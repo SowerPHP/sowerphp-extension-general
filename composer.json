@@ -1,0 +1,29 @@
+{
+	"name": "sowerphp/general",
+	"description": "Extensión: general",
+	"type": "library",
+	"keywords": ["sowerphp", "extension"],
+	"homepage": "http://sowerphp.org",
+	"license": "GPL",
+	"authors": [
+		{
+			"name": "Equipo de SowerPHP",
+			"homepage": "https://github.com/sowerphp/extension-general/graphs/contributors"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/sowerphp/extension-general/issues",
+		"forum": "http://stackoverflow.com/tags/sowerphp",
+		"source": "https://github.com/sowerphp/extension-general"
+	},
+	"config": {
+		"vendor-dir": "Vendor"
+	},
+	"require": {
+		"php": "~5.3",
+		"libchart/libchart": "1.4.0",
+		"lapinator.net/ods-php-generator": "dev-master",
+		"phpoffice/phpexcel": "1.8.0",
+		"tecnick.com/tcpdf": "6.0.062"
+	}
+}

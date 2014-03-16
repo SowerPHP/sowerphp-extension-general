@@ -89,5 +89,5 @@ Módulos
 		App::uses('Imagenes', 'Multimedia.Utility');
 		new Imagenes('/archivos/multimedia/imagenes');
 
-Otros directorios (como *Vendor* o *webroot*) contienen archivos que son
-necesarios para que la extensión funcione correctamente.
+Otros directorios (como *webroot*) contienen archivos que son necesarios para
+que la extensión funcione correctamente.

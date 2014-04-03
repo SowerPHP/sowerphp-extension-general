@@ -21,70 +21,75 @@
  * En caso contrario, consulte <http://www.gnu.org/licenses/gpl.html>.
  */
 
+namespace sowerphp\general;
+
 /**
  * Clase para trabajar con un autómata finito determinístico (AFD)
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2013-08-17
+ * @version 2014-03-30
  */
 
-class AFD {
+class Utility_Automata_AFD
+{
 
-	private $transitions; ///< Transiciones del autómata
-	private $q0; ///< Estado inicial del autómata
-	private $F; ///< Conjunto de estados finales
-	private $status; ///< Estado en que se detuvo el AFD
+    private $transitions; ///< Transiciones del autómata
+    private $q0; ///< Estado inicial del autómata
+    private $F; ///< Conjunto de estados finales
+    private $status; ///< Estado en que se detuvo el AFD
 
-	/**
-	 * Constructor de la clase
-	 *
-	 * Ejemplo de llamada:
-	 * \code
-	   $t = array(0=>array('a'=>1, 'b'=>'0'), 1=>array('a'=>0, 'b'=>'1'));
-	   $F = array(1);
-	   $q0 = 0;
-	   $afd = new AFD($t, $F, $q0);
-	   \endcode
-	 *
-	 * @param transitions Transiciones definidas para el AFD
-	 * @param F Estados finales de aceptación
-	 * @param q0 Estado inicial del AFD
-	 * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-	 * @version 2013-08-15
-	 */
-	public function AFD ($transitions = array(), $F = array(), $q0 = 0) {
-		$this->transitions = $transitions;
-		$this->F = $F;
-		$this->q0 = $q0;
-	}
+    /**
+     * Constructor de la clase
+     *
+     * Ejemplo de llamada:
+     * \code
+        $t = array(0=>array('a'=>1, 'b'=>'0'), 1=>array('a'=>0, 'b'=>'1'));
+        $F = array(1);
+        $q0 = 0;
+        $afd = new \sowerphp\general\Utility_Automata_AFD($t, $F, $q0);
+        \endcode
+     *
+     * @param transitions Transiciones definidas para el AFD
+     * @param F Estados finales de aceptación
+     * @param q0 Estado inicial del AFD
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2014-03-30
+     */
+    public function __construct ($transitions = array(), $F = array(), $q0 = 0)
+    {
+        $this->transitions = $transitions;
+        $this->F = $F;
+        $this->q0 = $q0;
+    }
 
-	/**
-	 * Método que evalua la entrada según las transiciones del autómata
-	 * @param input Entrada para el AFD (un string o un arreglo de símbolos)
-	 * @return =true si el estado de detención es de aceptación
-	 * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-	 * @version 2013-08-15
-	 */
-	public function run ($input) {
-		$estado = $this->q0;
-		$simbols = is_array($input) ? count($input) : strlen($input);
-		for ($i=0; $i<$simbols; ++$i) {
-			if (isset($this->transitions[$estado][$input[$i]])) {
-				$estado =
-					$this->transitions[$estado][$input[$i]];
-			}
-		}
-		$this->status = $estado;
-		return in_array($estado, $this->F);	
-	}
+    /**
+     * Método que evalua la entrada según las transiciones del autómata
+     * @param input Entrada para el AFD (un string o un arreglo de símbolos)
+     * @return =true si el estado de detención es de aceptación
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2013-08-15
+     */
+    public function run ($input)
+    {
+        $estado = $this->q0;
+        $simbols = is_array($input) ? count($input) : strlen($input);
+        for ($i=0; $i<$simbols; ++$i) {
+            if (isset($this->transitions[$estado][$input[$i]])) {
+                $estado = $this->transitions[$estado][$input[$i]];
+            }
+        }
+        $this->status = $estado;
+        return in_array($estado, $this->F);
+    }
 
-	/**
-	 * Obtener el estado final en que se detuvo el AFD
-	 * @return Entrega el estado donde se detuvo el AFD después de correr
-	 * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-	 * @version 2013-08-17
-	 */
-	public function getFinalState () {
-		return $this->status;
-	}
+    /**
+     * Obtener el estado final en que se detuvo el AFD
+     * @return Entrega el estado donde se detuvo el AFD después de correr
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2013-08-17
+     */
+    public function getFinalState ()
+    {
+        return $this->status;
+    }
 
 }

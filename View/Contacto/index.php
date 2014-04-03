@@ -3,23 +3,22 @@
 contactado a la brevedad.</p>
 
 <?php
-App::uses('FormHelper', 'View/Helper');
-$form = new FormHelper();
+$form = new \sowerphp\general\View_Helper_Form();
 echo $form->begin(array('focus'=>'nombre', 'onsubmit'=>'Form.check()'));
 echo $form->input(array(
-	'name'=>'nombre',
-	'label'=>'Nombre',
-	'check'=>'notempty'
+    'name'=>'nombre',
+    'label'=>'Nombre',
+    'check'=>'notempty'
 ));
 echo $form->input(array(
-	'name'=>'correo',
-	'label'=>'Correo electrónico',
-	'check'=>array('notempty', 'email')));
+    'name'=>'correo',
+    'label'=>'Correo electrónico',
+    'check'=>array('notempty', 'email')));
 echo $form->input(array(
-	'type'=>'textarea',
-	'name'=>'mensaje',
-	'label'=>'Mensaje',
-	'rows'=>5,
-	'check'=>'notempty'
+    'type'=>'textarea',
+    'name'=>'mensaje',
+    'label'=>'Mensaje',
+    'rows'=>5,
+    'check'=>'notempty'
 ));
 echo $form->end('Enviar mensaje');

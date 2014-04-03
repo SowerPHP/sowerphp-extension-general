@@ -1,3 +1,2 @@
 <?php
-App::uses('XLS', 'Utility/Spreadsheet');
-XLS::generate($data, $id);
+\sowerphp\general\Utility_Spreadsheet_XLS::generate($data, $id);

@@ -21,6 +21,8 @@
  * En caso contrario, consulte <http://www.gnu.org/licenses/gpl.html>.
  */
 
+namespace sowerphp\general;
+
 /**
  * Manejar archivos csv
  *
@@ -28,55 +30,58 @@
  * @author DeLaF, esteban[at]delaf.cl
  * @version 2014-02-16
  */
-final class CSV {
+final class Utility_Spreadsheet_CSV
+{
 
-	/**
-	 * Lee un archivo CSV
-	 * @param archivo archivo a leer (ejemplo celca tmp_name de un arreglo $_FILES)
-	 * @param separador separador a utilizar para diferenciar entre una columna u otra
-	 * @author DeLaF, esteban[at]delaf.cl
-	 * @version 2012-06-1
-	 */
-	public static function read ($archivo = null, $separador = ',', $delimitadortexto = '"') {
-		if (($handle = fopen($archivo, "r")) !== FALSE) {
-			$data = array();
-			$i = 0;
-			while (($row = fgetcsv($handle)) !== FALSE) {
-				$j = 0;
-				foreach($row as &$col) {
-					$data[$i][$j++] = $col;
-				}
-				++$i;
-			}
-			fclose($handle);
-		}
-		return $data;
-	}
+    /**
+     * Lee un archivo CSV
+     * @param archivo archivo a leer (ejemplo celca tmp_name de un arreglo $_FILES)
+     * @param separador separador a utilizar para diferenciar entre una columna u otra
+     * @author DeLaF, esteban[at]delaf.cl
+     * @version 2012-06-1
+     */
+    public static function read ($archivo = null, $separador = ',', $delimitadortexto = '"')
+    {
+        if (($handle = fopen($archivo, 'r')) !== FALSE) {
+            $data = array();
+            $i = 0;
+            while (($row = fgetcsv($handle)) !== FALSE) {
+                $j = 0;
+                foreach ($row as &$col) {
+                    $data[$i][$j++] = $col;
+                }
+                ++$i;
+            }
+            fclose($handle);
+        }
+        return $data;
+    }
 
-	/**
-	 * Crea un archivo CSV a partir de un arreglo
-	 * @param data Arreglo utilizado para generar la planilla
-	 * @param id Identificador de la planilla
-	 * @param separador separador a utilizar para diferenciar entre una columna u otra
-	 * @author DeLaF, esteban[at]delaf.cl
-	 * @version 2014-02-16
-	 */
-	public static function generate ($data, $id, $separador = ',',
-						$delimitadortexto = '"') {
-		ob_clean();
-		header('Content-type: text/csv');
-		header('Content-Disposition: attachment; filename='.$id.'.csv');
-		header('Pragma: no-cache');
-		header('Expires: 0');
-		foreach($data as &$row) {
-			foreach($row as &$col) {
-				$col = $delimitadortexto.rtrim(str_replace('<br />', ', ', strip_tags($col, '<br>')), " \t\n\r\0\x0B,").$delimitadortexto;
-			}
-			echo implode($separador, $row),"\n";
-			unset($row);
-		}
-		unset($data);
-		exit(0);
-	}
-	
+    /**
+     * Crea un archivo CSV a partir de un arreglo
+     * @param data Arreglo utilizado para generar la planilla
+     * @param id Identificador de la planilla
+     * @param separador separador a utilizar para diferenciar entre una columna u otra
+     * @author DeLaF, esteban[at]delaf.cl
+     * @version 2014-02-16
+     */
+    public static function generate ($data, $id, $separador = ',',
+                                                    $delimitadortexto = '"')
+    {
+        ob_clean();
+        header('Content-type: text/csv');
+        header('Content-Disposition: attachment; filename='.$id.'.csv');
+        header('Pragma: no-cache');
+        header('Expires: 0');
+        foreach($data as &$row) {
+            foreach($row as &$col) {
+                $col = $delimitadortexto.rtrim(str_replace('<br />', ', ', strip_tags($col, '<br>')), " \t\n\r\0\x0B,").$delimitadortexto;
+            }
+            echo implode($separador, $row),"\n";
+            unset($row);
+        }
+        unset($data);
+        exit(0);
+    }
+
 }

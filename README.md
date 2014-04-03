@@ -19,7 +19,7 @@ MVC (modelos, vistas y controladores)
 	*Config/core.php*, por ejemplo (para Gmail):
 
 		// Configuración para el correo electrónico
-		Configure::write('email.default', array(
+		\sowerphp\core\Configure::write('email.default', array(
 			'type' => 'smtp',
 			'host' => 'ssl://smtp.gmail.com',
 			'port' => 465,
@@ -38,27 +38,28 @@ MVC (modelos, vistas y controladores)
 Helpers
 -------
 
--	**ChartHelper**: para la generación de gráficos utilizando *libchart*.
+-	**View_Helper_Chart**: para la generación de gráficos utilizando
+	*libchart*.
 
--	**FormHelper**: para la generación de formularios HTML.
+-	**View_Helper_Form**: para la generación de formularios HTML.
 
--	**PDFHelper**: para la generación de archivos PDF utilizando *TCPDF*.
+-	**View_Helper_PDF**: para la generación de archivos PDF utilizando
+	*TCPDF*.
 
--	**TableHelper**: para la generación de tablas HTML.
+-	**View_Helper_Table**: para la generación de tablas HTML.
 
 Utilidades
 ----------
 
--	**Automata**: provee clase AFD para correr autómata finito
+-	**Utility_Automata_AFD**: provee clase AFD para correr autómata finito
 	determinístico.
 
--	**Spreadsheet**: provee clases para leer y escribir tablas en
+-	**Utility_Spreadsheet**: provee clases para leer y escribir tablas en
 	diferentes formatos, por ejemplo CSV, ODS y XLS. Se recomienda utilizar
 	la clase Spreadsheet para acceder a las otras clases. Por ejemplo para
 	generar una tabla se puede utilizar:
 
-		App::uses('Spreadsheet', 'Utility/Spreadsheet');
-		Spreadsheet::generate(array(
+		\sowerphp\general\Utility_Spreadsheet::generate(array(
 			array('f1c1', 'f1c2'),
 			array('f2c1', 'f2c2'),
 			array('f3c1', 'f3c2'),
@@ -86,8 +87,9 @@ Módulos
 	puede crear una galería con imagenes de cierto directorio de la
 	siguiente forma:
 
-		App::uses('Imagenes', 'Multimedia.Utility');
-		new Imagenes('/archivos/multimedia/imagenes');
+		new \sowerphp\general\Multimedia\Utility_Imagenes(
+			'/archivos/multimedia/imagenes'
+		);
 
 Otros directorios (como *webroot*) contienen archivos que son necesarios para
 que la extensión funcione correctamente.

@@ -21,75 +21,79 @@
  * En caso contrario, consulte <http://www.gnu.org/licenses/gpl.html>.
  */
 
+namespace sowerphp\general\Multimedia;
+
 /**
  * Clase para crear una galería de imágenes
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2010-10-27
+ * @version 2014-03-26
  */
-class Imagenes {
+class Utility_Imagenes
+{
 
-	private $_base;
+    private $_base;
 
-	public function __construct ($dir = null) {
-		// obtener base
-		$this->_base = Request::getBase();
-		// si se indico un directorio se genera e imprime (like TableHelper)
-		if($dir) {
-			echo $this->generate($dir);
-		}
-	}
+    public function __construct ($dir = null)
+    {
+        // obtener base
+        $this->_base = _BASE;
+        // si se indico un directorio se genera e imprime (like TableHelper)
+        if ($dir) {
+            echo $this->generate($dir);
+        }
+    }
 
-	public function generate ($dir) {
-		// buffer para ir dibujando la galería
-		$buffer = '';
-		// obtener cabecera
-		$buffer .= $this->header();
-		// inicio de la galería
-		$buffer .= '<div id="ImagenesPlugin">';
-		// obtener imagenes (si existen miniaturas se usan)
-		if(file_exists(DIR_WEBSITE.'/webroot'.$dir.'/miniaturas')) {
-			$imagenes = scandir(DIR_WEBSITE.'/webroot'.$dir.'/miniaturas');
-			$miniaturas = '/miniaturas';
-		} else {
-			$imagenes = scandir(DIR_WEBSITE.'/webroot'.$dir);
-			$miniaturas = '';
-		}
-		// mostrar imagenes
-		foreach($imagenes as &$imagen) {
-			if(!is_dir(DIR_WEBSITE.'/webroot'.$dir.$miniaturas.'/'.$imagen)) {
-				$buffer .= '<a href="'.$this->_base.$dir.'/'.$imagen.'" rel="prettyPhoto[gallery2]"><img src="'.$this->_base.$dir.$miniaturas.'/'.$imagen.'" alt="'.$imagen.'" /></a>';
-			}
-		}
+    public function generate ($dir)
+    {
+        // buffer para ir dibujando la galería
+        $buffer = '';
+        // obtener cabecera
+        $buffer .= $this->header();
+        // inicio de la galería
+        $buffer .= '<div id="ImagenesPlugin">';
+        // obtener imagenes (si existen miniaturas se usan)
+        if(file_exists(DIR_WEBSITE.'/webroot'.$dir.'/miniaturas')) {
+            $imagenes = scandir(DIR_WEBSITE.'/webroot'.$dir.'/miniaturas');
+            $miniaturas = '/miniaturas';
+        } else {
+            $imagenes = scandir(DIR_WEBSITE.'/webroot'.$dir);
+            $miniaturas = '';
+        }
+        // mostrar imagenes
+        foreach($imagenes as &$imagen) {
+            if (!is_dir(DIR_WEBSITE.'/webroot'.$dir.$miniaturas.'/'.$imagen)) {
+                $buffer .= '<a href="'.$this->_base.$dir.'/'.$imagen.'" rel="prettyPhoto[gallery2]"><img src="'.$this->_base.$dir.$miniaturas.'/'.$imagen.'" alt="'.$imagen.'" /></a>';
+            }
+        }
+        // fin de la galería
+        $buffer .= '</div>';
+        // retornar bufer
+        return $buffer;
+    }
 
-		
-		// fin de la galería
-		$buffer .= '</div>';
-		// retornar bufer
-		return $buffer;
-	}
-	
-	private function header () {
-		return '
-		<link rel="stylesheet" href="'.$this->_base.'/multimedia/css/prettyPhoto.css" type="text/css" media="screen" charset="utf-8" />
-		<script src="'.$this->_base.'/multimedia/js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
-		<style type="text/css">
-		#ImagenesPlugin img {
-			margin: 5px;
-			padding: 3px;
-			border: solid 1px #CCC;
-			-moz-box-shadow: 1px 1px 5px #999;
-			-webkit-box-shadow: 1px 1px 5px #999;
-			box-shadow: 1px 1px 5px #999;
-			max-width: 160px;
-			max-height: 120px;
-		}
-		</style>
-		<script type="text/javascript" charset="utf-8">
-			$(document).ready(function(){
-				$("#ImagenesPlugin a[rel^=\'prettyPhoto\']").prettyPhoto();
-			});
-		</script>
-		';
-	}
+    private function header ()
+    {
+        return '
+            <link rel="stylesheet" href="'.$this->_base.'/multimedia/css/prettyPhoto.css" type="text/css" media="screen" charset="utf-8" />
+            <script src="'.$this->_base.'/multimedia/js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
+            <style type="text/css">
+            #ImagenesPlugin img {
+                margin: 5px;
+                padding: 3px;
+                border: solid 1px #CCC;
+                -moz-box-shadow: 1px 1px 5px #999;
+                -webkit-box-shadow: 1px 1px 5px #999;
+                box-shadow: 1px 1px 5px #999;
+                max-width: 160px;
+                max-height: 120px;
+            }
+            </style>
+            <script type="text/javascript" charset="utf-8">
+                $(document).ready(function(){
+                    $("#ImagenesPlugin a[rel^=\'prettyPhoto\']").prettyPhoto();
+                });
+            </script>
+        ';
+    }
 
 }

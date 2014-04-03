@@ -21,6 +21,8 @@
  * En caso contrario, consulte <http://www.gnu.org/licenses/gpl.html>.
  */
 
+namespace sowerphp\general;
+
 /**
  * Manejar archivos json
  *
@@ -28,29 +30,38 @@
  * @author DeLaF, esteban[at]delaf.cl
  * @version 2014-02-12
  */
-final class JSON {
+final class Utility_Spreadsheet_JSON
+{
 
-	public static function read ($archivo) {
-	}
+    /**
+     * @todo Implementar método (debe ser el "inverso" de self::generate())
+     */
+    public static function read ($archivo) {
+    }
 
-	public static function generate ($data, $id) {
-		// limpiar posible contenido envíado antes
-		ob_clean();
-		// cabeceras del archivo
-		header('Content-type: application/json');
-		header('Content-Disposition: inline; filename='.$id.'.json');
-		header('Pragma: no-cache');
-		header('Expires: 0');
-		// cuerpo del archivo
-		foreach ($data as &$row) {
-			foreach ($row as &$col) {
-				$col = rtrim(str_replace('<br />', ', ', strip_tags($col, '<br>')), " \t\n\r\0\x0B,");
-			}
-		}
-		echo json_encode($data);
-		// liberar memoria y terminar script
-		unset($titles, $data, $id);
-		exit(0);
-	}
+    /**
+     * Método que genera un string JSON a partir de una tabla en un arreglo
+     * bidimensional
+     */
+    public static function generate ($data, $id)
+    {
+        // limpiar posible contenido envíado antes
+        ob_clean();
+        // cabeceras del archivo
+        header('Content-type: application/json');
+        header('Content-Disposition: inline; filename='.$id.'.json');
+        header('Pragma: no-cache');
+        header('Expires: 0');
+        // cuerpo del archivo
+        foreach ($data as &$row) {
+            foreach ($row as &$col) {
+                $col = rtrim(str_replace('<br />', ', ', strip_tags($col, '<br>')), " \t\n\r\0\x0B,");
+            }
+        }
+        echo json_encode($data);
+        // liberar memoria y terminar script
+        unset($titles, $data, $id);
+        exit(0);
+    }
 
 }

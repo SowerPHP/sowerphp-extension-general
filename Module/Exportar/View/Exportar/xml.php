@@ -1,3 +1,2 @@
 <?php
-App::uses('XML', 'Utility/Spreadsheet');
-XML::generate($data, $id);
+\sowerphp\general\Utility_Spreadsheet_XML::generate($data, $id);

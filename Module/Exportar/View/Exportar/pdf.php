@@ -1,8 +1,7 @@
 <?php
 
 // crear objeto para poder generar el pdf
-App::uses('PDFHelper', 'View/Helper');
-$pdf = new PDFHelper ();
+$pdf = new \sowerphp\general\View_Helper_PDF ();
 
 // propiedades del documento
 $pdf->setInfo (

@@ -1,3 +1,2 @@
 <?php
-App::uses('JSON', 'Utility/Spreadsheet');
-JSON::generate($data, $id);
+\sowerphp\general\Utility_Spreadsheet_JSON::generate($data, $id);

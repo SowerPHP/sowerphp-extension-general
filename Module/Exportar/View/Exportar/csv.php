@@ -1,3 +1,2 @@
 <?php
-App::uses('CSV', 'Utility/Spreadsheet');
-CSV::generate($data, $id);
+\sowerphp\general\Utility_Spreadsheet_CSV::generate($data, $id);

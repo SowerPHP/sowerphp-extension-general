@@ -1,3 +1,2 @@
 <?php
-App::uses('ODS', 'Utility/Spreadsheet');
-ODS::generate($data, $id);
+\sowerphp\general\Utility_Spreadsheet_ODS::generate($data, $id);

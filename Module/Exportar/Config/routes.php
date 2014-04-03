@@ -22,8 +22,8 @@
  */
 
 // ruta para las acciones de exportar
-Router::connect('/exportar/:action', array(
-	'module' => 'Exportar',
-	'controller' => 'exportar',
-	'action' => '',
+\sowerphp\core\Routing_Router::connect('/exportar/:action', array(
+    'module' => 'Exportar',
+    'controller' => 'exportar',
+    'action' => '',
 ));

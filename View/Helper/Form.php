@@ -26,7 +26,7 @@ namespace sowerphp\general;
 /**
  * Helper para la creación de formularios en HTML
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2014-03-24
+ * @version 2014-04-08
  */
 class View_Helper_Form
 {
@@ -125,7 +125,7 @@ class View_Helper_Form
      * @param config Arreglo con la configuración para el elemento
      * @return String Código HTML de lo solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-03-12
+     * @version 2014-04-08
      */
     private function _formatear ($field, $config)
     {
@@ -142,15 +142,16 @@ class View_Helper_Form
                 ;
             }
             // generar campo
-            $buffer .= '<div class="input">'."\n";
+            $buffer .= '<div>'."\n";
             if (!empty($config['label'])) {
-                if (isset($name))
-                    $label = '<label for="'.$config['name'].'Field">'.$config['label'].'</label>';
-                else
-                    $label = $config['label'];
-                $buffer .= '<div class="label">'.$label.'</div>'."\n";
-            } else
+                if (!empty($config['name'])) {
+                    $buffer .= '<div class="label"><label for="'.$config['name'].'Field">'.$config['label'].'</label></div>'."\n";
+                } else {
+                    $buffer .= '<div class="label"><label>'.$config['label'].'</label></div>'."\n";
+                }
+            } else {
                 $buffer .= '<div class="label">&nbsp;</div>'."\n";
+            }
             $buffer .= '<div class="field">'.$field.$config['help'].'</div>'."\n";
             $buffer .= '</div>'."\n";
         }
@@ -341,7 +342,7 @@ class View_Helper_Form
             $d = (isset($input['type']) && $input['type']=='hidden') ? ' style="display:none;"' : '';
             $inputs .= '<td'.$d.'>'.rtrim($this->input($input)).'</td>';
         }
-        $inputs .= '<td><a href="" onclick="$(this).parent().parent().remove(); return false" title="Eliminar"><img src="'._BASE.'/img/icons/16x16/actions/delete.png" alt="add" /></a></td>';
+        $inputs .= '<td><a href="" onclick="Form.delJS(this); return false" title="Eliminar"><img src="'._BASE.'/img/icons/16x16/actions/delete.png" alt="add" /></a></td>';
         $inputs .= '</tr>';
         // si no se indicaron valores, entonces se crea una fila con los campos vacíos
         if (!isset($config['values'])) {
@@ -358,7 +359,7 @@ class View_Helper_Form
                     $d = (isset($input['type']) && $input['type']=='hidden') ? ' style="display:none;"' : '';
                     $values .= '<td'.$d.'>'.rtrim($this->input($input)).'</td>';
                 }
-                $values .= '<td><a href="" onclick="$(this).parent().parent().remove(); return false" title="Eliminar"><img src="'._BASE.'/img/icons/16x16/actions/delete.png" alt="add" /></a></td>';
+                $values .= '<td><a href="" onclick="Form.delJS(this); return false" title="Eliminar"><img src="'._BASE.'/img/icons/16x16/actions/delete.png" alt="add" /></a></td>';
                 $values .= '</tr>';
             }
         }
@@ -367,13 +368,13 @@ class View_Helper_Form
         // generar tabla
         $buffer = '<script type="text/javascript"> window["inputsJS_'.$config['id'].'"] = \''.$inputs.'\'; </script>'."\n";
         $buffer .= '<table id="'.$config['id'].'" class="formTable" style="width:'.$config['width'].'">';
-        $buffer .= '<tr>';
+        $buffer .= '<thead><tr>';
         foreach ($config['titles'] as &$title) {
             $buffer .= '<th>'.$title.'</th>';
         }
         $buffer .= '<th><a href="javascript:Form.addJS(\''.$config['id'].'\')" title="Agregar [+]" accesskey="+"><img src="'._BASE.'/img/icons/16x16/actions/add.png" alt="add" /></a></th>';
-        $buffer .= '</tr>';
-        $buffer .= $values;
+        $buffer .= '</tr></thead>';
+        $buffer .= '<tbody>'.$values.'</tbody>';
         $buffer .= '</table>';
         return $buffer;
     }

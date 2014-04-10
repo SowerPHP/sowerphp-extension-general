@@ -19,6 +19,14 @@
  * En caso contrario, consulte <http://www.gnu.org/licenses/gpl.html>.
  */
 
+/**
+ * @file __.js
+ * Biblioteca con métodos genéricos (bajo la clase __) para propósitos
+ * genéricos
+ * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+ * @version 2014-04-09
+ */
+
 /*jslint browser: true, devel: true, nomen: true, indent: 4 */
 
 /**
@@ -79,6 +87,8 @@ __.num = function (n) {
 
 /**
  * Método que remueve los tags <option> de un tag <select>
+ * @param selectbox Elemento select que se quiere limpiar
+ * @param from Desde que option limpiar el campo select
  */
 __.removeOptions = function (selectbox, from) {
     'use strict';
@@ -106,3 +116,20 @@ __.rutDV = function (numero) {
     n_dv = 11 - (suma % 11);
     return ((n_dv === 11) ? 0 : ((n_dv === 10) ? "K" : n_dv));
 };
+
+/**
+ * Método que abre un popup
+ * @param url Dirección web que se debe abrir en el popup
+ * @param w Ancho de la ventana que se abrirá
+ * @param h Alto de la ventana que se abrirá
+ * @param s Si se muestran ("yes") o no ("no") los scrollbars
+ */
+__.popup = function (url, w, h, s) {
+    'use strict';
+    s = s || "no";
+    window.open(
+        url,
+        window,
+        "width=" + w + ",height=" + h + ",directories=no,location=no,menubar=no,scrollbars=" + s + ",status=no,toolbar=no,resizable=no"
+    );
+}

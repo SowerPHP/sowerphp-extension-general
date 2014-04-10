@@ -19,6 +19,13 @@
  * En caso contrario, consulte <http://www.gnu.org/licenses/gpl.html>.
  */
 
+/**
+ * @file form.js
+ * Archivo con clase y método para trabajar con formularios
+ * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+ * @version 2014-04-09
+ */
+
 /*jslint browser: true, devel: true, nomen: true, indent: 4 */
 
 /**
@@ -31,6 +38,8 @@ function Form() {
 
 /**
  * Método que revisa que el campo no sea vacío
+ * @param Campo que se quiere validar
+ * @return =true pasó la validación ok
  */
 Form.check_notempty = function (field) {
     'use strict';
@@ -42,6 +51,8 @@ Form.check_notempty = function (field) {
 
 /**
  * Método que revisa que el campo sea un entero
+ * @param Campo que se quiere validar
+ * @return =true pasó la validación ok
  */
 Form.check_integer = function (field) {
     'use strict';
@@ -53,6 +64,8 @@ Form.check_integer = function (field) {
 
 /**
  * Método que revisa que el campo sea un correo electrónico
+ * @param Campo que se quiere validar
+ * @return =true pasó la validación ok
  */
 Form.check_email = function (field) {
     'use strict';
@@ -65,6 +78,8 @@ Form.check_email = function (field) {
 
 /**
  * Método que revisa que el campo sea una fecha en formato YYYY-MM-DD
+ * @param Campo que se quiere validar
+ * @return =true pasó la validación ok
  */
 Form.check_date = function (field) {
     'use strict';
@@ -78,6 +93,8 @@ Form.check_date = function (field) {
 /**
  * Método que revisa que el campo sea un número de teléfono en formato:
  * "+<código país> <número de teléfono>"
+ * @param Campo que se quiere validar
+ * @return =true pasó la validación ok
  */
 Form.check_telephone = function (field) {
     'use strict';
@@ -90,6 +107,8 @@ Form.check_telephone = function (field) {
 
 /**
  * Método que revisa que el campo sea un RUT válido
+ * @param Campo que se quiere validar
+ * @return =true pasó la validación ok
  */
 Form.check_rut = function (field) {
     'use strict';
@@ -107,6 +126,8 @@ Form.check_rut = function (field) {
  * Método principal que hace los chequeos:
  *   - Campo obligatorio (en caso de aplicar)
  *   - Tipo de dato del campo
+ * @param id ID del formulario o nada si se desean revisar todos los campos
+ * @return =true pasó la validación ok
  */
 Form.check = function (id) {
     'use strict';
@@ -136,7 +157,10 @@ Form.check = function (id) {
                 if (status !== true) {
                     label = fields[i].parentNode.parentNode.getElementsByTagName("label")[0].innerText.replace("*", "");
                     alert(status.replace("%s", label));
-                    fields[i].value = "";
+                    try {
+                        fields[i].select();
+                    } catch (error) {
+                    }
                     fields[i].focus();
                     return false;
                 }
@@ -151,6 +175,7 @@ Form.check = function (id) {
 
 /**
  * Método para agregar una fila a una tabla en un formulario
+ * @param id ID de la tabla donde se deben agregar los campos
  */
 Form.addJS = function (id) {
     'use strict';
@@ -159,6 +184,7 @@ Form.addJS = function (id) {
 
 /**
  * Método para eliminar una fila de una tabla en un formulario
+ * @param link Elemento link (<a>) que es parte de la fila que se desea remover
  */
 Form.delJS = function (link) {
     'use strict';
@@ -167,6 +193,8 @@ Form.delJS = function (link) {
 
 /**
  * Método para cambiar el valor de un grupo de checkboxes de un mismo nombre
+ * @param name Nombre del arreglo de checkboxes que se desea asignar un valor "check"
+ * @param checked Si se deben o no marcar como chequeados los checkboxes
  */
 Form.checkboxesSet = function (name, checked) {
     'use strict';
@@ -179,6 +207,7 @@ Form.checkboxesSet = function (name, checked) {
 
 /**
  * Método que permite verificar si realmente se desea enviar el formulario
+ * @param msg Mensaje que se debe mostrar al usuario para confirmar el formulario
  */
 Form.checkSend = function (msg) {
     'use strict';

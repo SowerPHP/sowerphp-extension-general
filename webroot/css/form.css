@@ -39,7 +39,8 @@ table.formTable input[type="text"], table.formTable textarea, table.formTable se
 table.formTable input[type="image"] {
 	border: 0;
 }
-table.formTable th, table.formTable td {
+table.formTable th, table.formTable td,
+table.tableradios th+th, table.tableradios td+td {
 	text-align: center;
 }
 table.formTable th:last-child, table.formTable td:last-child {

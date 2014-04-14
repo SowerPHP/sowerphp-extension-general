@@ -26,7 +26,7 @@ namespace sowerphp\general;
 /**
  * Helper para la creación de formularios en HTML
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2014-04-08
+ * @version 2014-04-14
  */
 class View_Helper_Form
 {
@@ -407,6 +407,39 @@ class View_Helper_Form
                 $buffer .= '<td>'.$col.'</td>';
             }
             $buffer .= '<td><input type="checkbox" name="'.$config['name'].'[]" value="'.$key.'" checked="checked" /></td>';
+            $buffer .= '</tr>';
+        }
+        $buffer .= '</table>';
+        return $buffer;
+    }
+
+    private function _tableradios ($config)
+    {
+        // configuración por defecto
+        $config = array_merge(array('id'=>$config['name'], 'titles'=>array(), 'width'=>'100%'), $config);
+        $buffer = '<table id="'.$config['id'].'" class="tableradios" style="width:'.$config['width'].'">';
+        $buffer .= '<tr>';
+        foreach ($config['titles'] as &$title) {
+            $buffer .= '<th>'.$title.'</th>';
+        }
+        foreach ($config['options'] as &$option) {
+            $buffer .= '<th><div><span>'.$option.'</span></div></th>';
+        }
+        $buffer .= '</tr>';
+        $options = array_keys($config['options']);
+        foreach ($config['table'] as &$row) {
+            $key = array_shift($row);
+            // agregar fila
+            $buffer .= '<tr>';
+            foreach ($row as &$col) {
+                $buffer .= '<td>'.$col.'</td>';
+            }
+            foreach ($options as &$value) {
+                if (isset($_POST[$config['name'].'_'.$key]) && $_POST[$config['name'].'_'.$key]==$value)
+                    $checked = 'checked="checked" ';
+                else $checked = '';
+                $buffer .= '<td><input type="radio" name="'.$config['name'].'_'.$key.'" value="'.$value.'" '.$checked.'/></td>';
+            }
             $buffer .= '</tr>';
         }
         $buffer .= '</table>';

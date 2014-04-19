@@ -31,7 +31,7 @@ namespace sowerphp\general;
  * Hace uso de libchart, presentando métodos más simples y evitando que el
  * programador deba escribir tando código
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2014-03-03
+ * @version 2014-04-18
  */
 class View_Helper_Chart
 {
@@ -50,7 +50,7 @@ class View_Helper_Chart
      * @param options Opciones para el gráfico
      * @param exit =true si se debe terminar el script, =false si no se debe terminar
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-03-03
+     * @version 2014-04-18
      */
     private function generate ($title, $series, $type = 'line',
                                             $options = array(), $exit = true)
@@ -88,7 +88,7 @@ class View_Helper_Chart
             $dataSet->addSerie($serie, $s);
         }
         // renderizar
-        $this->render($chart,$title,$dataSet,$options['ratio'],$exit);
+        $this->render($chart, $title, $dataSet, $options, $exit);
     }
 
     /**
@@ -96,22 +96,28 @@ class View_Helper_Chart
      * @param chart Gráfico a renderizar
      * @param title Título del gráfico
      * @param data Datos del gráfico
-     * @param ratio Porcentaje que ocuparán los datos dentro de la imagen
+     * @param options Opciones del gráfico
      * @param exit =true si se debe terminar el script, =false si no se debe terminar
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-03-03
+     * @version 2014-04-18
      */
-    private function render (&$chart, $title, $data, $ratio, $exit = true)
+    private function render (&$chart, $title, $data, $options, $exit = true)
     {
+        // opciones por defecto
+        $options = array_merge (
+            ['disposition'=>'inline', 'filename'=>'grafico.png'],
+            $options
+        );
         // asignar opciones al gráfico
         $chart->setTitle($title);
         $chart->setDataSet($data);
-        $chart->getPlot()->setGraphCaptionRatio($ratio);
+        $chart->getPlot()->setGraphCaptionRatio($options['ratio']);
         // enviar cabeceras
         ob_clean ();
         header('Content-type: image/png');
         header('Pragma: no-cache');
         header('Expires: 0');
+        header('Content-Disposition: '.$options['disposition'].'; filename="'.$options['filename'].'"');
         // renderizar y terminar script
         $chart->render();
         if ($exit) exit(0);
@@ -143,7 +149,7 @@ class View_Helper_Chart
     public function vertical_bar ($title, $series,
                                             $options = array(), $exit = true)
     {
-        $this->generate ($title,$series,'VerticalBar',$options,$exit);
+        $this->generate ($title, $series, 'VerticalBar', $options, $exit);
     }
 
     /**
@@ -158,7 +164,7 @@ class View_Helper_Chart
     public function horizontal_bar ($title, $series,
                                             $options = array(), $exit = true)
     {
-        $this->generate ($title,$series,'HorizontalBar',$options,$exit);
+        $this->generate ($title, $series, 'HorizontalBar', $options, $exit);
     }
 
     /**
@@ -168,7 +174,7 @@ class View_Helper_Chart
      * @param options Opciones para el gráfico
      * @param exit =true si se debe terminar el script, =false si no se debe terminar
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-03-03
+     * @version 2014-04-18
      */
     public function pie ($title, $data, $options = array(), $exit = true)
     {
@@ -193,7 +199,7 @@ class View_Helper_Chart
         }
         $chart->setDataSet($dataSet);
         //renderizar
-        $this->render($chart,$title,$dataSet,$options['ratio'],$exit);
+        $this->render($chart, $title, $dataSet, $options, $exit);
     }
 
 }

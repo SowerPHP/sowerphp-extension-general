@@ -179,7 +179,7 @@ Form.check = function (id) {
  */
 Form.addJS = function (id) {
     'use strict';
-    document.getElementById(id).getElementsByTagName("tbody")[0].innerHTML = document.getElementById(id).getElementsByTagName("tbody")[0].innerHTML + window["inputsJS_" + id];
+    document.getElementById(id).getElementsByTagName("tbody")[0].insertAdjacentHTML('beforeend', window["inputsJS_" + id]);
 };
 
 /**

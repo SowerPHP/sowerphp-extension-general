@@ -32,6 +32,8 @@ MVC (modelos, vistas y controladores)
 			'to' => 'para@gmail.com',
 		));
 
+	El índice *from* es opcional.
+
 -	**Module**: permite desplegar los enlaces (iconos) del módulo que se
 	está consultando o bien su página View/index.php en caso de que exista.
 

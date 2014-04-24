@@ -3,19 +3,19 @@
 /**
  * SowerPHP: Minimalist Framework for PHP
  * Copyright (C) SowerPHP (http://sowerphp.org)
- * 
+ *
  * Este programa es software libre: usted puede redistribuirlo y/o
  * modificarlo bajo los términos de la Licencia Pública General GNU
  * publicada por la Fundación para el Software Libre, ya sea la versión
  * 3 de la Licencia, o (a su elección) cualquier versión posterior de la
  * misma.
- * 
+ *
  * Este programa se distribuye con la esperanza de que sea útil, pero
  * SIN GARANTÍA ALGUNA; ni siquiera la garantía implícita
  * MERCANTIL o de APTITUD PARA UN PROPÓSITO DETERMINADO.
  * Consulte los detalles de la Licencia Pública General GNU para obtener
  * una información más detallada.
- * 
+ *
  * Debería haber recibido una copia de la Licencia Pública General GNU
  * junto a este programa.
  * En caso contrario, consulte <http://www.gnu.org/licenses/gpl.html>.
@@ -78,7 +78,7 @@ class View_Helper_Form
         if ($config['focus']) {
             $buffer .= '<script type="text/javascript"> $(function() { $("#'.$config['focus'].'Field").focus(); }); </script>'."\n";
         }
-        // agregar formulario 
+        // agregar formulario
         $buffer .= '<form action="'.$config['action'].'" method="'.$config['method'].'" enctype="multipart/form-data"'.$config['onsubmit'].' id="'.$config['id'].'">'."\n";
         // retornar
         return $buffer;
@@ -133,7 +133,7 @@ class View_Helper_Form
         if (!in_array($config['type'], array('hidden')) && $this->_formato=='mantenedor') {
             $buffer = '';
             // generar ayuda
-            if ($config['help']!='') {				
+            if ($config['help']!='') {
                 $actions = 'onmouseover="$(\'#'.$config['name'].'FieldHelp\').dialog()" onmouseout="$(\'#'.$config['name'].'FieldHelp\').dialog(\'close\')"';
                 $config['help'] =
                     ' <a href="#" class="helpIcon" onclick="return false" '.$actions.'>'.
@@ -227,7 +227,7 @@ class View_Helper_Form
     {
         return '<input type="text" name="'.$config['name'].'" value="'.$config['value'].'" id="'.$config['name'].'Field"'.$config['class'].' '.$config['attr'].' />';
     }
-	
+
     private function _password($config)
     {
         return '<input type="password" name="'.$config['name'].'" id="'.$config['name'].'Field"'.$config['class'].' '.$config['attr'].' />';
@@ -241,7 +241,7 @@ class View_Helper_Form
                 'cols'=>10
             ), $config
         );
-        return '<textarea name="'.$config['name'].'" rows="'.$config['rows'].'" cols="'.$config['cols'].'" id="'.$config['name'].'Field"'.$config['class'].' '.$config['attr'].'>'.$config['value'].'</textarea>';	
+        return '<textarea name="'.$config['name'].'" rows="'.$config['rows'].'" cols="'.$config['cols'].'" id="'.$config['name'].'Field"'.$config['class'].' '.$config['attr'].'>'.$config['value'].'</textarea>';
     }
 
     private function _checkbox ($config)

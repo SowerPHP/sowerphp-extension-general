@@ -56,7 +56,7 @@ class Controller_Contacto extends \Controller_App
             $this->redirect('/');
         }
         // si se envió el formulario se procesa
-        if (isset($_POST['submit'])) {			
+        if (isset($_POST['submit'])) {
             $email = new \sowerphp\core\Network_Email();
             $email->replyTo($_POST['correo'], $_POST['nombre']);
             $email->to(\sowerphp\core\Configure::read('email.default.to'));

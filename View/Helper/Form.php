@@ -125,7 +125,7 @@ class View_Helper_Form
      * @param config Arreglo con la configuración para el elemento
      * @return String Código HTML de lo solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-04-08
+     * @version 2014-04-24
      */
     private function _formatear ($field, $config)
     {
@@ -145,7 +145,8 @@ class View_Helper_Form
             $buffer .= '<div>'."\n";
             if (!empty($config['label'])) {
                 if (!empty($config['name'])) {
-                    $buffer .= '<div class="label"><label for="'.$config['name'].'Field">'.$config['label'].'</label></div>'."\n";
+                    $ast = $config['notempty'] ? '<span style="color:red">*</span> ' : '';
+                    $buffer .= '<div class="label"><label for="'.$config['name'].'Field">'.$ast.$config['label'].'</label></div>'."\n";
                 } else {
                     $buffer .= '<div class="label"><label>'.$config['label'].'</label></div>'."\n";
                 }
@@ -190,6 +191,7 @@ class View_Helper_Form
                 'attr' => '',
                 'check' => null,
                 'help' => '',
+                'notempty' =>false,
             ), $config
         );
         // si no se indicó un valor y existe uno por POST se usa
@@ -204,6 +206,8 @@ class View_Helper_Form
             if (!is_array($config['check'])) $config['check'] = array($config['check']);
             // hacer implode, agregar check y meter al class
             $config['class'] = $config['class'].' check '.implode(' ', $config['check']);
+            if (in_array('notempty', $config['check']))
+                $config['notempty'] = true;
         }
         // si se paso class se usa
         if ($config['class']!='') $config['class'] = ' class="'.$config['class'].'"';

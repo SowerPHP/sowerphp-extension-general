@@ -155,7 +155,7 @@ Form.check = function (id) {
             try {
                 status = Form["check_" + checks[j]](fields[i]);
                 if (status !== true) {
-                    label = fields[i].parentNode.parentNode.getElementsByTagName("label")[0].innerText.replace("*", "");
+                    label = fields[i].parentNode.parentNode.getElementsByTagName("label")[0].innerText.replace("* ", "");
                     alert(status.replace("%s", label));
                     try {
                         fields[i].select();

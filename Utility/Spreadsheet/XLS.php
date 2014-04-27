@@ -122,7 +122,7 @@ final class Utility_Spreadsheet_XLS
      * @param archivo Archivo que se procesará
      * @return Arreglo con los nombres de las hojas
      * @author DeLaF (esteban[at]delaf.cl)
-     * @version 2013-04-04
+     * @version 2014-04-27
      */
     public static function sheets ($archivo, $type = 'Excel5')
     {
@@ -131,7 +131,9 @@ final class Utility_Spreadsheet_XLS
         $objReader->setReadDataOnly(true);
         $objPHPExcel = $objReader->load($archivo);
         // Retornar hojas
-        return array_slice($objPHPExcel->getSheetNames(), 0, -1);
+        if ($type=='OOCalc')
+            return array_slice($objPHPExcel->getSheetNames(), 0, -1);
+        return $objPHPExcel->getSheetNames();
     }
 
 }

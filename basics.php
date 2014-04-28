@@ -77,7 +77,7 @@ function codeFrom ($src, $recursive = false, $ext = array(), $header = 2)
  * @param dir Directorio donde están los archivos que se desean enlazar
  * @param recursive Procesar (o no) de forma recursiva el directorio dir
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2013-07-30
+ * @version 2014-04-28
  */
 function linksFrom ($dir, $recursive = false)
 {
@@ -97,8 +97,10 @@ function linksFrom ($dir, $recursive = false)
             // verificar que se deba procesar recursivamente, sino se veran solo archivos
             if (!$recursive) continue;
             // mostrar directorio y llamar función de forma recursiva
-            echo '<li style="list-style-image: url(\'',_BASE,'/img/icons/16x16/files/directory.png\')">',str_replace(array('_', '-'), ' ', $file),'</li>',"\n";
+            echo '<li style="list-style-image: url(\'',_BASE,'/img/icons/16x16/files/directory.png\')">';
+            echo '<span style="display:block;margin-bottom:1em">',str_replace(array('_', '-'), ' ', $file),'</span>',"\n";
             linksFrom($dir.'/'.$file, $recursive);
+            echo '</li>',"\n";
         }
         // si es un archivo
         else {

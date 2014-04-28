@@ -145,14 +145,14 @@ class Utility_Spreadsheet
      * @param archivo Archivo que se procesará
      * @return Arreglo con los nombres de las hojas
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-03-25
+     * @version 2014-04-27
      */
     public static function sheets ($archivo)
     {
         $archivo = self::archivo ($archivo);
         // en caso que sea archivo CSV
         if ($archivo['type']=='text/csv' || $archivo['type']=='text/plain') {
-            return Utility_Spreadsheet_CSV::sheets($archivo['tmp_name']);
+            return [substr($archivo['name'], 0, -4)];
         }
         // en caso que sea archivo ODS
         else if ($archivo['type']=='application/vnd.oasis.opendocument.spreadsheet') {

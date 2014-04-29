@@ -31,6 +31,8 @@
 
 /**
  * Constructor de la clase
+ * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+ * @version 2014-04-09
  */
 function __() {
     'use strict';
@@ -89,6 +91,8 @@ __.num = function (n) {
  * Método que remueve los tags <option> de un tag <select>
  * @param selectbox Elemento select que se quiere limpiar
  * @param from Desde que option limpiar el campo select
+ * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+ * @version 2014-04-09
  */
 __.removeOptions = function (selectbox, from) {
     'use strict';
@@ -123,6 +127,8 @@ __.rutDV = function (numero) {
  * @param w Ancho de la ventana que se abrirá
  * @param h Alto de la ventana que se abrirá
  * @param s Si se muestran ("yes") o no ("no") los scrollbars
+ * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+ * @version 2014-04-09
  */
 __.popup = function (url, w, h, s) {
     'use strict';
@@ -132,4 +138,31 @@ __.popup = function (url, w, h, s) {
         window,
         "width=" + w + ",height=" + h + ",directories=no,location=no,menubar=no,scrollbars=" + s + ",status=no,toolbar=no,resizable=no"
     );
+}
+
+/**
+ * Función para enviar un formulario por POST
+ * @param url URL donde se debe enviar el formulario
+ * @param variables Hash json con las variables a pasar al formulario
+ * @param newWindow Si está asignado se abrirá el formulario en una nueva ventana
+ * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+ * @version 2014-04-29
+ */
+__.post = function(url, variables, newWindow) {
+    'use strict';
+    var form, hiddenField, variable;
+    form = document.createElement('form');
+    form.setAttribute('method', 'post');
+    form.setAttribute('action', url);
+    if (typeof(newWindow) !== 'undefined') {
+        form.setAttribute('target', '_blank');
+    }
+    for (variable in variables) {
+        hiddenField = document.createElement('input');
+        hiddenField.setAttribute('type', 'hidden');
+        hiddenField.setAttribute('name', variable);
+        hiddenField.setAttribute('value', variables[variable]);
+        form.appendChild(hiddenField);
+    }
+    form.submit();
 }

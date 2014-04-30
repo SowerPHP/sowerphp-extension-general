@@ -26,7 +26,7 @@ namespace sowerphp\general;
 /**
  * Helper para la creación de formularios en HTML
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2014-04-14
+ * @version 2014-04-30
  */
 class View_Helper_Form
 {
@@ -174,7 +174,7 @@ class View_Helper_Form
      * @param config Arreglo con la configuración para el elemento
      * @return String Código HTML de lo solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-02-17
+     * @version 2014-04-30
      */
     public function input ($config)
     {
@@ -203,7 +203,7 @@ class View_Helper_Form
         // si se paso check se usa
         if ($config['check']) {
             // si no es arreglo se convierte
-            if (!is_array($config['check'])) $config['check'] = array($config['check']);
+            if (!is_array($config['check'])) $config['check'] = explode(' ',$config['check']);
             // hacer implode, agregar check y meter al class
             $config['class'] = $config['class'].' check '.implode(' ', $config['check']);
             if (in_array('notempty', $config['check']))

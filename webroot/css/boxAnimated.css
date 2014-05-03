@@ -54,6 +54,7 @@
 .boxAnimated .longdescription .description li {
 	list-style-type: circle;
 	margin-bottom: 0.3em;
+	margin-left: 0px;
 }
 
 .boxAnimated .shortdescription {
@@ -74,4 +75,4 @@
 	color:#665252;
 	font-size:13px;
 	margin-bottom:4px;
-} 
+}

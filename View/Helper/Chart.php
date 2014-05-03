@@ -50,9 +50,9 @@ class View_Helper_Chart
      * @param options Opciones para el gráfico
      * @param exit =true si se debe terminar el script, =false si no se debe terminar
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-04-18
+     * @version 2014-04-30
      */
-    private function generate ($title, $series, $type = 'line',
+    private function generate ($title, $series, $type,
                                             $options = array(), $exit = true)
     {
         // asignar opciones por defecto del gráfico
@@ -80,6 +80,10 @@ class View_Helper_Chart
         foreach ($series as $serie => &$data) {
             $s = new \Libchart\Model\XYDataSet();
             foreach ($data as $key => &$value) {
+                if (is_array($value)) {
+                    $key = array_shift($value);
+                    $value = array_shift($value);
+                }
                 $s->addPoint(new \Libchart\Model\Point(
                     $key,
                     $value

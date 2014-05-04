@@ -386,7 +386,7 @@ class View_Helper_Form
     private function _tablecheck ($config)
     {
         // configuración por defecto
-        $config = array_merge(array('id'=>$config['name'], 'titles'=>array(), 'width'=>'100%'), $config);
+        $config = array_merge(array('id'=>$config['name'], 'titles'=>array(), 'width'=>'100%', 'mastercheck'=>true, 'checked'=>[]), $config);
         if (!isset($config['key']))
             $config['key'] = array_keys($config['table'][0])[0];
         if (!is_array($config['key']))
@@ -396,7 +396,8 @@ class View_Helper_Form
         foreach ($config['titles'] as &$title) {
             $buffer .= '<th>'.$title.'</th>';
         }
-        $buffer .= '<th><input type="checkbox" checked="checked" onclick="Form.checkboxesSet(\''.$config['name'].'\', this.checked)"/></th>';
+        $checked = $config['mastercheck'] ? ' checked="checked"' : '';
+        $buffer .= '<th><input type="checkbox"'.$checked.' onclick="Form.checkboxesSet(\''.$config['name'].'\', this.checked)"/></th>';
         $buffer .= '</tr>';
         foreach ($config['table'] as &$row) {
             // determinar la llave
@@ -410,7 +411,8 @@ class View_Helper_Form
             foreach ($row as &$col) {
                 $buffer .= '<td>'.$col.'</td>';
             }
-            $buffer .= '<td><input type="checkbox" name="'.$config['name'].'[]" value="'.$key.'" checked="checked" /></td>';
+            $checked = in_array($key, $config['checked']) ? ' checked="checked"' : '' ;
+            $buffer .= '<td><input type="checkbox" name="'.$config['name'].'[]" value="'.$key.'"'.$checked.' /></td>';
             $buffer .= '</tr>';
         }
         $buffer .= '</table>';

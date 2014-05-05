@@ -26,7 +26,7 @@ namespace sowerphp\general;
 /**
  * Controlador para módulos
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2014-03-28
+ * @version 2014-05-04
  */
 class Controller_Module extends \Controller_App {
 
@@ -55,7 +55,7 @@ class Controller_Module extends \Controller_App {
 
     /**
      * Mostrar la página principal para el módulo (con sus opciones de menú)
-     * @version 2014-02-05
+     * @version 2014-05-05
      */
     public function display ()
     {
@@ -68,13 +68,18 @@ class Controller_Module extends \Controller_App {
         // Si no se incluye el archivo con el título y el menú para el módulo
         else {
             // incluir menú del módulo
+            $nav = \sowerphp\core\Module::fileLocation (
+                $this->request->params['module'],
+                'Config/nav'
+            );
+            $nav and include($nav);
             $nav_module = \sowerphp\core\Configure::read ('nav.module');
             if (!$nav_module)
                 $nav_module = array();
             // nombre del módulo para url
-            $module = \sowerphp\core\Utility_Inflector::underscore (
+            $module = str_replace('.', '/', \sowerphp\core\Utility_Inflector::underscore (
                 $this->request->params['module']
-            );
+            ));
             // verificar permisos
             foreach ($nav_module as $link=>&$info) {
                 // si info no es un arreglo es solo el nombre y se arma

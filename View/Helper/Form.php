@@ -386,7 +386,13 @@ class View_Helper_Form
     private function _tablecheck ($config)
     {
         // configuración por defecto
-        $config = array_merge(array('id'=>$config['name'], 'titles'=>array(), 'width'=>'100%', 'mastercheck'=>true, 'checked'=>[]), $config);
+        $config = array_merge([
+            'id'=>$config['name'],
+            'titles'=>array(),
+            'width'=>'100%',
+            'mastercheck'=>true,
+            'checked'=>(isset($_POST[$config['name']])?$_POST[$config['name']]:[])
+        ], $config);
         if (!isset($config['key']))
             $config['key'] = array_keys($config['table'][0])[0];
         if (!is_array($config['key']))

@@ -247,4 +247,41 @@ class Utility_Image
         else if ($file['type']=='image/png') imagepng($src, $file['tmp_name']);
     }
 
+    /**
+     * Función para cambiar el tamaño de una imagen
+     * @param file Archivo de la imagen en el sistema de archivos
+     * @todo Utilizar file como arreglo y autodetectar extensión si no se pasa
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2014-05-10
+     */
+    public static function resize ($file, $dst_w, $dst_h, $ext = null)
+    {
+        // obtener imagen fuente
+        list($src_w, $src_h) = getimagesize($file);
+        $src = imagecreatefromstring(file_get_contents($file));
+        // crear imagen destino
+        $dst = imagecreatetruecolor($dst_w, $dst_h);
+        imagealphablending($dst, false);
+        imagesavealpha($dst, true);
+        $transparent = imagecolorallocatealpha($dst, 255, 255, 255, 127);
+        imagefilledrectangle($dst, 0, 0, $dst_w, $dst_h, $transparent);
+        // copiar imagen
+        imagecopyresampled($dst, $src, 0, 0, 0, 0, $dst_w, $dst_h, $src_w, $src_h);
+        // guardar imagen
+        ob_clean();
+        ob_start();
+        if ($ext=='jpg'||$ext=='jpeg') imagejpeg($dst);
+        else if ($ext=='gif') imagegif($dst);
+        else if ($ext=='png') imagepng($dst);
+        $image = [
+            'size' => ob_get_length(),
+            'data' => ob_get_contents(),
+        ];
+        ob_clean();
+        // eliminar imagenes gd
+        imagedestroy($src);
+        imagedestroy($dst);
+        return $image;
+    }
+
 }

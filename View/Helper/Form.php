@@ -26,23 +26,23 @@ namespace sowerphp\general;
 /**
  * Helper para la creación de formularios en HTML
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2014-04-30
+ * @version 2014-05-10
  */
 class View_Helper_Form
 {
 
     private $_id; ///< Identificador para el formulario
-    private $_formato; ///< Formato del formulario que se renderizará (mantenedor u false)
+    private $_style; ///< Formato del formulario que se renderizará (mantenedor u false)
 
     /**
      * Método que inicia el código del formulario
      * @param formato Formato del formulario que se renderizará
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2012-09-21
+     * @version 2014-05-10
      */
-    public function __construct ($formato = 'mantenedor')
+    public function __construct ($style = 'mantenedor')
     {
-        $this->_formato = $formato;
+        $this->_style = $style;
     }
 
     /**
@@ -89,7 +89,7 @@ class View_Helper_Form
      * @param config Arreglo con la configuración para el botón submit
      * @return String Código HTML de lo solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-02-20
+     * @version 2014-05-10
      */
     public function end ($config = array())
     {
@@ -107,13 +107,8 @@ class View_Helper_Form
                     'label' => '',
                 ), $config
             );
-            // generar buffer
-            $buffer = '';
-            if (isset($config['type']))
-                $buffer .= $this->input($config);
-            $buffer .= '</form>'."\n";
-            // retornar buffer
-            return $buffer;
+            // generar fin del formulario
+            return $this->input($config).'</form>'."\n";
         } else {
             return '</form>'."\n";
         }
@@ -125,12 +120,12 @@ class View_Helper_Form
      * @param config Arreglo con la configuración para el elemento
      * @return String Código HTML de lo solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-04-24
+     * @version 2014-05-10
      */
     private function _formatear ($field, $config)
     {
         // si se debe aplicar estilo de mantenedor
-        if (!in_array($config['type'], array('hidden')) && $this->_formato=='mantenedor') {
+        if (!in_array($config['type'], array('hidden')) && $config['style']=='mantenedor') {
             $buffer = '';
             // generar ayuda
             if ($config['help']!='') {
@@ -174,7 +169,7 @@ class View_Helper_Form
      * @param config Arreglo con la configuración para el elemento
      * @return String Código HTML de lo solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-04-30
+     * @version 2014-05-10
      */
     public function input ($config)
     {
@@ -192,6 +187,7 @@ class View_Helper_Form
                 'check' => null,
                 'help' => '',
                 'notempty' =>false,
+                'style'=>$this->_style,
             ), $config
         );
         // si no se indicó un valor y existe uno por POST se usa
@@ -337,8 +333,8 @@ class View_Helper_Form
         // configuración por defecto
         $config = array_merge(array('titles'=>array(), 'width'=>'100%'), $config);
         // respaldar formato
-        $formato = $this->_formato;
-        $this->_formato = null;
+        $formato = $this->_style;
+        $this->_style = null;
         // determinar inputs
         $inputs = '<tr>';
         foreach ($config['inputs'] as $input) {
@@ -368,7 +364,7 @@ class View_Helper_Form
             }
         }
         // restaurar formato
-        $this->_formato = $formato;
+        $this->_style = $formato;
         // generar tabla
         $buffer = '<script type="text/javascript"> window["inputsJS_'.$config['id'].'"] = \''.$inputs.'\'; </script>'."\n";
         $buffer .= '<table id="'.$config['id'].'" class="formTable" style="width:'.$config['width'].'">';

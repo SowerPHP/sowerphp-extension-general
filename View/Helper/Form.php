@@ -99,6 +99,7 @@ class View_Helper_Form
             if (!is_array($config))
                 $config = array('value'=>$config);
             // asignar configuración
+            $config['type'] = 'submit';
             $config = array_merge(
                 array(
                     'type' => 'submit',

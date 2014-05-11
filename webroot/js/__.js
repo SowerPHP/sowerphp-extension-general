@@ -166,3 +166,27 @@ __.post = function(url, variables, newWindow) {
     }
     form.submit();
 }
+
+/**
+ * Implementación sincrónica de $.getJSON, esto para poder recuperar el objeto
+ * JSON fuera de la funcion que se ejecuta en success
+ * @param url Url desde donde se obtendrá el JSON
+ * @param data Datos que se deben enviar por la URL (como GET)
+ * @return json Datos retornados por la página
+ * @todo Migrar método para que use Javascript puro (sin JQuery)
+ * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+ * @version 2014-05-10
+ */
+__.getJSON = function(url, data) {
+    'use strict';
+    var json;
+    $.ajax({
+        type: 'GET',
+        url: url,
+        dataType: 'json',
+        success: function (result) {json = result;},
+        data: data,
+        async: false
+    });
+    return json;
+}

@@ -385,3 +385,19 @@ function tableToArrayWithHeaderAndBody ($data, $camposEncabezado, $detalle = 'de
     $items[] = $item;
     return $items;
 }
+
+/**
+ * Función para convertir datos en formato tabla a un arreglo asociativo
+ * @param table Arreglo en formato tabla a convertir
+ * @return Arreglo asociativo
+ * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+ * @version 2014-05-12
+ */
+function tableToArray ($table)
+{
+    $array = [];
+    foreach ($table as &$row) {
+        $array[array_shift($row)] = array_shift($row);
+    }
+    return $array;
+}

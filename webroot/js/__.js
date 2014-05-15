@@ -151,17 +151,17 @@ __.popup = function (url, w, h, s) {
 __.post = function(url, variables, newWindow) {
     'use strict';
     var form, hiddenField, variable;
-    form = document.createElement('form');
-    form.setAttribute('method', 'post');
-    form.setAttribute('action', url);
-    if (typeof(newWindow) !== 'undefined') {
-        form.setAttribute('target', '_blank');
+    form = document.createElement("form");
+    form.setAttribute("method", "post");
+    form.setAttribute("action", url);
+    if (typeof(newWindow) !== "undefined") {
+        form.setAttribute("target", "_blank");
     }
     for (variable in variables) {
-        hiddenField = document.createElement('input');
-        hiddenField.setAttribute('type', 'hidden');
-        hiddenField.setAttribute('name', variable);
-        hiddenField.setAttribute('value', variables[variable]);
+        hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", variable);
+        hiddenField.setAttribute("value", variables[variable]);
         form.appendChild(hiddenField);
     }
     form.submit();
@@ -181,9 +181,9 @@ __.getJSON = function(url, data) {
     'use strict';
     var json;
     $.ajax({
-        type: 'GET',
+        type: "GET",
         url: url,
-        dataType: 'json',
+        dataType: "json",
         success: function (result) {json = result;},
         data: data,
         async: false

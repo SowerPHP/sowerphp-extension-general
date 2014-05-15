@@ -36,6 +36,7 @@ class View_Helper_Table
     private $_export = false; ///< Crear o no datos para exportar
     private $_exportRemove = array(); ///< Datos que se removeran al exportar
     private $_display = true; ///< Indica si se debe o no mostrar la tabla
+    private $_height = null; ///< Altura de la tabla en pixeles
 
     /**
      * Constructor de la clase para crear una tabla
@@ -114,10 +115,21 @@ class View_Helper_Table
     }
 
     /**
+     * Asignar la altura que podrá ocupar todo el contenedor (div) de la tabla
+     * @param height Altura en pixeles del div
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2014-05-14
+     */
+    public function setHeight ($height = null)
+    {
+        $this->_height = $height;
+    }
+
+    /**
      * Método que genera la tabla en HTML a partir de un arreglo
      * @param table Tabla que se generará
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-03-09
+     * @version 2014-05-14
      */
     public function generate ($table, $thead = 1)
     {
@@ -127,7 +139,10 @@ class View_Helper_Table
         }
         // Utilizar buffer para el dibujado, así lo retornaremos en vez
         // de imprimir directamente
-        $buffer = '<div>'."\n";
+        if ($this->_height)
+            $buffer = '<div style="height:'.$this->_height.'px;overflow:auto">'."\n";
+        else
+            $buffer = '<div>'."\n";
         // Crear iconos para exportar y ocultar/mostrar tabla
         if ($this->_id!==null) {
             $buffer .= '<div class="tableIcons" style="text-align:right">'."\n";
@@ -181,7 +196,7 @@ class View_Helper_Table
      * Crea los datos de la sesión de la tabla para poder exportarla
      * @param table Tabla que se está exportando
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-02-16
+     * @version 2014-05-14
      */
     private function export (&$table)
     {
@@ -207,7 +222,7 @@ class View_Helper_Table
             $aux = array();
             foreach ($row as &$col) {
                 $nCol++;
-                if (isset($this->_exportRemove['rows'])) {
+                if (isset($this->_exportRemove['cols'])) {
                     if (
                         in_array($nCol, $this->_exportRemove['cols']) ||
                         in_array($nCol-$nCols-1, $this->_exportRemove['cols'])
@@ -231,14 +246,13 @@ class View_Helper_Table
     }
 
     /**
-     * Botones para mostrar y ocular la tabla (+/-)
+     * Botones para mostrar y ocultar la tabla (+/-)
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-03-26
+     * @version 2014-05-14
      */
     public function showAndHide ()
     {
-        $buffer = '';
-        $buffer .= '<a onclick="$(\'#'.$this->_id.'\').show(); $(\'#tableShow'.$this->_id.'\').hide(); $(\'#tableHide'.$this->_id.'\').show();" id="tableShow'.$this->_id.'" title="Mostrar tabla"><img src="'._BASE.'/img/icons/16x16/actions/more.gif" alt="" /></a>';
+        $buffer = '<a onclick="$(\'#'.$this->_id.'\').show(); $(\'#tableShow'.$this->_id.'\').hide(); $(\'#tableHide'.$this->_id.'\').show();" id="tableShow'.$this->_id.'" title="Mostrar tabla"><img src="'._BASE.'/img/icons/16x16/actions/more.gif" alt="" /></a>';
         $buffer .= '<a onclick="$(\'#'.$this->_id.'\').hide(); $(\'#tableHide'.$this->_id.'\').hide(); $(\'#tableShow'.$this->_id.'\').show();" id="tableHide'.$this->_id.'" title="Ocultar tabla"><img src="'._BASE.'/img/icons/16x16/actions/less.gif" alt="" /></a>';
         $buffer .= '<script type="text/javascript"> $(function() { ';
         if ($this->_display) {

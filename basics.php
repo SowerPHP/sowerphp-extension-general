@@ -90,8 +90,8 @@ function linksFrom ($dir, $recursive = false)
     echo '<ul>',"\n";
     // procesar cada archivo
     foreach ($files as &$file) {
-        // si es archivo oculto se omite
-        if ($file[0]=='.') continue;
+        // si es archivo oculto o no hay permiso de lectura => se omite
+        if ($file[0]=='.' || !is_readable($realdir.'/'.$file)) continue;
         // si es un directorio
         if (is_dir($realdir.'/'.$file)) {
             // verificar que se deba procesar recursivamente, sino se veran solo archivos

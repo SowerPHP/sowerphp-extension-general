@@ -154,16 +154,23 @@ __.post = function(url, variables, newWindow) {
     form = document.createElement("form");
     form.setAttribute("method", "post");
     form.setAttribute("action", url);
-    if (typeof(newWindow) !== "undefined") {
+    if (newWindow !== undefined) {
         form.setAttribute("target", "_blank");
     }
     for (variable in variables) {
-        hiddenField = document.createElement("input");
-        hiddenField.setAttribute("type", "hidden");
-        hiddenField.setAttribute("name", variable);
-        hiddenField.setAttribute("value", variables[variable]);
-        form.appendChild(hiddenField);
+        if (variables.hasOwnProperty(variable)) {
+            hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", variable);
+            hiddenField.setAttribute("value", variables[variable]);
+            form.appendChild(hiddenField);
+        }
     }
+    hiddenField = document.createElement("input");
+    hiddenField.setAttribute("type", "submit");
+    hiddenField.setAttribute("name", "enviar");
+    hiddenField.setAttribute("value", "Enviar");
+    form.appendChild(hiddenField);
     form.submit();
 }
 

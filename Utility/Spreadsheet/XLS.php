@@ -72,7 +72,7 @@ final class Utility_Spreadsheet_XLS
      * @param id Identificador de la planilla
      * @param horizontal Indica si la hoja estara horizontalmente (true) o verticalmente (false)
      * @author DeLaF, esteban[at]delaf.cl
-     * @version 2014-02-20
+     * @version 2014-07-10
      */
     public static function generate ($tabla, $id, $type = 'Excel5')
     {
@@ -89,7 +89,7 @@ final class Utility_Spreadsheet_XLS
             // agregar hoja
             $objWorkSheet = $objPHPExcel->setActiveSheetIndex($hoja);
             // Colocar título a la hoja
-            $objWorkSheet->setTitle($name);
+            $objWorkSheet->setTitle(substr($name, 0, 30));
             // Colocar datos
             $y=1; // fila
             $x=0; // columna

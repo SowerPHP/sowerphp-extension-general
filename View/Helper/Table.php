@@ -26,7 +26,7 @@ namespace sowerphp\general;
 /**
  * Helper para la creación de tablas en HTML
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2014-03-26
+ * @version 2014-07-09
  */
 class View_Helper_Table
 {
@@ -37,6 +37,7 @@ class View_Helper_Table
     private $_exportRemove = array(); ///< Datos que se removeran al exportar
     private $_display = true; ///< Indica si se debe o no mostrar la tabla
     private $_height = null; ///< Altura de la tabla en pixeles
+    private $_colsWidth = []; ///< Ancho de las columnas en pixeles
 
     /**
      * Constructor de la clase para crear una tabla
@@ -126,10 +127,21 @@ class View_Helper_Table
     }
 
     /**
+     * Asignar ancho de las columnas
+     * @param width Arreglo con los anchos de las columnas (null si una columna debe ser automática)
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2014-07-09
+     */
+    public function setColsWidth ($width = [])
+    {
+        $this->_colsWidth = $width;
+    }
+
+    /**
      * Método que genera la tabla en HTML a partir de un arreglo
      * @param table Tabla que se generará
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-05-14
+     * @version 2014-07-09
      */
     public function generate ($table, $thead = 1)
     {
@@ -158,8 +170,13 @@ class View_Helper_Table
         $buffer .= "\t".'<thead>'."\n";
         $titles = array_shift($table);
         $buffer .= "\t\t".'<tr>'."\n";
+        $i = 0;
         foreach ($titles as &$col) {
-            $buffer .= "\t\t\t".'<th>'.$col.'</th>'."\n";
+            if (isset($this->_colsWidth[$i]) && $this->_colsWidth[$i]!=null) {
+                $w = ' style="width:'.$this->_colsWidth[$i].'px"';
+            } else $w = '';
+            $buffer .= "\t\t\t".'<th'.$w.'>'.$col.'</th>'."\n";
+            $i++;
         }
         $buffer .= "\t\t".'</tr>'."\n";
         // extraer otras filas que son parte de la cabecera

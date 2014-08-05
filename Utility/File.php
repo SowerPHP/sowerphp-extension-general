@@ -328,4 +328,22 @@ class Utility_File
         return $dot!==false ? substr($file, $dot+1) : null;
     }
 
+    /**
+     * Método que cuenta la cantidad de líneas que un archivo posee
+     * @param file Ruta hacia el fichero
+     * @return Cantidad de líneas del fichero
+     * @author http://stackoverflow.com/a/20537130
+     * @version 2013-12-12
+     */
+    public static function getLines($file)
+    {
+        $f = fopen($file, 'rb');
+        $lines = 0;
+        while (!feof($f)) {
+            $lines += substr_count(fread($f, 8192), "\n");
+        }
+        fclose($f);
+        return $lines;
+    }
+
 }

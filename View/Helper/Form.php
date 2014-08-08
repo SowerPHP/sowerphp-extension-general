@@ -191,6 +191,8 @@ class View_Helper_Form
                 'style'=>$this->_style,
             ), $config
         );
+        if (!isset($config['name']) && isset($config['id']))
+            $config['name'] = $config['id'];
         // si no se indicó un valor y existe uno por POST se usa
         if (!isset($config['value'][0]) && isset($config['name']) && isset($_POST[$config['name']])) {
             $config['value'] = $_POST[$config['name']];

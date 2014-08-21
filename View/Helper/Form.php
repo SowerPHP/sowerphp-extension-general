@@ -26,7 +26,7 @@ namespace sowerphp\general;
 /**
  * Helper para la creación de formularios en HTML
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2014-05-10
+ * @version 2014-08-21
  */
 class View_Helper_Form
 {
@@ -36,7 +36,7 @@ class View_Helper_Form
 
     /**
      * Método que inicia el código del formulario
-     * @param formato Formato del formulario que se renderizará
+     * @param style Estilo del formulario que se renderizará
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2014-05-10
      */
@@ -45,6 +45,17 @@ class View_Helper_Form
         $this->_style = $style;
     }
 
+    /**
+     * Método para asignar el estilo del formulario una vez ya se creo el objeto
+     * @param style Estilo del formulario que se renderizará
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2014-08-21
+     */
+    public function setStyle($style = false)
+    {
+        $this->_style = $style;
+    }
+    
     /**
      * Método que inicia el código del formulario
      * @param config Arreglo con la configuración para el formulario

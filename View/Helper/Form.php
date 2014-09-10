@@ -55,7 +55,7 @@ class View_Helper_Form
     {
         $this->_style = $style;
     }
-    
+
     /**
      * Método que inicia el código del formulario
      * @param config Arreglo con la configuración para el formulario
@@ -395,6 +395,8 @@ class View_Helper_Form
 
     private function _tablecheck ($config)
     {
+        if(!isset($config['table'][0]))
+            return '-';
         // configuración por defecto
         $config = array_merge([
             'id'=>$config['name'],

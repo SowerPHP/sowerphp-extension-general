@@ -218,3 +218,53 @@ Form.checkSend = function (msg) {
         return false;
     }
 }
+
+/**
+ * Método que remueve los tags <option> de un tag <select>
+ * @param selectbox Elemento select que se quiere limpiar
+ * @param from Desde que option limpiar el campo select
+ * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+ * @version 2014-04-09
+ */
+Form.removeOptions = function (selectbox, from) {
+    'use strict';
+    var i;
+    from = from || 0;
+    for (i = selectbox.options.length - 1; i >= from; i -= 1) {
+        selectbox.remove(i);
+    }
+};
+
+/**
+ * Función para enviar un formulario por POST
+ * @param url URL donde se debe enviar el formulario
+ * @param variables Hash json con las variables a pasar al formulario
+ * @param newWindow Si está asignado se abrirá el formulario en una nueva ventana
+ * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+ * @version 2014-04-29
+ */
+Form.post = function(url, variables, newWindow) {
+    'use strict';
+    var form, hiddenField, variable;
+    form = document.createElement("form");
+    form.setAttribute("method", "post");
+    form.setAttribute("action", url);
+    if (newWindow !== undefined) {
+        form.setAttribute("target", "_blank");
+    }
+    for (variable in variables) {
+        if (variables.hasOwnProperty(variable)) {
+            hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", variable);
+            hiddenField.setAttribute("value", variables[variable]);
+            form.appendChild(hiddenField);
+        }
+    }
+    hiddenField = document.createElement("input");
+    hiddenField.setAttribute("type", "submit");
+    hiddenField.setAttribute("name", "enviar");
+    hiddenField.setAttribute("value", "Enviar");
+    form.appendChild(hiddenField);
+    form.submit();
+}

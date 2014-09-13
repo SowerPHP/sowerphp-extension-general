@@ -92,15 +92,15 @@ Form.check_date = function (field) {
 
 /**
  * Método que revisa que el campo sea un número de teléfono en formato:
- * "+<código país> <número de teléfono>"
+ * "+<código país> <prefijo> <teléfono>"
  * @param Campo que se quiere validar
  * @return =true pasó la validación ok
  */
 Form.check_telephone = function (field) {
     'use strict';
-    var filter = /^\+\d{1,4}[ ]\d{6,15}$/;
+    var filter = /^\+\d{1,4}[ ]\d{1,2}[ ]\d{7,10}$/;
     if (!filter.test(field.value)) {
-        return "¡%s debe tener el formato +<código país> <número>!\nEjemplo: +56 987654321";
+        return "¡%s debe tener el formato +<código país> <prefijo> <teléfono>!\nEjemplo: +56 9 87654321 o +56 2 22221111";
     }
     return true;
 };

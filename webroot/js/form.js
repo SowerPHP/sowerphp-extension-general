@@ -144,6 +144,9 @@ Form.check = function (id) {
     }
     // chequear campos
     for (i = 0; i < fields.length; i += 1) {
+        if (fields[i].getAttribute("disabled")=="disabled") {
+            continue;
+        }
         checks = fields[i].getAttribute("class").replace("check ", "").split(" ");
         if (checks.indexOf("notempty") === -1 && __.empty(fields[i].value)) {
             continue;

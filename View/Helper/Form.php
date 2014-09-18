@@ -358,9 +358,25 @@ class View_Helper_Form
         }
         $inputs .= '<td><a href="" onclick="Form.delJS(this); return false" title="Eliminar"><img src="'._BASE.'/img/icons/16x16/actions/delete.png" alt="add" /></a></td>';
         $inputs .= '</tr>';
-        // si no se indicaron valores, entonces se crea una fila con los campos vacíos
+        // si no se indicaron valores se tratan de determinar
         if (!isset($config['values'])) {
-            $values = $inputs;
+            if (isset($_POST[$config['inputs'][0]['name']])) {
+                $values = '';
+                $filas = count($_POST[$config['inputs'][0]['name']]);
+                for ($i=0; $i<$filas; $i++) {
+                    $values .= '<tr>';
+                    foreach ($config['inputs'] as $input) {
+                        $input['value'] = $_POST[$input['name']][$i];
+                        $input['name'] = $input['name'].'[]';
+                        $d = (isset($input['type']) && $input['type']=='hidden') ? ' style="display:none;"' : '';
+                        $values .= '<td'.$d.'>'.rtrim($this->input($input)).'</td>';
+                    }
+                    $values .= '<td><a href="" onclick="Form.delJS(this); return false" title="Eliminar"><img src="'._BASE.'/img/icons/16x16/actions/delete.png" alt="add" /></a></td>';
+                    $values .= '</tr>';
+                }
+            }
+            // si no hay valores por post se crea una fila con los campos vacíos
+            else $values = $inputs;
         }
         // en caso que se cree el formulario con valores por defecto ya asignados
         else {

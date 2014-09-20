@@ -61,7 +61,7 @@ class View_Helper_Form
      * @param config Arreglo con la configuración para el formulario
      * @return String Código HTML de lo solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2013-06-15
+     * @version 2014-09-20
      */
     public function begin ($config = array())
     {
@@ -77,6 +77,7 @@ class View_Helper_Form
                 'method'=> 'post',
                 'onsubmit' => null,
                 'focus' => null,
+                'attr' => '',
             ), $config
         );
         // crear onsubmit
@@ -90,7 +91,7 @@ class View_Helper_Form
             $buffer .= '<script type="text/javascript"> $(function() { $("#'.$config['focus'].'Field").focus(); }); </script>'."\n";
         }
         // agregar formulario
-        $buffer .= '<form action="'.$config['action'].'" method="'.$config['method'].'" enctype="multipart/form-data"'.$config['onsubmit'].' id="'.$config['id'].'">'."\n";
+        $buffer .= '<form action="'.$config['action'].'" method="'.$config['method'].'" enctype="multipart/form-data"'.$config['onsubmit'].' id="'.$config['id'].'" '.$config['attr'].'>'."\n";
         // retornar
         return $buffer;
     }

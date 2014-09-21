@@ -224,10 +224,12 @@ class View_Helper_PDF extends \TCPDF
      * definir un ancho al texto. Además recibe menos parámetros para ser
      * más simple (parámetros comunes solamente).
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-02-12
+     * @version 2014-09-20
      */
-    public function Texto ($x, $y, $txt, $align='', $w=0, $link='', $border=0, $fill=false)
+    public function Texto ($txt, $x=null, $y=null, $align='', $w=0, $link='', $border=0, $fill=false)
     {
+        if ($x==null) $x = $this->GetX();
+        if ($y==null) $y = $this->GetY();
         $textrendermode = $this->textrendermode;
         $textstrokewidth = $this->textstrokewidth;
         $this->setTextRenderingMode(0, true, false);
@@ -243,10 +245,12 @@ class View_Helper_PDF extends \TCPDF
      * MultiCell. La principal diferencia es que este método no permite
      * agregar un enlace y Texto si.
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-02-12
+     * @version 2014-09-20
      */
-    public function MultiTexto ($x, $y, $txt, $align='', $w=0, $border=0, $fill=false)
+    public function MultiTexto ($txt, $x=null, $y=null, $align='', $w=0, $border=0, $fill=false)
     {
+        if ($x==null) $x = $this->GetX();
+        if ($y==null) $y = $this->GetY();
         $textrendermode = $this->textrendermode;
         $textstrokewidth = $this->textstrokewidth;
         $this->setTextRenderingMode(0, true, false);

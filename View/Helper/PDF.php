@@ -108,6 +108,18 @@ class View_Helper_PDF extends \TCPDF
     }
 
     /**
+     * Método que sobreescribe la cabecera del PDF para agregar URL de la web
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2014-09-22
+     */
+    public function Header()
+    {
+        parent::Header();
+        $this->SetFont('helvetica', 'B', 12);
+        $this->Texto('http'.(isset($_SERVER['HTTPS'])?'s':null).'://'.$_SERVER['HTTP_HOST'], 15, 20, 'R', 185);
+    }
+
+    /**
      * Obtener el ancho de las columnas de una tabla
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2014-02-12

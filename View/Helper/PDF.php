@@ -116,7 +116,8 @@ class View_Helper_PDF extends \TCPDF
     {
         parent::Header();
         $this->SetFont('helvetica', 'B', 10);
-        $this->Texto('http'.(isset($_SERVER['HTTPS'])?'s':null).'://'.$_SERVER['HTTP_HOST'], 15, 20, 'R', 185);
+        $link = 'http'.(isset($_SERVER['HTTPS'])?'s':null).'://'.$_SERVER['HTTP_HOST'];
+        $this->Texto($link, 15, 20, 'R', 185, $link);
     }
 
     /**

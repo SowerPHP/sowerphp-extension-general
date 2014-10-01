@@ -124,7 +124,7 @@ class View_Helper_HTML
                     $name = str_replace(array('_', '-'), ' ', $file);
                 }
                 // buscar icono a partir de la extension
-                $icon = App::location('webroot/img/icons/16x16/files/'.$ext.'.png');
+                $icon = \sowerphp\core\App::location('webroot/img/icons/16x16/files/'.$ext.'.png');
                 if($icon) $icon = 'img/icons/16x16/files/'.$ext.'.png';
                 else $icon = 'img/icons/16x16/files/generic.png';
                 // mostrar enlace

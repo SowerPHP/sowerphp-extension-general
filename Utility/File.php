@@ -47,22 +47,15 @@ class Utility_File
      * @return Arreglo con los nombres de los archivos y/o directorios
      * @todo Selección de sólo algunos archivos de la carpeta
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2010-05-22
+     * @version 2014-10-01
      */
     public static function browseDirectory ($dir)
     {
-        $archivos = array(); // arreglo para retornar archivos
-        if ($gestor = opendir($dir)) { // abrir directorio
-            while (($archivo = readdir($gestor)) != false) { // leer directorio
-                if ($archivo!='.' && $archivo!='..') { // no considerar . ni ..
-                    array_push($archivos, $archivo); // guardar nombre del archivo
-                }
-            }
-            closedir($gestor); // cerrar gestor
+        $filesAux = scandir($dir);
+        foreach($filesAux as &$file) {
+            if($file[0]!='.') $files[] = $file;
         }
-        unset($dir, $gestor, $archivo);
-        sort($archivos); // ordenar resultado alfabéticamente
-        return $archivos; // devolver archivos
+        return $files;
     }
 
     /**

@@ -23,11 +23,10 @@
 
 namespace sowerphp\general;
 
-
 /**
  * Clase para trabajar con fechas
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2014-09-07
+ * @version 2014-10-01
  */
 class Utility_Date
 {
@@ -95,6 +94,37 @@ class Utility_Date
             $date += 86400;
         }
         return $count;
+    }
+
+    /**
+     * Función para mostrar una fecha con hora con un formato "agradable"
+     * @param timestamp Fecha en formto (de función date): Y-m-d H:i:s
+     * @param hora Si se desea (true) o no (false) mostrar la hora
+     * @param letrasFormato Si van en mayúscula ('u'), mínuscula ('l') o normal ('')
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2014-02-19
+     */
+    public static function timestamp2string ($timestamp, $hora = true, $letrasFormato = '')
+    {
+        $puntoPos = strpos($timestamp, '.');
+        if ($puntoPos) {
+            $timestamp = substr($timestamp, 0, $puntoPos);
+        }
+        $dias = array('Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado');
+        $meses = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+        $unixtime = strtotime($timestamp);
+        $fecha = date('\D\I\A j \d\e \M\E\S \d\e\l Y', $unixtime);
+        if ($hora) $fecha .= ', a las '.date ('H:i', $unixtime);
+        $dia = $dias[date('w', $unixtime)];
+        $mes = $meses[date('n', $unixtime)-1];
+        if ($letrasFormato == 'l') {
+            $dia = strtolower ($dia);
+            $mes = strtolower ($mes);
+        } else if ($letrasFormato == 'u') {
+            $dia = strtoupper ($dia);
+            $mes = strtoupper ($mes);
+        }
+        return str_replace(array('DIA', 'MES'), array($dia, $mes), $fecha);
     }
 
 }

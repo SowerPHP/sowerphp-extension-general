@@ -62,7 +62,7 @@ class View_Helper_HTML
                 if (is_dir($src.'/'.$file) && !$recursive) continue;
                 // si es un directorio colocar el nombre del directorio
                 if (is_dir ($src.'/'.$file)) {
-                    $permlink = string2url($file);
+                    $permlink = \sowerphp\core\Utility_String::normalize($file);
                     echo "<h$header id=\"$permlink\">$file <a href=\"#$permlink\">&lt;&gt;</a></h$header>";
                     $h = $header + 1;
                 }

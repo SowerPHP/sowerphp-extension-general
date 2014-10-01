@@ -197,13 +197,14 @@ class Utility_Spreadsheet
         // agregar títulos de la pestaña
         $buffer .= '<ul>'."\n";
         foreach ($sheets as $id => &$name) {
-            $buffer .= '<li><a href="#'.$options['id'].'_'.string2url($name).'">'.$name.'</a></li>'."\n";
+            $buffer .= '<li><a href="#'.$options['id'].'_'.\sowerphp\core\Utility_String::normalize($name).'">'.$name.'</a></li>'."\n";
         }
         $buffer .= '</ul>'."\n";
         // agregar hojas
         foreach ($sheets as $id => &$name) {
-            $buffer .= '<div id="'.$options['id'].'_'.string2url($name).'">'."\n";
-            $table->setId(string2url($name));
+            $nameN = \sowerphp\core\Utility_String::normalize($name);
+            $buffer .= '<div id="'.$options['id'].'_'.$nameN.'">'."\n";
+            $table->setId($nameN);
             $buffer .= $table->generate(self::read($file, $id));
             $buffer .= '</div>'."\n";
         }

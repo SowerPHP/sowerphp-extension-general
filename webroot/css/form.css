@@ -14,16 +14,16 @@ form .label {
 }
 form .field {
 	margin-left: 212px;
-	margin-bottom: 1em;
+	margin-bottom: 0.3em;
 }
 input[type="text"], input[type="password"], textarea, select {
 	border: 1px solid black;
 	width: 400px;
-	padding: 0.5em;
+	padding: 0.2em;
 }
 input[type="submit"], input[type="button"] {
 	border: 1px solid black;
-	padding: 0.5em;
+	padding: 0.2em;
 }
 input[type="file"], input[type="image"] {
 	border: 0;
@@ -32,7 +32,7 @@ input[type="file"], input[type="image"] {
 /* ajustes para tablasJS dentro de formularios */
 table.formTable input[type="text"], table.formTable textarea, table.formTable select {
 	border: 1px solid gray;
-	padding: 0.3em;
+	padding: 0.2em;
 	width: 100px;
 	color: #555;
 }

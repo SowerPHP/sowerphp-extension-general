@@ -1,5 +1,8 @@
 <?php
 
+// se desactivarán errores
+error_reporting(false);
+
 // crear objeto para poder generar el pdf
 $pdf = new \sowerphp\general\View_Helper_PDF ();
 

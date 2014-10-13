@@ -121,6 +121,19 @@ class View_Helper_PDF extends \TCPDF
     }
 
     /**
+     * Método que sobreescribe el pie de página del PDF
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2014-10-13
+     */
+    public function Footer()
+    {
+        parent::Footer();
+        $this->SetY($this->GetY());
+        $this->SetFont('helvetica', 'B', 6);
+        $this->Texto('Documento generado: '. date('Y-m-d H:i'));
+    }
+
+    /**
      * Obtener el ancho de las columnas de una tabla
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2014-02-12

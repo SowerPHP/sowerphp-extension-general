@@ -1,9 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
     ],
-    "hash": "db9aca592abdb17dca1ec35e1ea94b4b",
+    "hash": "8fe4bbb3f95c2c3012bcaddfea5ea27b",
     "packages": [
         {
             "name": "lapinator.net/ods-php-generator",
@@ -11,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/estebandelaf/odsPhpGenerator.git",
-                "reference": "584b481d5a741cd9bad35b72073ed693210bf72f"
+                "reference": "a277381fdcd69fa2f3013c132974ce11170076d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/estebandelaf/odsPhpGenerator/zipball/584b481d5a741cd9bad35b72073ed693210bf72f",
-                "reference": "584b481d5a741cd9bad35b72073ed693210bf72f",
+                "url": "https://api.github.com/repos/estebandelaf/odsPhpGenerator/zipball/a277381fdcd69fa2f3013c132974ce11170076d6",
+                "reference": "a277381fdcd69fa2f3013c132974ce11170076d6",
                 "shasum": ""
             },
             "require": {
@@ -27,8 +28,15 @@
             "license": [
                 "LGPL-3.0"
             ],
+            "authors": [
+                {
+                    "name": "Laurent VUIBERT",
+                    "homepage": "http://odsphpgenerator.lapinator.net/",
+                    "role": "Developer"
+                }
+            ],
             "description": "The ods file generator in php",
-            "time": "2014-03-12 18:55:04"
+            "time": "2014-04-06 04:07:03"
         },
         {
             "name": "libchart/libchart",
@@ -129,11 +137,17 @@
         },
         {
             "name": "tecnick.com/tcpdf",
-            "version": "6.0.062",
+            "version": "6.0.096",
             "source": {
                 "type": "git",
-                "url": "git://git.code.sf.net/p/tcpdf/code",
-                "reference": "cada5f0ef8c1bb0799f2694ea501db437b02a2ea"
+                "url": "https://github.com/tecnickcom/TCPDF.git",
+                "reference": "ff8799164231d5c99a69bee276ce33bcb7f52a54"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/ff8799164231d5c99a69bee276ce33bcb7f52a54",
+                "reference": "ff8799164231d5c99a69bee276ce33bcb7f52a54",
+                "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
@@ -171,7 +185,7 @@
                     "homepage": "http://nicolaasuni.tecnick.com"
                 }
             ],
-            "description": "TCPDF is a PHP class for generating PDF documents.",
+            "description": "TCPDF is a PHP class for generating PDF documents and barcodes.",
             "homepage": "http://www.tcpdf.org/",
             "keywords": [
                 "PDFD32000-2008",
@@ -182,23 +196,18 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2014-03-02 10:22:27"
+            "time": "2014-10-06 17:50:43"
         }
     ],
-    "packages-dev": [
-
-    ],
-    "aliases": [
-
-    ],
+    "packages-dev": [],
+    "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
         "lapinator.net/ods-php-generator": 20
     },
+    "prefer-stable": false,
     "platform": {
-        "php": "~5.3"
+        "php": "~5.5"
     },
-    "platform-dev": [
-
-    ]
+    "platform-dev": []
 }

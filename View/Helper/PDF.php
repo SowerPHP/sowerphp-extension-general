@@ -32,10 +32,12 @@ define ('K_PATH_IMAGES', '');
 /**
  * Clase para generar PDFs
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2014-02-23
+ * @version 2014-10-15
  */
 class View_Helper_PDF extends \TCPDF
 {
+
+    private $margin_top; ///< Margen extra (al por defecto) para la parte de arriba de la página
 
     private $defaultOptions = array(
         'font' => array ('family' => 'helvetica', 'size' => 10),
@@ -63,25 +65,30 @@ class View_Helper_PDF extends \TCPDF
 
     /**
      * Constructor de la clase
+     * @param o Orientación
+     * @param u Unidad de medida
+     * @param s Tipo de hoja
+     * @param top Margen extra (al normal) para la parte de arriba del PDF
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-02-23
+     * @version 2014-10-15
      */
-    public function __construct ($o = 'P', $u = 'mm', $s = 'Letter')
+    public function __construct ($o = 'P', $u = 'mm', $s = 'Letter', $top = 8)
     {
         parent::__construct($o, $u, $s);
-        $this->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-        $this->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $this->margin_top = $top;
+        $this->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP+$top, PDF_MARGIN_RIGHT);
+        $this->SetHeaderMargin(PDF_MARGIN_HEADER+$top);
         $this->SetFooterMargin(PDF_MARGIN_FOOTER);
     }
 
     /**
      * Asignar información del PDF
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-02-12
+     * @version 2014-10-15
      */
-    public function setInfo ($autor, $titulo)
+    public function setInfo ($autor, $titulo, $creador = 'SowerPHP')
     {
-        $this->SetCreator('SowerPHP');
+        $this->SetCreator($creador);
         $this->SetAuthor($autor);
         $this->SetTitle($titulo);
     }
@@ -117,7 +124,7 @@ class View_Helper_PDF extends \TCPDF
         parent::Header();
         $this->SetFont('helvetica', 'B', 10);
         $link = 'http'.(isset($_SERVER['HTTPS'])?'s':null).'://'.$_SERVER['HTTP_HOST'];
-        $this->Texto($link, 15, 20, 'R', 185, $link);
+        $this->Texto($link, 15, 20+$this->margin_top, 'R', 185, $link);
     }
 
     /**

@@ -37,7 +37,7 @@ define ('K_PATH_IMAGES', '');
 class View_Helper_PDF extends \TCPDF
 {
 
-    private $margin_top; ///< Margen extra (al por defecto) para la parte de arriba de la página
+    protected $margin_top; ///< Margen extra (al por defecto) para la parte de arriba de la página
 
     private $defaultOptions = array(
         'font' => array ('family' => 'helvetica', 'size' => 10),
@@ -130,10 +130,11 @@ class View_Helper_PDF extends \TCPDF
     /**
      * Método que sobreescribe el pie de página del PDF
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-10-13
+     * @version 2014-10-20
      */
     public function Footer()
     {
+        $this->SetFont('helvetica', 'B', 8);
         parent::Footer();
         $this->SetY($this->GetY());
         $this->SetFont('helvetica', 'B', 6);

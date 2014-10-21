@@ -134,7 +134,7 @@ class View_Helper_PDF extends \TCPDF
      */
     public function Footer()
     {
-        $this->SetFont('helvetica', 'B', 8);
+        $this->SetFont('helvetica', '', 8);
         parent::Footer();
         $this->SetY($this->GetY());
         $this->SetFont('helvetica', 'B', 6);

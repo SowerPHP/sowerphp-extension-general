@@ -419,7 +419,7 @@ class View_Helper_Form
             'id'=>$config['name'],
             'titles'=>array(),
             'width'=>'100%',
-            'mastercheck'=>true,
+            'mastercheck'=>false,
             'checked'=>(isset($_POST[$config['name']])?$_POST[$config['name']]:[])
         ], $config);
         if (!isset($config['key']))

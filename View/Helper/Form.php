@@ -26,7 +26,7 @@ namespace sowerphp\general;
 /**
  * Helper para la creación de formularios en HTML
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2014-08-21
+ * @version 2014-10-28
  */
 class View_Helper_Form
 {
@@ -133,7 +133,7 @@ class View_Helper_Form
      * @param config Arreglo con la configuración para el elemento
      * @return String Código HTML de lo solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-05-10
+     * @version 2014-10-28
      */
     private function _formatear ($field, $config)
     {
@@ -152,11 +152,11 @@ class View_Helper_Form
             // generar campo
             $buffer .= '<div>'."\n";
             if (!empty($config['label'])) {
+                $ast = $config['notempty'] ? '<span style="color:red">*</span> ' : '';
                 if (!empty($config['name'])) {
-                    $ast = $config['notempty'] ? '<span style="color:red">*</span> ' : '';
                     $buffer .= '<div class="label"><label for="'.$config['name'].'Field">'.$ast.$config['label'].'</label></div>'."\n";
                 } else {
-                    $buffer .= '<div class="label"><label>'.$config['label'].'</label></div>'."\n";
+                    $buffer .= '<div class="label"><label>'.$ast.$config['label'].'</label></div>'."\n";
                 }
             } else {
                 $buffer .= '<div class="label">&nbsp;</div>'."\n";
@@ -485,6 +485,11 @@ class View_Helper_Form
         }
         $buffer .= '</table>';
         return $buffer;
+    }
+
+    private function _div ($config)
+    {
+        return $config['value'];
     }
 
 }

@@ -69,9 +69,13 @@ Form.check_integer = function (field) {
  */
 Form.check_email = function (field) {
     'use strict';
-    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    if (!filter.test(field.value)) {
-        return "¡%s no es válido!";
+    var filter, emails, i;
+    filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    emails = field.value.replace(',', ';').replace(' ', '').split(';');
+    for (i = 0; i < emails.length; i=i+1) {
+        if (!filter.test(emails[i])) {
+            return "¡%s no es válido!";
+        }
     }
     return true;
 };

@@ -103,7 +103,7 @@ class View_Helper_Chart
      * @param options Opciones del gráfico
      * @param exit =true si se debe terminar el script, =false si no se debe terminar
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-04-18
+     * @version 2014-11-01
      */
     private function render (&$chart, $title, $data, $options, $exit = true)
     {
@@ -113,6 +113,7 @@ class View_Helper_Chart
             $options
         );
         // asignar opciones al gráfico
+        $chart->getPlot()->setGraphPadding(new \Libchart\View\Primitive\Padding(10, 1, 50, 70));
         $chart->setTitle($title);
         $chart->setDataSet($data);
         $chart->getPlot()->setGraphCaptionRatio($options['ratio']);

@@ -43,7 +43,7 @@ class Controller_Contacto extends \Controller_App
     /**
      * Método que desplegará y procesará el formulario de contacto
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-03-26
+     * @version 2014-11-06
      */
     public function index ()
     {
@@ -61,7 +61,8 @@ class Controller_Contacto extends \Controller_App
             $email->replyTo($_POST['correo'], $_POST['nombre']);
             $email->to(\sowerphp\core\Configure::read('email.default.to'));
             $email->subject('Contacto desde la web #'.date('YmdHis'));
-            if (!is_array($email->send($_POST['mensaje']))) {
+            $msg = $_POST['mensaje']."\n\n".'-- '."\n".$_POST['nombre']."\n".$_POST['correo'];
+            if (!is_array($email->send($msg))) {
                 \sowerphp\core\Model_Datasource_Session::message(
                     'Su mensaje ha sido enviado, se responderá a la brevedad.'
                 );

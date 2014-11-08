@@ -44,7 +44,7 @@ class Utility_Spreadsheet_XML
     /**
      * Función para generar un archivo XML a partir de una "tabla"
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-04-03
+     * @version 2014-11-08
      */
     public static function generate ($data, $id)
     {
@@ -56,13 +56,13 @@ class Utility_Spreadsheet_XML
         header('Pragma: no-cache');
         header('Expires: 0');
         // cuerpo del archivo
-        $root = string2url(\sowerphp\core\Utility_Inflector::underscore($id));
+        $root = \sowerphp\core\Utility_String::normalize(\sowerphp\core\Utility_Inflector::underscore($id));
         $item = \sowerphp\core\Utility_Inflector::singularize($root);
         echo '<?xml version="1.0" encoding="utf-8" ?>',"\n";
         echo '<',$root,'>',"\n";
         $titles = array_shift($data);
         foreach ($titles as &$col) {
-            $col = string2url(strip_tags($col));
+            $col = \sowerphp\core\Utility_String::normalize(strip_tags($col));
         }
         foreach($data as &$row) {
             echo "\t",'<',$item,'>',"\n";

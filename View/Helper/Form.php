@@ -133,12 +133,16 @@ class View_Helper_Form
      * @param config Arreglo con la configuración para el elemento
      * @return String Código HTML de lo solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-10-28
+     * @version 2014-11-09
      */
     private function _formatear ($field, $config)
     {
+        // si es campo oculto no se aplica ningún estilo
+        if ($config['type'] == 'hidden') {
+            $buffer = $field."\n";
+        }
         // si se debe aplicar estilo de mantenedor
-        if (!in_array($config['type'], array('hidden')) && $config['style']=='mantenedor') {
+        else if ($config['style']=='mantenedor') {
             $buffer = '';
             // generar ayuda
             if ($config['help']!='') {
@@ -167,6 +171,10 @@ class View_Helper_Form
         // si se debe alinear
         else if (isset($config['align'])) {
             $buffer = '<div style="text-align:'.$config['align'].'">'.$field.'</div>'."\n";
+        }
+        // si se debe usar estilo inline
+        else if ($config['style']=='inline') {
+            $buffer = '<div style="display:inline">'.$field.'</div>'."\n";
         }
         // si no se debe aplicar ningún formato solo agregar el campo dentro de un div y el EOL
         else {

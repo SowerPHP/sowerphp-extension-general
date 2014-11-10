@@ -46,7 +46,6 @@ class Utility_Date
         $start = $end = strtotime($fecha);
         $dia = date('N', $start);
         if ($dias==0) {
-            $fds = 0;
             if ($dia==6) $end = $start + 2*86400;
             else if ($dia==7) $end = $start + 86400;
         } else {
@@ -62,6 +61,40 @@ class Utility_Date
         while (($dias=self::countDaysMatch($fecha, $nuevaFecha, $feriados, true))!=0) {
             $fecha = date('Y-m-d', strtotime($nuevaFecha)+86400);
             $nuevaFecha = self::addWorkingDays($nuevaFecha, $dias);
+        }
+        // retornar fecha
+        return $nuevaFecha;
+    }
+
+    /**
+     * Método que resta días hábiles a una fecha
+     * @param fecha Desde donde empezar
+     * @param dias Días que se deben restar a la fecha
+     * @param feriados Días que no se deberán considerar al restar
+     * @return Fecha con los días hábiles restados
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2014-11-10
+     */
+    public static function subtractWorkingDays($fecha, $dias, $feriados = [])
+    {
+        // mover fecha los días solicitados
+        $start = $end = strtotime($fecha);
+        $dia = date('N', $start);
+        if ($dias==0) {
+            if ($dia==6) $end = $start - 86400;
+            else if ($dia==7) $end = $start - 2*86400;
+        } else {
+            $total = $dia - $dias;
+            $fds = $total > 0 ? (int)(abs($total)/5) * 2 : (int)(abs($total)/5) * 2 + 2;
+            $end = $start - ($dias+$fds)*86400;
+        }
+        $nuevaFecha = date('Y-m-d', $end);
+        // ver si hay feriados, por cada feriado encontrado mover un día hábil
+        // la fecha, hacer esto hasta que no hayan más días feriados en el rango
+        // que se movió la fecha
+        while (($dias=self::countDaysMatch($nuevaFecha, $fecha, $feriados, true))!=0) {
+            $fecha = date('Y-m-d', strtotime($nuevaFecha)-86400);
+            $nuevaFecha = self::subtractWorkingDays($nuevaFecha, $dias);
         }
         // retornar fecha
         return $nuevaFecha;

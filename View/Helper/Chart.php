@@ -31,7 +31,7 @@ namespace sowerphp\general;
  * Hace uso de libchart, presentando métodos más simples y evitando que el
  * programador deba escribir tando código
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2014-04-18
+ * @version 2014-11-19
  */
 class View_Helper_Chart
 {
@@ -40,6 +40,7 @@ class View_Helper_Chart
         'width' => 750,
         'height' => 300,
         'ratio' => 0.65,
+        'padding' => [10, 1, 50, 70],
     );
 
     /**
@@ -103,7 +104,7 @@ class View_Helper_Chart
      * @param options Opciones del gráfico
      * @param exit =true si se debe terminar el script, =false si no se debe terminar
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-11-01
+     * @version 2014-11-19
      */
     private function render (&$chart, $title, $data, $options, $exit = true)
     {
@@ -113,7 +114,10 @@ class View_Helper_Chart
             $options
         );
         // asignar opciones al gráfico
-        $chart->getPlot()->setGraphPadding(new \Libchart\View\Primitive\Padding(10, 1, 50, 70));
+        if (!empty($options['padding'])) {
+            $Padding = new \Libchart\View\Primitive\Padding(10, 1, 50, 70);
+            $chart->getPlot()->setGraphPadding($Padding);
+        }
         $chart->setTitle($title);
         $chart->setDataSet($data);
         $chart->getPlot()->setGraphCaptionRatio($options['ratio']);
@@ -179,12 +183,12 @@ class View_Helper_Chart
      * @param options Opciones para el gráfico
      * @param exit =true si se debe terminar el script, =false si no se debe terminar
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-04-18
+     * @version 2014-11-19
      */
     public function pie ($title, $data, $options = array(), $exit = true)
     {
         // asignar opciones por defecto del gráfico
-        $options = array_merge($this->defaultOptions, $options);
+        $options = array_merge($this->defaultOptions, ['padding'=>false], $options);
         // crear gráfico
         $chart = new \Libchart\View\Chart\PieChart($options['width'], $options['height']);
         // asignar colores

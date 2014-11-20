@@ -117,7 +117,7 @@ Form.check_date = function (field) {
  */
 Form.check_telephone = function (field) {
     'use strict';
-    var filter = /^\+\d{1,4}[ ]\d{1,2}[ ]\d{7,10}$/;
+    var filter = /^\+\d{1,4}[ ][[1-9]{1}|\d{1,2}][ ]\d{7,10}$/;
     if (!filter.test(field.value)) {
         return "¡%s debe tener el formato +<código país> <prefijo> <teléfono>!\nEjemplo: +56 9 87654321 o +56 2 22221111";
     }

@@ -395,6 +395,8 @@ class View_Helper_Form
                 foreach ($config['inputs'] as $input) {
                     if (isset($input['type']) && $input['type']=='checkbox')
                         $input['checked'] = $value[$input['name']];
+                    else if (isset($input['type']) && $input['type']=='select')
+                        $input['selected'] = $value[$input['name']];
                     else
                         $input['value'] = $value[$input['name']];
                     $input['name'] = $input['name'].'[]';

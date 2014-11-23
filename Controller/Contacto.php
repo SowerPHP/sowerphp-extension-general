@@ -43,7 +43,7 @@ class Controller_Contacto extends \Controller_App
     /**
      * Método que desplegará y procesará el formulario de contacto
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-11-06
+     * @version 2014-11-23
      */
     public function index ()
     {
@@ -51,7 +51,7 @@ class Controller_Contacto extends \Controller_App
         // permirir cargar página de contacto
         if (\sowerphp\core\Configure::read('email.default')===NULL) {
             \sowerphp\core\Model_Datasource_Session::message(
-                'Página de contacto deshabilitada'
+                'Página de contacto deshabilitada', 'error'
             );
             $this->redirect('/');
         }
@@ -64,11 +64,11 @@ class Controller_Contacto extends \Controller_App
             $msg = $_POST['mensaje']."\n\n".'-- '."\n".$_POST['nombre']."\n".$_POST['correo'];
             if (!is_array($email->send($msg))) {
                 \sowerphp\core\Model_Datasource_Session::message(
-                    'Su mensaje ha sido enviado, se responderá a la brevedad.'
+                    'Su mensaje ha sido enviado, se responderá a la brevedad.', 'ok'
                 );
             } else {
                 \sowerphp\core\Model_Datasource_Session::message(
-                    'Ha ocurrido un error al intentar enviar su mensaje, por favor intente nuevamente.'
+                    'Ha ocurrido un error al intentar enviar su mensaje, por favor intente nuevamente.', 'warning'
                 );
             }
             $this->redirect('/contacto');

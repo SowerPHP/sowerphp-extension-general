@@ -351,7 +351,7 @@ class View_Helper_Form
         return $buffer;
     }
 
-    private function _js ($config)
+    private function _js ($config, $js = true)
     {
         // configuración por defecto
         $config = array_merge(array('titles'=>array(), 'width'=>'100%'), $config);
@@ -365,7 +365,9 @@ class View_Helper_Form
             $d = (isset($input['type']) && $input['type']=='hidden') ? ' style="display:none;"' : '';
             $inputs .= '<td'.$d.'>'.rtrim($this->input($input)).'</td>';
         }
-        $inputs .= '<td><a href="" onclick="Form.delJS(this); return false" title="Eliminar"><img src="'._BASE.'/img/icons/16x16/actions/delete.png" alt="add" /></a></td>';
+        if ($js) {
+            $inputs .= '<td><a href="" onclick="Form.delJS(this); return false" title="Eliminar"><img src="'._BASE.'/img/icons/16x16/actions/delete.png" alt="add" /></a></td>';
+        }
         $inputs .= '</tr>';
         // si no se indicaron valores se tratan de determinar
         if (!isset($config['values'])) {
@@ -380,7 +382,9 @@ class View_Helper_Form
                         $d = (isset($input['type']) && $input['type']=='hidden') ? ' style="display:none;"' : '';
                         $values .= '<td'.$d.'>'.rtrim($this->input($input)).'</td>';
                     }
-                    $values .= '<td><a href="" onclick="Form.delJS(this); return false" title="Eliminar"><img src="'._BASE.'/img/icons/16x16/actions/delete.png" alt="add" /></a></td>';
+                    if ($js) {
+                        $values .= '<td><a href="" onclick="Form.delJS(this); return false" title="Eliminar"><img src="'._BASE.'/img/icons/16x16/actions/delete.png" alt="add" /></a></td>';
+                    }
                     $values .= '</tr>';
                 }
             }
@@ -403,20 +407,27 @@ class View_Helper_Form
                     $d = (isset($input['type']) && $input['type']=='hidden') ? ' style="display:none;"' : '';
                     $values .= '<td'.$d.'>'.rtrim($this->input($input)).'</td>';
                 }
-                $values .= '<td><a href="" onclick="Form.delJS(this); return false" title="Eliminar"><img src="'._BASE.'/img/icons/16x16/actions/delete.png" alt="add" /></a></td>';
+                if ($js) {
+                    $values .= '<td><a href="" onclick="Form.delJS(this); return false" title="Eliminar"><img src="'._BASE.'/img/icons/16x16/actions/delete.png" alt="add" /></a></td>';
+                }
                 $values .= '</tr>';
             }
         }
         // restaurar formato
         $this->_style = $formato;
         // generar tabla
-        $buffer = '<script type="text/javascript"> window["inputsJS_'.$config['id'].'"] = \''.$inputs.'\'; </script>'."\n";
+        $buffer = '';
+        if ($js) {
+            $buffer .= '<script type="text/javascript"> window["inputsJS_'.$config['id'].'"] = \''.$inputs.'\'; </script>'."\n";
+        }
         $buffer .= '<table id="'.$config['id'].'" class="formTable" style="width:'.$config['width'].'">';
         $buffer .= '<thead><tr>';
         foreach ($config['titles'] as &$title) {
             $buffer .= '<th>'.$title.'</th>';
         }
-        $buffer .= '<th><a href="javascript:Form.addJS(\''.$config['id'].'\')" title="Agregar [+]" accesskey="+"><img src="'._BASE.'/img/icons/16x16/actions/add.png" alt="add" /></a></th>';
+        if ($js) {
+            $buffer .= '<th><a href="javascript:Form.addJS(\''.$config['id'].'\')" title="Agregar [+]" accesskey="+"><img src="'._BASE.'/img/icons/16x16/actions/add.png" alt="add" /></a></th>';
+        }
         $buffer .= '</tr></thead>';
         $buffer .= '<tbody>'.$values.'</tbody>';
         $buffer .= '</table>';
@@ -503,6 +514,11 @@ class View_Helper_Form
     private function _div ($config)
     {
         return '<div'.(!empty($config['attr'])?' '.$config['attr']:'').'>'.$config['value'].'</div>';
+    }
+
+    private function _table($config)
+    {
+        return $this->_js($config, false);
     }
 
 }

@@ -16,6 +16,9 @@ form .field {
 	margin-left: 212px;
 	margin-bottom: 0.3em;
 }
+form .field > div {
+	display: inline;
+}
 input[type="text"], input[type="password"], textarea, select {
 	border: 1px solid black;
 	width: 400px;

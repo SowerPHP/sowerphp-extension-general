@@ -39,7 +39,7 @@ class View_Helper_PDF extends \TCPDF
 
     protected $margin_top; ///< Margen extra (al por defecto) para la parte de arriba de la página
 
-    private $defaultOptions = array(
+    protected $defaultOptions = array(
         'font' => array ('family' => 'helvetica', 'size' => 10),
         'header' => array (
             'textcolor' => array (0,0,0),

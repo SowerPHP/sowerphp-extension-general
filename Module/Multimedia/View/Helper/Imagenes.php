@@ -26,9 +26,9 @@ namespace sowerphp\general\Multimedia;
 /**
  * Clase para crear una galería de imágenes
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2014-03-26
+ * @version 2014-11-23
  */
-class Utility_Imagenes
+class View_Helper_Imagenes
 {
 
     private $_base;
@@ -50,7 +50,7 @@ class Utility_Imagenes
         // obtener cabecera
         $buffer .= $this->header();
         // inicio de la galería
-        $buffer .= '<div id="ImagenesPlugin">';
+        $buffer .= '<div id="ImagenesPlugin" style="text-align:center">';
         // obtener imagenes (si existen miniaturas se usan)
         if(file_exists(DIR_WEBSITE.'/webroot'.$dir.'/miniaturas')) {
             $imagenes = scandir(DIR_WEBSITE.'/webroot'.$dir.'/miniaturas');

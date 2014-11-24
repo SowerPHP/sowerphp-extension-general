@@ -50,7 +50,7 @@ class View_Helper_Imagenes
         // obtener cabecera
         $buffer .= $this->header();
         // inicio de la galería
-        $buffer .= '<div id="ImagenesPlugin" style="text-align:center">';
+        $buffer .= '<div id="ImagenesPlugin">';
         // obtener imagenes (si existen miniaturas se usan)
         if(file_exists(DIR_WEBSITE.'/webroot'.$dir.'/miniaturas')) {
             $imagenes = scandir(DIR_WEBSITE.'/webroot'.$dir.'/miniaturas');

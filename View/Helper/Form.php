@@ -133,7 +133,7 @@ class View_Helper_Form
      * @param config Arreglo con la configuración para el elemento
      * @return String Código HTML de lo solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-11-09
+     * @version 2014-11-28
      */
     private function _formatear ($field, $config)
     {
@@ -157,7 +157,7 @@ class View_Helper_Form
             $buffer .= '<div>'."\n";
             if (!empty($config['label'])) {
                 $ast = $config['notempty'] ? '<span style="color:red">*</span> ' : '';
-                if (!empty($config['name'])) {
+                if (!empty($config['name']) && substr($config['name'], -2)!='[]') {
                     $buffer .= '<div class="label"><label for="'.$config['name'].'Field">'.$ast.$config['label'].'</label></div>'."\n";
                 } else {
                     $buffer .= '<div class="label"><label>'.$ast.$config['label'].'</label></div>'."\n";
@@ -248,12 +248,14 @@ class View_Helper_Form
 
     private function _text ($config)
     {
-        return '<input type="text" name="'.$config['name'].'" value="'.$config['value'].'" id="'.$config['name'].'Field"'.$config['class'].' '.$config['attr'].' />';
+        $id = substr($config['name'], -2)!='[]' ? ' id="'.$config['name'].'Field"' : '';
+        return '<input type="text" name="'.$config['name'].'" value="'.$config['value'].'"'.$id.$config['class'].' '.$config['attr'].' />';
     }
 
     private function _password($config)
     {
-        return '<input type="password" name="'.$config['name'].'" id="'.$config['name'].'Field"'.$config['class'].' '.$config['attr'].' />';
+        $id = substr($config['name'], -2)!='[]' ? ' id="'.$config['name'].'Field"' : '';
+        return '<input type="password" name="'.$config['name'].'"'.$id.$config['class'].' '.$config['attr'].' />';
     }
 
     private function _textarea ($config)
@@ -264,7 +266,8 @@ class View_Helper_Form
                 'cols'=>10
             ), $config
         );
-        return '<textarea name="'.$config['name'].'" rows="'.$config['rows'].'" cols="'.$config['cols'].'" id="'.$config['name'].'Field"'.$config['class'].' '.$config['attr'].'>'.$config['value'].'</textarea>';
+        $id = substr($config['name'], -2)!='[]' ? ' id="'.$config['name'].'Field"' : '';
+        return '<textarea name="'.$config['name'].'" rows="'.$config['rows'].'" cols="'.$config['cols'].'"'.$id.$config['class'].' '.$config['attr'].'>'.$config['value'].'</textarea>';
     }
 
     private function _checkbox ($config)
@@ -273,8 +276,9 @@ class View_Helper_Form
         if (isset($_POST[$config['name']])) {
             $config['checked'] = true;
         }
-        $checked = isset($config['checked']) && $config['checked'] ? 'checked="checked"' : '';
-        return '<input type="checkbox" name="'.$config['name'].'" value="'.$config['value'].'" id="'.$config['name'].'Field" '.$checked.''.$config['class'].' '.$config['attr'].'/>';
+        $id = substr($config['name'], -2)!='[]' ? ' id="'.$config['name'].'Field"' : '';
+        $checked = isset($config['checked']) && $config['checked'] ? ' checked="checked"' : '';
+        return '<input type="checkbox" name="'.$config['name'].'" value="'.$config['value'].'"'.$id.$checked.$config['class'].' '.$config['attr'].'/>';
     }
 
     /**
@@ -301,14 +305,16 @@ class View_Helper_Form
             'yearTo' => date('Y')+1
         ), $config);
         $options = 'dateFormat: "yy-mm-dd", changeYear: true, yearRange: "'.$config['yearFrom'].':'.$config['yearTo'].'"';
+        $id = substr($config['name'], -2)!='[]' ? ' id="'.$config['name'].'Field"' : '';
         $buffer = '<script type="text/javascript">$(function() { $("#'.$config['name'].'Field").datepicker({ '.$options.' }); }); </script>';
-        $buffer .= '<input type="text" name="'.$config['name'].'" value="'.$config['value'].'" id="'.$config['name'].'Field"'.$config['class'].' '.$config['attr'].' />';
+        $buffer .= '<input type="text" name="'.$config['name'].'" value="'.$config['value'].'"'.$id.$config['class'].' '.$config['attr'].' />';
         return $buffer;
     }
 
     private function _file ($config)
     {
-        return '<input type="file" name="'.$config['name'].'" id="'.$config['name'].'Field"'.$config['class'].' '.$config['attr'].' />';
+        $id = substr($config['name'], -2)!='[]' ? ' id="'.$config['name'].'Field"' : '';
+        return '<input type="file" name="'.$config['name'].'"'.$id.$config['class'].' '.$config['attr'].' />';
     }
 
     private function _select ($config)
@@ -320,8 +326,9 @@ class View_Helper_Form
         if (isset($config['value'][0])) {
             $config['selected'] = $config['value'];
         }
+        $id = substr($config['name'], -2)!='[]' ? ' id="'.$config['name'].'Field"' : '';
         $buffer = '';
-        $buffer .= '<select name="'.$config['name'].'" id="'.$config['name'].'Field"'.$config['class'].' '.$config['attr'].'>';
+        $buffer .= '<select name="'.$config['name'].'"'.$id.$config['class'].' '.$config['attr'].'>';
         foreach ($config['options'] as $key => &$value) {
             if (is_array($value)) {
                 $key = array_shift($value);

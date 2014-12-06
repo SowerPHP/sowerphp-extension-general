@@ -339,4 +339,19 @@ class Utility_File
         return $lines;
     }
 
+    /**
+     * Método que entrega el mimetype de un archivo
+     * @param file Ruta hacia el fichero
+     * @return Mimetype del fichero
+     * @author http://stackoverflow.com/a/23287361
+     * @version 2014-04-25
+     */
+    public static function mimetype($file)
+    {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mimetype = finfo_file($finfo, $file);
+        finfo_close($finfo);
+        return $mimetype;
+    }
+
 }

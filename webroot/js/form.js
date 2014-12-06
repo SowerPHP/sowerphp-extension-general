@@ -131,8 +131,10 @@ Form.check_telephone = function (field) {
  */
 Form.check_rut = function (field) {
     'use strict';
-    var dv = parseInt(field.value.charAt(field.value.length - 1)),
+    var dv = field.value.charAt(field.value.length - 1).toUpperCase(),
         rut = field.value.replace(/\./g, "").replace("-", "");
+    if (dv !== "K")
+        dv = parseInt(dv);
     rut = rut.substr(0, rut.length - 1);
     if (dv !== __.rutDV(rut)) {
         return "¡%s es incorrecto!";

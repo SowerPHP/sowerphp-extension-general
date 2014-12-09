@@ -1,33 +1,33 @@
 .session_message {
 	font-weight: bold;
 	text-align: center;
-	border-width: 3px;
+	border-width: 2px;
 	border-style: solid;
 	padding: 0.5em;
 	margin-bottom: 1em;
 }
 
-.session_message_info {
-	border-color: #ddd;
-	background-color: #ffffeb;
-}
-
-.session_message_ok {
-	border-color: green;
-	background-color: #add370;
-}
-
-.session_message_notice {
+.bg-primary {
 	border-color: darkblue;
 	background-color: #8bcbea;
 }
 
-.session_message_warning {
+.bg-success {
+	border-color: green;
+	background-color: #add370;
+}
+
+.bg-info {
+	border-color: #ddd;
+	background-color: #ffffeb;
+}
+
+.bg-warning {
 	border-color: #ffb516;
 	background-color: #ffde4c;
 }
 
-.session_message_error {
+.bg-danger {
 	border-color: #d00;
 	background-color: #e39d7c;
 }

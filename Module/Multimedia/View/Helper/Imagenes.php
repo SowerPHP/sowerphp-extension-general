@@ -50,7 +50,7 @@ class View_Helper_Imagenes
         // obtener cabecera
         $buffer .= $this->header();
         // inicio de la galería
-        $buffer .= '<div id="ImagenesPlugin">';
+        $buffer .= '<div id="ImagenesPlugin">'."\n";
         // obtener imagenes (si existen miniaturas se usan)
         if(file_exists(DIR_WEBSITE.'/webroot'.$dir.'/miniaturas')) {
             $imagenes = scandir(DIR_WEBSITE.'/webroot'.$dir.'/miniaturas');
@@ -62,11 +62,11 @@ class View_Helper_Imagenes
         // mostrar imagenes
         foreach($imagenes as &$imagen) {
             if (!is_dir(DIR_WEBSITE.'/webroot'.$dir.$miniaturas.'/'.$imagen)) {
-                $buffer .= '<a href="'.$this->_base.$dir.'/'.$imagen.'" rel="prettyPhoto[gallery2]"><img src="'.$this->_base.$dir.$miniaturas.'/'.$imagen.'" alt="'.$imagen.'" /></a>';
+                $buffer .= '<a href="'.$this->_base.$dir.'/'.$imagen.'" rel="prettyPhoto[gallery2]"><img src="'.$this->_base.$dir.$miniaturas.'/'.$imagen.'" alt="'.$imagen.'" /></a>'."\n";
             }
         }
         // fin de la galería
-        $buffer .= '</div>';
+        $buffer .= '</div>'."\n";
         // retornar bufer
         return $buffer;
     }

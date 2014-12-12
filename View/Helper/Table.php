@@ -32,7 +32,7 @@ class View_Helper_Table
 {
 
     private $_id = null; ///< Identificador de la tabla
-    private $_class = ''; ///< Atributo class para la tabla
+    private $_class = 'table table-striped'; ///< Atributo class para la tabla
     private $_export = false; ///< Crear o no datos para exportar
     private $_exportRemove = array(); ///< Datos que se removeran al exportar
     private $_display = true; ///< Indica si se debe o no mostrar la tabla
@@ -141,7 +141,7 @@ class View_Helper_Table
      * Método que genera la tabla en HTML a partir de un arreglo
      * @param table Tabla que se generará
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-07-09
+     * @version 2014-12-10
      */
     public function generate ($table, $thead = 1)
     {
@@ -152,7 +152,7 @@ class View_Helper_Table
         // Utilizar buffer para el dibujado, así lo retornaremos en vez
         // de imprimir directamente
         if ($this->_height)
-            $buffer = '<div style="height:'.$this->_height.'px;overflow:auto">'."\n";
+            $buffer = '<div style="max-height:'.$this->_height.'px;overflow:auto">'."\n";
         else
             $buffer = '<div>'."\n";
         // Crear iconos para exportar y ocultar/mostrar tabla

@@ -7,16 +7,16 @@ input, select, textarea {
 	border-radius: 4px;
 	border: 1px solid black;
 }
-form .label {
+label {
 	width: 200px;
 	float: left;
 	text-align: right;
 }
-form .field {
+.form-group div {
 	margin-left: 212px;
 	margin-bottom: 0.3em;
 }
-form .field > div {
+.form-group div > div {
 	display: inline;
 }
 input[type="text"], input[type="password"], textarea, select {

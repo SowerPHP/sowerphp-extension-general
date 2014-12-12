@@ -28,7 +28,8 @@ namespace sowerphp\general;
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
  * @version 2014-05-04
  */
-class Controller_Module extends \Controller_App {
+class Controller_Module extends \Controller_App
+{
 
     /**
      * Método para autorizar la carga de index en caso que hay autenticación
@@ -38,7 +39,7 @@ class Controller_Module extends \Controller_App {
     public function beforeFilter ()
     {
         if (isset($this->Auth))
-            $this->Auth->allow ('index');
+            $this->Auth->allow('index');
         parent::beforeFilter ();
     }
 

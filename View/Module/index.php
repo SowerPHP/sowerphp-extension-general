@@ -11,3 +11,4 @@
     </div>
 <?php endforeach; ?>
 </div>
+<div style="clear:both;margin-top:2em">&nbsp;</div>

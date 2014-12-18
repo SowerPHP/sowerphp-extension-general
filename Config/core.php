@@ -28,5 +28,5 @@
     'todayBtn' => 'linked',
     'language' => 'es',
     'todayHighlight' => true,
-    'orientation' => 'top auto',
+    'orientation' => 'auto',
 ]);

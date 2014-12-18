@@ -163,14 +163,20 @@ class Utility_Date
     /**
      * Método para transformar un string a una fecha
      * @param fecha String a transformar (20100523 o 201005)
+     * @param invertir =true si la fecha a normalizar parte con día o mes
      * @return String trasnformado (2010-05-23 o 2010-05)
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-10-04
+     * @version 2014-12-18
      */
-    public static function normalize($fecha)
+    public static function normalize($fecha, $invertir = false)
     {
-        if (strlen($fecha)==6) return $fecha[0].$fecha[1].$fecha[2].$fecha[3].'-'.$fecha[4].$fecha[5];
-        else if (strlen($fecha)==8) return $fecha[0].$fecha[1].$fecha[2].$fecha[3].'-'.$fecha[4].$fecha[5].'-'.$fecha[6].$fecha[7];
+        if ($invertir) {
+            if (strlen($fecha)==6) return $fecha[2].$fecha[3].$fecha[4].$fecha[5].'-'.$fecha[0].$fecha[1];
+            else if (strlen($fecha)==8) return $fecha[4].$fecha[5].$fecha[6].$fecha[7].'-'.$fecha[2].$fecha[3].'-'.$fecha[0].$fecha[1];
+        } else {
+            if (strlen($fecha)==6) return $fecha[0].$fecha[1].$fecha[2].$fecha[3].'-'.$fecha[4].$fecha[5];
+            else if (strlen($fecha)==8) return $fecha[0].$fecha[1].$fecha[2].$fecha[3].'-'.$fecha[4].$fecha[5].'-'.$fecha[6].$fecha[7];
+        }
         return $fecha;
     }
 

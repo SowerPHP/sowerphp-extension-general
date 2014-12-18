@@ -182,7 +182,7 @@ class View_Helper_Form
      * @param config Arreglo con la configuración para el elemento
      * @return String Código HTML de lo solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-12-10
+     * @version 2014-12-18
      */
     public function input($config)
     {
@@ -222,7 +222,7 @@ class View_Helper_Form
                 $config['notempty'] = true;
         }
         // generar buffer
-        if (!in_array($config['type'], ['submit', 'checkbox'])) {
+        if (!in_array($config['type'], ['submit', 'checkbox', 'file'])) {
             $config['class'] = (!empty($config['class']) ? $config['class'] : '').' form-control';
         }
         $buffer = $this->_formatear($this->{'_'.$config['type']}($config), $config);
@@ -307,7 +307,7 @@ class View_Helper_Form
     private function _file ($config)
     {
         $id = substr($config['name'], -2)!='[]' ? ' id="'.$config['name'].'Field"' : '';
-        return '<input type="file" name="'.$config['name'].'"'.$id.' '.$config['attr'].' />';
+        return '<input type="file" name="'.$config['name'].'"'.$id.' class="'.$config['class'].'" '.$config['attr'].' />';
     }
 
     private function _select ($config)

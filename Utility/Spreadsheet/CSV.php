@@ -84,4 +84,26 @@ final class Utility_Spreadsheet_CSV
         exit(0);
     }
 
+    /**
+     * Crea un archivo CSV a partir de un arreglo guardándolo en el sistema de archivos
+     * @param data Arreglo utilizado para generar la planilla
+     * @param archivo Nombre del archivo que se debe generar
+     * @param separador separador a utilizar para diferenciar entre una columna u otra
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2014-12-18
+     */
+    public static function save($data, $archivo, $separador = ',',
+                                                    $delimitadortexto = '"')
+    {
+        $fd = fopen($archivo, 'w');
+        foreach($data as &$row) {
+            foreach($row as &$col) {
+                $col = $delimitadortexto.rtrim(str_replace('<br />', ', ', strip_tags($col, '<br>')), " \t\n\r\0\x0B,").$delimitadortexto;
+            }
+            fwrite($fd, implode($separador, $row)."\n");
+            unset($row);
+        }
+        fclose($fd);
+    }
+
 }

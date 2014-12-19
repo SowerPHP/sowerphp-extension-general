@@ -420,7 +420,7 @@ class View_Helper_Form
         if ($js) {
             $buffer .= '<script type="text/javascript"> window["inputsJS_'.$config['id'].'"] = \''.$inputs.'\'; </script>'."\n";
         }
-        $buffer .= '<table id="'.$config['id'].'" class="formTable" style="width:'.$config['width'].'">';
+        $buffer .= '<table id="'.$config['id'].'" class="table" style="width:'.$config['width'].'">';
         $buffer .= '<thead><tr>';
         foreach ($config['titles'] as &$title) {
             $buffer .= '<th>'.$title.'</th>';
@@ -450,7 +450,7 @@ class View_Helper_Form
             $config['key'] = array_keys($config['table'][0])[0];
         if (!is_array($config['key']))
             $config['key'] = array($config['key']);
-        $buffer = '<table id="'.$config['id'].'" class="formTable" style="width:'.$config['width'].'">';
+        $buffer = '<table id="'.$config['id'].'" class="table" style="width:'.$config['width'].'">';
         $buffer .= '<tr>';
         foreach ($config['titles'] as &$title) {
             $buffer .= '<th>'.$title.'</th>';

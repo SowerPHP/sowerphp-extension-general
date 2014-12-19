@@ -420,7 +420,7 @@ class View_Helper_Form
         if ($js) {
             $buffer .= '<script type="text/javascript"> window["inputsJS_'.$config['id'].'"] = \''.$inputs.'\'; </script>'."\n";
         }
-        $buffer .= '<table id="'.$config['id'].'" class="table" style="width:'.$config['width'].'">';
+        $buffer .= '<table id="'.$config['id'].'" class="table table-striped" style="width:'.$config['width'].'">';
         $buffer .= '<thead><tr>';
         foreach ($config['titles'] as &$title) {
             $buffer .= '<th>'.$title.'</th>';
@@ -450,7 +450,7 @@ class View_Helper_Form
             $config['key'] = array_keys($config['table'][0])[0];
         if (!is_array($config['key']))
             $config['key'] = array($config['key']);
-        $buffer = '<table id="'.$config['id'].'" class="table" style="width:'.$config['width'].'">';
+        $buffer = '<table id="'.$config['id'].'" class="table table-striped" style="width:'.$config['width'].'">';
         $buffer .= '<tr>';
         foreach ($config['titles'] as &$title) {
             $buffer .= '<th>'.$title.'</th>';
@@ -482,7 +482,7 @@ class View_Helper_Form
     {
         // configuración por defecto
         $config = array_merge(array('id'=>$config['name'], 'titles'=>array(), 'width'=>'100%'), $config);
-        $buffer = '<table id="'.$config['id'].'" class="tableradios" style="width:'.$config['width'].'">';
+        $buffer = '<table id="'.$config['id'].'" class="table table-striped" style="width:'.$config['width'].'">';
         $buffer .= '<tr>';
         foreach ($config['titles'] as &$title) {
             $buffer .= '<th>'.$title.'</th>';

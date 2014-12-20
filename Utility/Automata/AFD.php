@@ -26,7 +26,7 @@ namespace sowerphp\general;
 /**
  * Clase para trabajar con un autómata finito determinístico (AFD)
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2014-03-30
+ * @version 2014-12-19
  */
 
 class Utility_Automata_AFD
@@ -90,6 +90,54 @@ class Utility_Automata_AFD
     public function getFinalState ()
     {
         return $this->status;
+    }
+
+    /**
+     * Método que entrega una imagen PNG con el grafo del AFD
+     *
+     * Requiere: GraphViz y que esté la biblioteca clue/graph de composer
+     *
+     * @return Datos de una imagen PNG
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2014-12-20
+     */
+    public function getGraph()
+    {
+        require DIR_FRAMEWORK.'/extensions/sowerphp/general/Vendor/autoload.php';
+        $graph = new \Fhaculty\Graph\Graph();
+        // crear estados y transiciones
+        $vertexs = [];
+        $edges = [];
+        foreach ($this->transitions as $from => $data) {
+            if (!isset($vertexs[$from])) {
+                $vertexs[$from] = $graph->createVertex($from);
+                if ($from == $this->q0)
+                    $vertexs[$from]->setLayout(['style'=>'filled', 'fillcolor'=>'gray']);
+            }
+            foreach ($data as $valor => $to) {
+                if (!isset($vertexs[$to]))
+                    $vertexs[$to] = $graph->createVertex($to);
+                if (!isset($edges[$from][$to])) {
+                    $vertexs[$from]->createEdgeTo($vertexs[$to]);
+                    $edges[$from][$to] = [];
+                }
+                $edges[$from][$to][] = $valor;
+            }
+        }
+        // agregar valores de las transiciones
+        foreach ($vertexs as $v) {
+            if (!isset($edges[$v->getId()]))
+                continue;
+            $aux = $edges[$v->getId()];
+            foreach ($aux as $to => $valores) {
+                $v->getEdgesTo($vertexs[$to])->getEdgeFirst()->setLayout(
+                    ['label'=>implode(',', $valores), 'fontsize'=>'12']
+                );
+            }
+        }
+        //debug((new \Fhaculty\Graph\GraphViz($graph))->createScript()); exit;
+        $graph->setExporter(new \Fhaculty\Graph\Exporter\Image());
+        return $graph;
     }
 
 }

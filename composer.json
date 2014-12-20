@@ -25,6 +25,7 @@
         "libchart/libchart": "1.4.0",
         "lapinator.net/ods-php-generator": "dev-master",
         "phpoffice/phpexcel": "1.8.0",
-        "tecnick.com/tcpdf": "6.0.096"
+        "tecnick.com/tcpdf": "6.0.096",
+        "clue/graph": "~0.7"
     }
 }

@@ -251,13 +251,14 @@ class View_Helper_Table
             }
             $data[] = $aux;
         }
-        // escribir datos para la exportación
-        \sowerphp\core\Model_Datasource_Session::write('export.'.$this->_id, $data);
-        // colocar iconos
+        // escribir datos para la exportación y colocar iconos si se logró
+        // guardar en la caché
         $buffer = '';
-        $extensions = array('ods', 'xls', 'csv', 'pdf', 'xml', 'json');
-        foreach ($extensions as $e) {
-            $buffer .= '<a href="'._BASE.'/exportar/'.$e.'/'.$this->_id.'" title="Exportar a '.strtoupper($e).'"><img src="'._BASE.'/exportar/img/icons/16x16/'.$e.'.png" alt="" /></a> ';
+        if ((new \sowerphp\core\Cache())->set('session.'.session_id().'.export.'.$this->_id, $data)) {
+            $extensions = array('ods', 'xls', 'csv', 'pdf', 'xml', 'json');
+            foreach ($extensions as $e) {
+                $buffer .= '<a href="'._BASE.'/exportar/'.$e.'/'.$this->_id.'" title="Exportar a '.strtoupper($e).'"><img src="'._BASE.'/exportar/img/icons/16x16/'.$e.'.png" alt="" /></a> ';
+            }
         }
         return $buffer;
     }

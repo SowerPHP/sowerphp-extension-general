@@ -62,7 +62,7 @@ class Controller_Exportar extends \Controller_App
 
     private function _exportTable ($id)
     {
-        $data = \sowerphp\core\Model_Datasource_Session::read('export.'.$id);
+        $data = (new \sowerphp\core\Cache())->get('session.'.session_id().'.export.'.$id);
         if (!$data) {
             throw new \sowerphp\core\Exception('No hay datos que exportar');
         }

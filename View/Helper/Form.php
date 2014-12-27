@@ -61,7 +61,7 @@ class View_Helper_Form
      * @param config Arreglo con la configuración para el formulario
      * @return String Código HTML de lo solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-12-10
+     * @version 2014-12-27
      */
     public function begin($config = [])
     {
@@ -72,7 +72,7 @@ class View_Helper_Form
         // asignar configuración
         $config = array_merge(
             [
-                'id' => 'id',
+                'id' => 'formulario',
                 'action' => $_SERVER['REQUEST_URI'],
                 'method'=> 'post',
                 'onsubmit' => null,
@@ -91,7 +91,8 @@ class View_Helper_Form
             $buffer .= '<script type="text/javascript"> $(function() { $("#'.$config['focus'].'Field").focus(); }); </script>'."\n";
         }
         // agregar formulario
-        $buffer .= '<form action="'.$config['action'].'" method="'.$config['method'].'" enctype="multipart/form-data"'.$config['onsubmit'].' id="'.$config['id'].'" '.$config['attr'].' class="form-horizontal" role="form">'."\n";
+        $class = $this->_style ? 'form-'.$this->_style : '';
+        $buffer .= '<form action="'.$config['action'].'" method="'.$config['method'].'" enctype="multipart/form-data"'.$config['onsubmit'].' id="'.$config['id'].'" '.$config['attr'].' class="'.$class.'" role="form">'."\n";
         // retornar
         return $buffer;
     }
@@ -133,15 +134,15 @@ class View_Helper_Form
      * @param config Arreglo con la configuración para el elemento
      * @return String Código HTML de lo solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-12-10
+     * @version 2014-12-22
      */
     private function _formatear($field, $config)
     {
         // si es campo oculto no se aplica ningún estilo
         if ($config['type'] == 'hidden') {
-            $buffer = $field."\n";
+            $buffer = '    '.$field."\n";
         }
-        // si se debe aplicar estilo de mantenedor
+        // si se debe aplicar estilo horizontal
         else if ($config['style']=='horizontal') {
             if ($config['help']!='')
                 $config['help'] = ' <p class="help-block">'.$config['help'].'</p>';
@@ -159,6 +160,17 @@ class View_Helper_Form
                 $buffer .= '        <div class="col-sm-offset-2 col-sm-10">'.$field.$config['help'].'</div>'."\n";
             }
             $buffer .= '    </div>'."\n";
+        }
+        // si se debe aplicar estilo inline
+        else if ($config['style']=='inline') {
+            $buffer = '<div>';
+            $buffer .= '<label class="sr-only" for="'.$config['name'].'Field">'.$config['label'].'</label>'."\n";
+            if (isset($config['addon-icon']))
+                $buffer .= '<div class="input-group-addon"><span class="glyphicon glyphicon-'.$config['addon-icon'].'" aria-hidden="true"></span></div>'."\n";
+            else if (isset($config['addon-text']))
+                $buffer .= '<div class="input-group-addon">'.$config['addon-text'].'</div>'."\n";
+            $buffer .= $field;
+            $buffer .= '</div>'."\n";
         }
         // si se debe alinear
         else if (isset($config['align'])) {
@@ -182,7 +194,7 @@ class View_Helper_Form
      * @param config Arreglo con la configuración para el elemento
      * @return String Código HTML de lo solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-12-18
+     * @version 2014-12-27
      */
     public function input($config)
     {
@@ -211,7 +223,8 @@ class View_Helper_Form
             $config['value'] = $_POST[$config['name']];
         }
         // si label no existe se usa el nombre de la variable
-        if (!isset($config['label'])) $config['label'] = $config['name'];
+        if (!isset($config['label']))
+            $config['label'] = isset($config['placeholder'][0]) ? $config['placeholder'] : $config['name'];
         // si se paso check se usa
         if ($config['check']) {
             // si no es arreglo se convierte
@@ -300,7 +313,7 @@ class View_Helper_Form
         );
         $id = substr($config['name'], -2)!='[]' ? ' id="'.$config['name'].'Field"' : '';
         $buffer = '<script type="text/javascript">$(function() { $("#'.$config['name'].'Field").datepicker('.json_encode($config['datepicker']).'); }); </script>';
-        $buffer .= '<input type="text" name="'.$config['name'].'" value="'.$config['value'].'"'.$id.' class="'.$config['class'].'" '.$config['attr'].' />';
+        $buffer .= '<input type="text" name="'.$config['name'].'" value="'.$config['value'].'"'.$id.' class="'.$config['class'].'" placeholder="'.$config['placeholder'].'" '.$config['attr'].' />';
         return $buffer;
     }
 

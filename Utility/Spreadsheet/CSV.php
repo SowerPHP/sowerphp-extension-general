@@ -27,25 +27,25 @@ namespace sowerphp\general;
  * Manejar archivos csv
  *
  * Esta clase permite leer y generar archivos csv
- * @author DeLaF, esteban[at]delaf.cl
- * @version 2014-02-16
+ * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+ * @version 2014-12-18
  */
 final class Utility_Spreadsheet_CSV
 {
 
     /**
      * Lee un archivo CSV
-     * @param archivo archivo a leer (ejemplo celca tmp_name de un arreglo $_FILES)
+     * @param archivo archivo a leer (ejemplo índice tmp_name de un arreglo $_FILES)
      * @param separador separador a utilizar para diferenciar entre una columna u otra
-     * @author DeLaF, esteban[at]delaf.cl
-     * @version 2012-06-1
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2014-12-27
      */
     public static function read ($archivo = null, $separador = ',', $delimitadortexto = '"')
     {
         if (($handle = fopen($archivo, 'r')) !== FALSE) {
             $data = array();
             $i = 0;
-            while (($row = fgetcsv($handle)) !== FALSE) {
+            while (($row = fgetcsv($handle, 0, $separador, $delimitadortexto)) !== FALSE) {
                 $j = 0;
                 foreach ($row as &$col) {
                     $data[$i][$j++] = $col;
@@ -62,11 +62,10 @@ final class Utility_Spreadsheet_CSV
      * @param data Arreglo utilizado para generar la planilla
      * @param id Identificador de la planilla
      * @param separador separador a utilizar para diferenciar entre una columna u otra
-     * @author DeLaF, esteban[at]delaf.cl
-     * @version 2014-02-16
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2014-12-27
      */
-    public static function generate ($data, $id, $separador = ',',
-                                                    $delimitadortexto = '"')
+    public static function generate ($data, $id, $separador = ',', $delimitadortexto = '"')
     {
         ob_clean();
         header('Content-type: text/csv');
@@ -77,7 +76,7 @@ final class Utility_Spreadsheet_CSV
             foreach($row as &$col) {
                 $col = $delimitadortexto.rtrim(str_replace('<br />', ', ', strip_tags($col, '<br>')), " \t\n\r\0\x0B,").$delimitadortexto;
             }
-            echo implode($separador, $row),"\n";
+            echo implode($separador, $row),"\r\n";
             unset($row);
         }
         unset($data);
@@ -90,17 +89,16 @@ final class Utility_Spreadsheet_CSV
      * @param archivo Nombre del archivo que se debe generar
      * @param separador separador a utilizar para diferenciar entre una columna u otra
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-12-18
+     * @version 2014-12-27
      */
-    public static function save($data, $archivo, $separador = ',',
-                                                    $delimitadortexto = '"')
+    public static function save($data, $archivo, $separador = ',', $delimitadortexto = '"')
     {
         $fd = fopen($archivo, 'w');
         foreach($data as &$row) {
             foreach($row as &$col) {
                 $col = $delimitadortexto.rtrim(str_replace('<br />', ', ', strip_tags($col, '<br>')), " \t\n\r\0\x0B,").$delimitadortexto;
             }
-            fwrite($fd, implode($separador, $row)."\n");
+            fwrite($fd, implode($separador, $row)."\r\n");
             unset($row);
         }
         fclose($fd);

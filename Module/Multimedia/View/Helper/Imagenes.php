@@ -32,11 +32,13 @@ class View_Helper_Imagenes
 {
 
     private $_base;
+    private $_name;
 
-    public function __construct ($dir = null)
+    public function __construct ($dir = null, $name = 'galeria')
     {
         // obtener base
         $this->_base = _BASE;
+        $this->_name = $name;
         // si se indico un directorio se genera e imprime (like TableHelper)
         if ($dir) {
             echo $this->generate($dir);
@@ -50,7 +52,7 @@ class View_Helper_Imagenes
         // obtener cabecera
         $buffer .= $this->header();
         // inicio de la galería
-        $buffer .= '<div id="ImagenesPlugin">'."\n";
+        $buffer .= '<div>'."\n";
         // obtener imagenes (si existen miniaturas se usan)
         if(file_exists(DIR_WEBSITE.'/webroot'.$dir.'/miniaturas')) {
             $imagenes = scandir(DIR_WEBSITE.'/webroot'.$dir.'/miniaturas');
@@ -62,7 +64,7 @@ class View_Helper_Imagenes
         // mostrar imagenes
         foreach($imagenes as &$imagen) {
             if (!is_dir(DIR_WEBSITE.'/webroot'.$dir.$miniaturas.'/'.$imagen)) {
-                $buffer .= '<a href="'.$this->_base.$dir.'/'.$imagen.'" rel="prettyPhoto[gallery2]"><img src="'.$this->_base.$dir.$miniaturas.'/'.$imagen.'" alt="'.$imagen.'" /></a>'."\n";
+                $buffer .= '<a href="'.$this->_base.$dir.'/'.$imagen.'" rel="prettyPhoto['.$this->_name.']"><img src="'.$this->_base.$dir.$miniaturas.'/'.$imagen.'" alt="'.$imagen.'" class="pp-thumbnail" /></a>'."\n";
             }
         }
         // fin de la galería
@@ -75,9 +77,10 @@ class View_Helper_Imagenes
     {
         return '
             <link rel="stylesheet" href="'.$this->_base.'/multimedia/css/prettyPhoto.css" type="text/css" media="screen" charset="utf-8" />
+            <script src="'.$this->_base.'/multimedia/js/jquery.browser.min.js" type="text/javascript" charset="utf-8"></script>
             <script src="'.$this->_base.'/multimedia/js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
             <style type="text/css">
-            #ImagenesPlugin img {
+            img.pp-thumbnail {
                 margin: 5px;
                 padding: 3px;
                 border: solid 1px #CCC;
@@ -90,7 +93,7 @@ class View_Helper_Imagenes
             </style>
             <script type="text/javascript" charset="utf-8">
                 $(document).ready(function(){
-                    $("#ImagenesPlugin a[rel^=\'prettyPhoto\']").prettyPhoto();
+                    $("a[rel^=\'prettyPhoto\']").prettyPhoto();
                 });
             </script>
         ';

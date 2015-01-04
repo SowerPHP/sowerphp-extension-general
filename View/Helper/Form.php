@@ -464,13 +464,13 @@ class View_Helper_Form
         if (!is_array($config['key']))
             $config['key'] = array($config['key']);
         $buffer = '<table id="'.$config['id'].'" class="table table-striped" style="width:'.$config['width'].'">';
-        $buffer .= '<tr>';
+        $buffer .= '<thead><tr>';
         foreach ($config['titles'] as &$title) {
             $buffer .= '<th>'.$title.'</th>';
         }
         $checked = $config['mastercheck'] ? ' checked="checked"' : '';
         $buffer .= '<th><input type="checkbox"'.$checked.' onclick="Form.checkboxesSet(\''.$config['name'].'\', this.checked)"/></th>';
-        $buffer .= '</tr>';
+        $buffer .= '</tr></thead><tbody>';
         foreach ($config['table'] as &$row) {
             // determinar la llave
             $key = array();
@@ -487,7 +487,7 @@ class View_Helper_Form
             $buffer .= '<td><input type="checkbox" name="'.$config['name'].'[]" value="'.$key.'"'.$checked.' /></td>';
             $buffer .= '</tr>';
         }
-        $buffer .= '</table>';
+        $buffer .= '</tbody></table>';
         return $buffer;
     }
 
@@ -496,14 +496,14 @@ class View_Helper_Form
         // configuración por defecto
         $config = array_merge(array('id'=>$config['name'], 'titles'=>array(), 'width'=>'100%'), $config);
         $buffer = '<table id="'.$config['id'].'" class="table table-striped" style="width:'.$config['width'].'">';
-        $buffer .= '<tr>';
+        $buffer .= '<thead><tr>';
         foreach ($config['titles'] as &$title) {
             $buffer .= '<th>'.$title.'</th>';
         }
         foreach ($config['options'] as &$option) {
             $buffer .= '<th><div><span>'.$option.'</span></div></th>';
         }
-        $buffer .= '</tr>';
+        $buffer .= '</tr></thead><tbody>';
         $options = array_keys($config['options']);
         foreach ($config['table'] as &$row) {
             $key = array_shift($row);
@@ -520,7 +520,7 @@ class View_Helper_Form
             }
             $buffer .= '</tr>';
         }
-        $buffer .= '</table>';
+        $buffer .= '</tbody></table>';
         return $buffer;
     }
 

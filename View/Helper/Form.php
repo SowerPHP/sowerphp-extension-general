@@ -335,8 +335,9 @@ class View_Helper_Form
             $config['selected'] = $config['value'];
         }
         $id = isset($config['id']) ? ' id="'.$config['id'].'"' : '';
+        $multiple = isset($config['multiple']) ? ' multiple="multiple" size="'.$config['multiple'].'"' : '';
         $buffer = '';
-        $buffer .= '<select name="'.$config['name'].'"'.$id.' class="'.$config['class'].'" '.$config['attr'].'>';
+        $buffer .= '<select name="'.$config['name'].'"'.$id.' class="'.$config['class'].'"'.$multiple.' '.$config['attr'].'>';
         foreach ($config['options'] as $key => &$value) {
             if (is_array($value)) {
                 $key = array_shift($value);

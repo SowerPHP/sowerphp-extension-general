@@ -164,21 +164,20 @@ class View_Helper_Form
         // si se debe aplicar estilo inline
         else if ($config['style']=='inline') {
             $buffer = '<div>';
-            $buffer .= '<label class="sr-only" for="'.$config['id'].'">'.$config['label'].'</label>'."\n";
+            if ($config['type']!='checkbox')
+                $buffer .= '<label class="sr-only"'.(isset($config['id'])?' for="'.$config['id'].'"':'').'>'.$config['label'].'</label>'."\n";
             if (isset($config['addon-icon']))
                 $buffer .= '<div class="input-group-addon"><span class="glyphicon glyphicon-'.$config['addon-icon'].'" aria-hidden="true"></span></div>'."\n";
             else if (isset($config['addon-text']))
                 $buffer .= '<div class="input-group-addon">'.$config['addon-text'].'</div>'."\n";
             $buffer .= $field;
+            if ($config['type']=='checkbox')
+                $buffer .= ' <label '.(isset($config['id'])?' for="'.$config['id'].'"':'').' style="font-weight:normal">'.$config['label'].'</label>'."\n";
             $buffer .= '</div>'."\n";
         }
         // si se debe alinear
         else if (isset($config['align'])) {
             $buffer = '<div style="text-align:'.$config['align'].'">'.$field.'</div>'."\n";
-        }
-        // si se debe usar estilo inline
-        else if ($config['style']=='inline') {
-            $buffer = '<div style="display:inline">'.$field.'</div>'."\n";
         }
         // si no se debe aplicar ningún formato solo agregar el campo dentro de un div y el EOL
         else {
@@ -282,8 +281,8 @@ class View_Helper_Form
 
     private function _checkbox ($config)
     {
-        // si el valor por defecto se pasó en value se copia donde corresponde
-        if (isset($_POST[$config['name']])) {
+        // determinar si está o no chequeado
+        if (!isset($config['checked']) and isset($_POST[$config['name']])) {
             $config['checked'] = true;
         }
         $id = isset($config['id']) ? ' id="'.$config['id'].'"' : '';

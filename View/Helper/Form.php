@@ -440,7 +440,7 @@ class View_Helper_Form
         // generar tabla
         $buffer = '';
         if ($js) {
-            $buffer .= '<script type="text/javascript"> window["inputsJS_'.$config['id'].'"] = \''.$inputs.'\'; </script>'."\n";
+            $buffer .= '<script type="text/javascript"> window["inputsJS_'.$config['id'].'"] = \''.str_replace('\'', '\\\'', $inputs).'\'; </script>'."\n";
         }
         $buffer .= '<table id="'.$config['id'].'" class="table table-striped" style="width:'.$config['width'].'">';
         $buffer .= '<thead><tr>';

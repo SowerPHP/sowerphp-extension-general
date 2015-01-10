@@ -172,7 +172,7 @@ class View_Helper_Form
                 $buffer .= '<div class="input-group-addon">'.$config['addon-text'].'</div>'."\n";
             $buffer .= $field;
             if ($config['type']=='checkbox')
-                $buffer .= ' <label '.(isset($config['id'])?' for="'.$config['id'].'"':'').' style="font-weight:normal">'.$config['label'].'</label>'."\n";
+                $buffer .= ' <label '.(isset($config['id'])?' for="'.$config['id'].'"':'').' style="font-weight:normal"'.$config['popover'].'>'.$config['label'].'</label>'."\n";
             $buffer .= '</div>'."\n";
         }
         // si se debe alinear
@@ -193,7 +193,7 @@ class View_Helper_Form
      * @param config Arreglo con la configuración para el elemento
      * @return String Código HTML de lo solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2015-01-08
+     * @version 2015-01-10
      */
     public function input($config)
     {
@@ -210,6 +210,7 @@ class View_Helper_Form
                 'attr' => '',
                 'check' => null,
                 'help' => '',
+                'popover' => '',
                 'notempty' =>false,
                 'style'=>$this->_style,
                 'placeholder' => '',
@@ -241,6 +242,10 @@ class View_Helper_Form
         if (!isset($config['id']) and !empty($config['name']) and substr($config['name'], -2)!='[]') {
             $config['id'] = $config['name'].'Field';
         }
+        // determinar popover
+        if ($config['popover']!='') {
+            $config['popover'] = ' data-toggle="popover" data-trigger="focus" title="'.$config['label'].'" data-placement="top" data-content="'.$config['popover'].'" onmouseover="$(this).popover(\'show\')" onmouseout="$(this).popover(\'hide\')"';
+        }
         // generar campo, formatear y entregar
         return $this->_formatear($this->{'_'.$config['type']}($config), $config);
     }
@@ -258,13 +263,13 @@ class View_Helper_Form
     private function _text ($config)
     {
         $id = isset($config['id']) ? ' id="'.$config['id'].'"' : '';
-        return '<input type="text" name="'.$config['name'].'" value="'.$config['value'].'"'.$id.' class="'.$config['class'].'" placeholder="'.$config['placeholder'].'" '.$config['attr'].' />';
+        return '<input type="text" name="'.$config['name'].'" value="'.$config['value'].'"'.$id.' class="'.$config['class'].'" placeholder="'.$config['placeholder'].'" '.$config['attr'].$config['popover'].' />';
     }
 
     private function _password($config)
     {
         $id = isset($config['id']) ? ' id="'.$config['id'].'"' : '';
-        return '<input type="password" name="'.$config['name'].'"'.$id.' class="'.$config['class'].'" '.$config['attr'].' />';
+        return '<input type="password" name="'.$config['name'].'"'.$id.' class="'.$config['class'].'" '.$config['attr'].$config['popover'].' />';
     }
 
     private function _textarea ($config)
@@ -276,7 +281,7 @@ class View_Helper_Form
             ), $config
         );
         $id = isset($config['id']) ? ' id="'.$config['id'].'"' : '';
-        return '<textarea name="'.$config['name'].'" rows="'.$config['rows'].'" cols="'.$config['cols'].'"'.$id.' class="'.$config['class'].'" placeholder="'.$config['placeholder'].'" '.$config['attr'].'>'.$config['value'].'</textarea>';
+        return '<textarea name="'.$config['name'].'" rows="'.$config['rows'].'" cols="'.$config['cols'].'"'.$id.' class="'.$config['class'].'" placeholder="'.$config['placeholder'].'" '.$config['attr'].$config['popover'].'>'.$config['value'].'</textarea>';
     }
 
     private function _checkbox ($config)
@@ -287,7 +292,7 @@ class View_Helper_Form
         }
         $id = isset($config['id']) ? ' id="'.$config['id'].'"' : '';
         $checked = isset($config['checked']) && $config['checked'] ? ' checked="checked"' : '';
-        return '<input type="checkbox" name="'.$config['name'].'" value="'.$config['value'].'"'.$id.$checked.' class="'.$config['class'].'" '.$config['attr'].'/>';
+        return '<input type="checkbox" name="'.$config['name'].'" value="'.$config['value'].'"'.$id.$checked.' class="'.$config['class'].'" '.$config['attr'].' />';
     }
 
     /**
@@ -315,7 +320,7 @@ class View_Helper_Form
         );
         $id = isset($config['id']) ? ' id="'.$config['id'].'"' : '';
         $buffer = '<script type="text/javascript">$(function() { $("#'.$config['id'].'").datepicker('.json_encode($config['datepicker']).'); }); </script>';
-        $buffer .= '<input type="text" name="'.$config['name'].'" value="'.$config['value'].'"'.$id.' class="'.$config['class'].'" placeholder="'.$config['placeholder'].'" '.$config['attr'].' />';
+        $buffer .= '<input type="text" name="'.$config['name'].'" value="'.$config['value'].'"'.$id.' class="'.$config['class'].'" placeholder="'.$config['placeholder'].'" '.$config['attr'].$config['popover'].' />';
         return $buffer;
     }
 

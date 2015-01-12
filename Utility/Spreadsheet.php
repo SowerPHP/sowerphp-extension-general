@@ -241,7 +241,7 @@ class Utility_Spreadsheet
      * Método que normaliza los datos del archivo en un arreglo (igual a arreglo en $_FILES)
      * @param archivo Nombre del archivo
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-03-25
+     * @version 2015-01-12
      */
     private static function archivo ($archivo)
     {
@@ -253,15 +253,18 @@ class Utility_Spreadsheet
             $archivo['tmp_name'] = $aux;
             unset($aux);
             $archivo['name'] = basename($archivo['tmp_name']);
-            switch (strtolower(substr($archivo['name'], strrpos($archivo['name'], '.')+1))) {
-                case 'csv': { $archivo['type'] = 'text/csv'; break; }
-                case 'txt': { $archivo['type'] = 'text/plain'; break; }
-                case 'ods': { $archivo['type'] = 'application/vnd.oasis.opendocument.spreadsheet'; break; }
-                case 'xls': { $archivo['type'] = 'application/vnd.ms-excel'; break; }
-                case 'xlsx': { $archivo['type'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'; break; }
-            }
             $archivo['size'] = filesize($archivo['tmp_name']);
         }
+        // extensión siempre se chequea y reemplaza (ya que PHP puede cambiar
+        // esto entre distintas versiones)
+        switch (strtolower(substr($archivo['name'], strrpos($archivo['name'], '.')+1))) {
+            case 'csv': { $archivo['type'] = 'text/csv'; break; }
+            case 'txt': { $archivo['type'] = 'text/plain'; break; }
+            case 'ods': { $archivo['type'] = 'application/vnd.oasis.opendocument.spreadsheet'; break; }
+            case 'xls': { $archivo['type'] = 'application/vnd.ms-excel'; break; }
+            case 'xlsx': { $archivo['type'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'; break; }
+        }
+        // entregar archivo normalizado
         return $archivo;
     }
 

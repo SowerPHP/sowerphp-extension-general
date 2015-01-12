@@ -399,7 +399,7 @@ class View_Helper_Form
                 for ($i=0; $i<$filas; $i++) {
                     $values .= '<tr>';
                     foreach ($config['inputs'] as $input) {
-                        $input['value'] = $_POST[$input['name']][$i];
+                        $input['value'] = isset($_POST[$input['name']]) ? $_POST[$input['name']][$i] : '';
                         $input['name'] = $input['name'].'[]';
                         $d = (isset($input['type']) && $input['type']=='hidden') ? ' style="display:none;"' : '';
                         $values .= '<td'.$d.'>'.rtrim($this->input($input)).'</td>';

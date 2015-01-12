@@ -64,11 +64,11 @@ class Utility_File
      * @param mostrarUnidad =true mostrara la unidad (KB, MB, etc)
      * @return Tamaño del archivo/directorio o bien descripción del error ocurrido
      * @author Desconocido, http://www.blasten.com/contenidos/?id=Tama?o_de_archivo_en_byte,_Kb,_Mb,_y_Gb
-     * @version 2010-07-16
+     * @version 2015-01-12
      */
     public static function getSize ($filepath, $mostrarUnidad = true)
     {
-        $method = array('B','KB','MB','GB', 'TB');
+        $method = array('B','KiB','MiB','GiB', 'TiB');
         $size = 0;
         if (!file_exists($filepath)) { // verificar que el archivo exista
             return 'Archivo no existe';

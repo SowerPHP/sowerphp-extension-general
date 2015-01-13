@@ -466,7 +466,8 @@ class View_Helper_Form
             'titles'=>array(),
             'width'=>'100%',
             'mastercheck'=>false,
-            'checked'=>(isset($_POST[$config['name']])?$_POST[$config['name']]:[])
+            'checked'=>(isset($_POST[$config['name']])?$_POST[$config['name']]:[]),
+            'display-key'=>true,
         ], $config);
         if (!isset($config['key']))
             $config['key'] = array_keys($config['table'][0])[0];
@@ -480,6 +481,7 @@ class View_Helper_Form
         $checked = $config['mastercheck'] ? ' checked="checked"' : '';
         $buffer .= '<th><input type="checkbox"'.$checked.' onclick="Form.checkboxesSet(\''.$config['name'].'\', this.checked)"/></th>';
         $buffer .= '</tr></thead><tbody>';
+        $n_keys = count($config['key']);
         foreach ($config['table'] as &$row) {
             // determinar la llave
             $key = array();
@@ -489,8 +491,11 @@ class View_Helper_Form
             $key = implode (';', $key);
             // agregar fila
             $buffer .= '<tr>';
+            $count = 0;
             foreach ($row as &$col) {
-                $buffer .= '<td>'.$col.'</td>';
+                if ($config['display-key'] or $count>=$n_keys)
+                    $buffer .= '<td>'.$col.'</td>';
+                $count++;
             }
             $checked = in_array($key, $config['checked']) ? ' checked="checked"' : '' ;
             $buffer .= '<td><input type="checkbox" name="'.$config['name'].'[]" value="'.$key.'"'.$checked.' /></td>';

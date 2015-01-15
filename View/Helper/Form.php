@@ -134,7 +134,7 @@ class View_Helper_Form
      * @param config Arreglo con la configuración para el elemento
      * @return String Código HTML de lo solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2015-01-08
+     * @version 2015-01-14
      */
     private function _formatear($field, $config)
     {
@@ -145,7 +145,7 @@ class View_Helper_Form
         // si se debe aplicar estilo horizontal
         else if ($config['style']=='horizontal') {
             if ($config['help']!='')
-                $config['help'] = ' <p class="help-block">'.$config['help'].'</p>';
+                $config['help'] = ' <p class="help-block"'.(isset($config['id'])?' id="'.$config['id'].'Help"':'').'>'.$config['help'].'</p>';
             $buffer = '    <div class="form-group'.($config['notempty']?' required':'').'">'."\n";
             if (!empty($config['label'])) {
                 if (isset($config['id'])) {
@@ -380,7 +380,7 @@ class View_Helper_Form
         $formato = $this->_style;
         $this->_style = null;
         // determinar inputs
-        $delete = '<td><a href="" onclick="Form.delJS(this); return false" title="Eliminar"><span class="glyphicon glyphicon-remove-circle btn btn-default" aria-hidden="true"></a></td>';
+        $delete = '<td><a href="" onclick="Form.delJS(this); return false" title="Eliminar"><span class="glyphicon glyphicon-remove-circle btn btn-default" aria-hidden="true"></span></a></td>';
         $inputs = '<tr>';
         foreach ($config['inputs'] as $input) {
             $input['name'] = $input['name'].'[]';
@@ -448,7 +448,7 @@ class View_Helper_Form
             $buffer .= '<th>'.$title.'</th>';
         }
         if ($js) {
-            $buffer .= '<th style="width:1px"><a href="javascript:Form.addJS(\''.$config['id'].'\')" title="Agregar [+]" accesskey="+"><span class="glyphicon glyphicon-plus btn btn-default" aria-hidden="true"></a></th>';
+            $buffer .= '<th style="width:1px"><a href="javascript:Form.addJS(\''.$config['id'].'\')" title="Agregar [+]" accesskey="+"><span class="glyphicon glyphicon-plus btn btn-default" aria-hidden="true"></span></a></th>';
         }
         $buffer .= '</tr></thead>';
         $buffer .= '<tbody>'.$values.'</tbody>';

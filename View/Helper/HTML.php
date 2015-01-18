@@ -26,7 +26,7 @@ namespace sowerphp\general;
 /**
  * Helper para la creación de código HTML genérico a través de métodos estáticos
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2014-10-01
+ * @version 2015-01-18
  */
 class View_Helper_HTML
 {
@@ -140,57 +140,6 @@ class View_Helper_HTML
     public static function makeClickableLinks($s)
     {
         return preg_replace('@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1">$1</a>', $s);
-    }
-
-    /**
-     * Muestra logos e información sobre ellos de una forma "linda", para un
-     * ejemplo revisar: http://sasco.cl/clientes
-     *
-     * El arreglo que se recibe tiene la forma:
-     * $logos = array (
-     *      'Empresa' => array (
-     *              'desc' => 'Descripción empresa',
-     *              'info' => array ('Info 1', 'Info 2', 'etc'),
-     *              'imag' => 'Imagen dentro de $dir'
-     *      ),
-     * );
-     *
-     * @param logos Arreglo con la información de los logos
-     * @param dir Ruta completa de la URL donde se encuentran los logos
-     * @param infoTitle Título para la información que se mostrará por logo
-     */
-    public static function boxAnimated ($logos, $dir, $infoTitle = '')
-    {
-        // si es la primera vez que se llama la función se agrega código css y js
-        if (!defined('LOGO_INFO_CALLED')) {
-            echo '<link type="text/css" href="',_BASE,'/css/boxAnimated.css" media="screen" title="screen" rel="stylesheet" />',"\n";
-            echo '<script type="text/javascript" src="',_BASE,'/js/boxAnimated.js"></script>',"\n";
-            define ('LOGO_INFO_CALLED', true);
-        }
-        // mostrar logos
-        foreach ($logos as $name => &$info) {
-            echo '
-<div class="boxAnimated">
-    <div class="image">
-        <div class="inner">
-            <img src="',$dir,'/',$info['imag'],'" alt="" />
-            <div class="longdescription">
-                <div class="title">',$infoTitle,'</div>
-                <div class="description">
-                    <ul>
-                        <li>',implode('</li><li>', $info['info']),'</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="shortdescription">
-        <div class="title">',$name,'</div>
-        <div class="description">',$info['desc'],'</div>
-    </div>
-</div>
-            ';
-        }
     }
 
 }

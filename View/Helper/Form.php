@@ -540,7 +540,7 @@ class View_Helper_Form
 
     private function _div ($config)
     {
-        return '<div'.(!empty($config['attr'])?' '.$config['attr']:'').'>'.$config['value'].'</div>';
+        return '<div'.(!empty($config['attr'])?' '.$config['attr']:'').' class="'.$config['class'].'">'.$config['value'].'</div>';
     }
 
     private function _table($config)

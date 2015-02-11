@@ -235,7 +235,7 @@ class View_Helper_Form
                 $config['notempty'] = true;
         }
         // asignar class
-        if (!in_array($config['type'], ['submit', 'checkbox', 'file'])) {
+        if (!in_array($config['type'], ['submit', 'checkbox', 'file', 'div'])) {
             $config['class'] = (!empty($config['class']) ? $config['class'] : '').' form-control';
         }
         // asignar id si no se asignó

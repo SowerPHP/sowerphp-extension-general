@@ -257,7 +257,8 @@ class View_Helper_Form
 
     private function _hidden ($config)
     {
-        return '<input type="hidden" name="'.$config['name'].'" value="'.$config['value'].'" />';
+        $id = isset($config['id']) ? ' id="'.$config['id'].'"' : '';
+        return '<input type="hidden" name="'.$config['name'].'" value="'.$config['value'].'"'.$id.' />';
     }
 
     private function _text ($config)

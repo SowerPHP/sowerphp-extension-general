@@ -313,12 +313,12 @@ class Utility_File
      * @param file Ruta hacia el archivo (o nombre del mismo)
      * @return Extensión si existe
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2012-11-22
+     * @version 2015-03-11
      */
     public static function extension ($file)
     {
         $dot = strrpos($file, '.');
-        return $dot!==false ? substr($file, $dot+1) : null;
+        return $dot!==false ? strtolower(substr($file, $dot+1)) : null;
     }
 
     /**

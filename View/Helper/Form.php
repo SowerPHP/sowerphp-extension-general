@@ -26,23 +26,26 @@ namespace sowerphp\general;
 /**
  * Helper para la creación de formularios en HTML
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2014-12-10
+ * @version 2015-03-25
  */
 class View_Helper_Form
 {
 
     private $_id; ///< Identificador para el formulario
     private $_style; ///< Formato del formulario que se renderizará (mantenedor u false)
+    private $_cols_label; ///< Columnas de la grilla para la etiqueta
 
     /**
      * Método que inicia el código del formulario
      * @param style Estilo del formulario que se renderizará
+     * @param cols_label Cantidad de columnas de la grilla para la etiqueta
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2014-12-10
      */
-    public function __construct($style = 'horizontal')
+    public function __construct($style = 'horizontal', $cols_label = 2)
     {
         $this->_style = $style;
+        $this->_cols_label = $cols_label;
     }
 
     /**
@@ -54,6 +57,17 @@ class View_Helper_Form
     public function setStyle($style = false)
     {
         $this->_style = $style;
+    }
+
+    /**
+     * Método para asignar la cantidad de columnas de la grilla para la etiqueta
+     * @param cols_label Cantidad de columnas de la grilla para la etiqueta
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2015-03-25
+     */
+    public function setColsLabel($cols_label = 2)
+    {
+        $this->_cols_label = $cols_label;
     }
 
     /**
@@ -149,15 +163,15 @@ class View_Helper_Form
             $buffer = '    <div class="form-group'.($config['notempty']?' required':'').'">'."\n";
             if (!empty($config['label'])) {
                 if (isset($config['id'])) {
-                    $buffer .= '        <label for="'.$config['id'].'" class="col-sm-2 control-label">'.$config['label'].'</label>'."\n";
+                    $buffer .= '        <label for="'.$config['id'].'" class="col-sm-'.$this->_cols_label.' control-label">'.$config['label'].'</label>'."\n";
                 } else {
-                    $buffer .= '        <label class="col-sm-2 control-label">'.$config['label'].'</label>'."\n";
+                    $buffer .= '        <label class="col-sm-'.$this->_cols_label.' control-label">'.$config['label'].'</label>'."\n";
                 }
             }
             if (!in_array($config['type'], ['submit'])) {
-                $buffer .= '        <div class="col-sm-10">'.$field.$config['help'].'</div>'."\n";
+                $buffer .= '        <div class="col-sm-'.(12-$this->_cols_label).'">'.$field.$config['help'].'</div>'."\n";
             } else {
-                $buffer .= '        <div class="col-sm-offset-2 col-sm-10">'.$field.$config['help'].'</div>'."\n";
+                $buffer .= '        <div class="col-sm-offset-'.$this->_cols_label.' col-sm-'.(12-$this->_cols_label).'">'.$field.$config['help'].'</div>'."\n";
             }
             $buffer .= '    </div>'."\n";
         }

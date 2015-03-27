@@ -67,12 +67,10 @@ class View_Helper_Chart
             foreach ($options['colors'] as &$c)
                 $colors[] = new \Libchart\View\Color\Color($c[0], $c[1], $c[2]);
             if ($type=='Line') {
-                $chart->getPlot()->getPalette()
-                    ->setLineColor($colors);
+                $chart->getPlot()->getPalette()->setLineColor($colors);
             }
             else if ($type=='VerticalBar') {
-                $chart->getPlot()->getPalette()
-                    ->setBarColor($colors);
+                $chart->getPlot()->getPalette()->setBarColor($colors);
             }
         }
         // conjunto de series
@@ -115,7 +113,12 @@ class View_Helper_Chart
         );
         // asignar opciones al gráfico
         if (!empty($options['padding'])) {
-            $Padding = new \Libchart\View\Primitive\Padding(10, 1, 50, 70);
+            $Padding = new \Libchart\View\Primitive\Padding(
+                $options['padding'][0], // arriba
+                $options['padding'][1], // derecha
+                $options['padding'][2], // abajo
+                $options['padding'][3]  // izquierda
+            );
             $chart->getPlot()->setGraphPadding($Padding);
         }
         $chart->setTitle($title);

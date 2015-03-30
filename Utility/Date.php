@@ -26,10 +26,13 @@ namespace sowerphp\general;
 /**
  * Clase para trabajar con fechas
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2014-10-01
+ * @version 2015-03-29
  */
 class Utility_Date
 {
+
+    public static $dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    public static $meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
     /**
      * Método que suma días hábiles a una fecha
@@ -135,7 +138,7 @@ class Utility_Date
      * @param hora Si se desea (true) o no (false) mostrar la hora
      * @param letrasFormato Si van en mayúscula ('u'), mínuscula ('l') o normal ('')
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-02-19
+     * @version 2015-03-29
      */
     public static function timestamp2string ($timestamp, $hora = true, $letrasFormato = '')
     {
@@ -143,13 +146,11 @@ class Utility_Date
         if ($puntoPos) {
             $timestamp = substr($timestamp, 0, $puntoPos);
         }
-        $dias = array('Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado');
-        $meses = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
         $unixtime = strtotime($timestamp);
         $fecha = date('\D\I\A j \d\e \M\E\S \d\e\l Y', $unixtime);
         if ($hora) $fecha .= ', a las '.date ('H:i', $unixtime);
-        $dia = $dias[date('w', $unixtime)];
-        $mes = $meses[date('n', $unixtime)-1];
+        $dia = self::$dias[date('w', $unixtime)];
+        $mes = self::$meses[date('n', $unixtime)-1];
         if ($letrasFormato == 'l') {
             $dia = strtolower ($dia);
             $mes = strtolower ($mes);

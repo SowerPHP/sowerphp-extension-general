@@ -93,17 +93,17 @@ class Utility_Automata_AFD
     }
 
     /**
-     * Método que entrega una imagen PNG con el grafo del AFD
+     * Método que entrega el grafo del AFD
      *
-     * Requiere: GraphViz y que esté la biblioteca clue/graph de composer
+     * Requiere que esté la biblioteca clue/graph de composer
      *
-     * @return Datos de una imagen PNG
+     * @return Grafo en instancia de la clase \Fhaculty\Graph\Graph
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-12-20
+     * @version 2015-03-29
      */
     public function getGraph()
     {
-        require DIR_FRAMEWORK.'/extensions/sowerphp/general/Vendor/autoload.php';
+        require_once DIR_FRAMEWORK.'/extensions/sowerphp/general/Vendor/autoload.php';
         $graph = new \Fhaculty\Graph\Graph();
         // crear estados y transiciones
         $vertexs = [];
@@ -111,8 +111,10 @@ class Utility_Automata_AFD
         foreach ($this->transitions as $from => $data) {
             if (!isset($vertexs[$from])) {
                 $vertexs[$from] = $graph->createVertex($from);
-                if ($from == $this->q0)
-                    $vertexs[$from]->setLayout(['style'=>'filled', 'fillcolor'=>'gray']);
+                if ($from == $this->q0) {
+                    $vertexs[$from]->setAttribute('graphviz.style', 'filled');
+                    $vertexs[$from]->setAttribute('graphviz.fillcolor', 'gray');
+                }
             }
             foreach ($data as $valor => $to) {
                 if (!isset($vertexs[$to]))
@@ -130,14 +132,28 @@ class Utility_Automata_AFD
                 continue;
             $aux = $edges[$v->getId()];
             foreach ($aux as $to => $valores) {
-                $v->getEdgesTo($vertexs[$to])->getEdgeFirst()->setLayout(
-                    ['label'=>implode(',', $valores), 'fontsize'=>'12']
-                );
+                $e = $v->getEdgesTo($vertexs[$to])->getEdgeFirst();
+                $e->setAttribute('graphviz.label', implode(',', $valores));
+                $e->setAttribute('graphviz.fontsize', 12);
             }
         }
-        //debug((new \Fhaculty\Graph\GraphViz($graph))->createScript()); exit;
-        $graph->setExporter(new \Fhaculty\Graph\Exporter\Image());
         return $graph;
+    }
+
+    /**
+     * Método que entrega los datos de la imagen PNG del grafo del AFD
+     *
+     * Requiere: GraphViz y que esté la biblioteca graphp/graphviz de composer
+     *
+     * @return Datos de una imagen PNG
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2015-03-29
+     */
+    public function image()
+    {
+        $graph = $this->getGraph();
+        $graphviz = new \Graphp\GraphViz\GraphViz();
+        return $graphviz->createImageData($graph);
     }
 
 }

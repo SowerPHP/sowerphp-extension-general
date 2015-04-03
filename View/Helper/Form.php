@@ -266,7 +266,12 @@ class View_Helper_Form
 
     private function _submit ($config)
     {
-        return '<input type="'.$config['type'].'" name="'.$config['name'].'" value="'.$config['value'].'" class="'.$config['class'].' btn btn-default" />';
+        return $this->_button($config);
+    }
+
+    private function _button($config)
+    {
+        return '<button type="'.$config['type'].'" name="'.$config['name'].'" class="'.$config['class'].' btn btn-default" >'.$config['value'].'</button>';
     }
 
     private function _hidden ($config)

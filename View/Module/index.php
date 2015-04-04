@@ -4,7 +4,11 @@
     <div class="pull-left">
         <div class="icon">
             <a href="<?=$_base,'/',$module,$link?>" title="<?=$info['desc']?>">
+<?php if (isset($info['icon'])) : ?>
+            <span class="<?=$info['icon']?>" aria-hidden="true" style="font-size:48px;margin-top:10px"></span>
+<?php else : ?>
                 <img src="<?=$_base,$info['imag']?>" alt="<?=$info['name']?>" align="middle" />
+<?php endif; ?>
                 <span><?=$info['name']?></span>
             </a>
         </div>

@@ -207,7 +207,7 @@ class View_Helper_Form
      * @param config Arreglo con la configuración para el elemento
      * @return String Código HTML de lo solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2015-01-10
+     * @version 2015-04-11
      */
     public function input($config)
     {
@@ -228,6 +228,7 @@ class View_Helper_Form
                 'notempty' =>false,
                 'style'=>$this->_style,
                 'placeholder' => '',
+                'sanitize' => true,
             ), $config
         );
         if (!isset($config['name']) && isset($config['id']))
@@ -259,6 +260,10 @@ class View_Helper_Form
         // determinar popover
         if ($config['popover']!='') {
             $config['popover'] = ' data-toggle="popover" data-trigger="focus" title="'.$config['label'].'" data-placement="top" data-content="'.$config['popover'].'" onmouseover="$(this).popover(\'show\')" onmouseout="$(this).popover(\'hide\')"';
+        }
+        // limpiar valor del campo
+        if ($config['sanitize'] and isset($config['value'][0])) {
+            $config['value'] = htmlspecialchars(strip_tags(trim($config['value'])));
         }
         // generar campo, formatear y entregar
         return $this->_formatear($this->{'_'.$config['type']}($config), $config);
@@ -352,13 +357,6 @@ class View_Helper_Form
 
     private function _select ($config)
     {
-        $config = array_merge(array(
-            'selected'=>''
-        ), $config);
-        // si el valor por defecto se pasó en value se copia donde corresponde
-        if (isset($config['value'][0])) {
-            $config['selected'] = $config['value'];
-        }
         $id = isset($config['id']) ? ' id="'.$config['id'].'"' : '';
         $multiple = isset($config['multiple']) ? ' multiple="multiple" size="'.$config['multiple'].'"' : '';
         $buffer = '';
@@ -368,7 +366,7 @@ class View_Helper_Form
                 $key = array_shift($value);
                 $value = array_shift($value);
             }
-            $buffer .= '<option value="'.$key.'"'.($config['selected']==$key?' selected="selected"':'').'>'.$value.'</option>';
+            $buffer .= '<option value="'.$key.'"'.($config['value']==$key?' selected="selected"':'').'>'.$value.'</option>';
         }
         $buffer .= '</select>';
         return $buffer;
@@ -442,7 +440,7 @@ class View_Helper_Form
                     if (isset($input['type']) && $input['type']=='checkbox')
                         $input['checked'] = $value[$input['name']];
                     else if (isset($input['type']) && $input['type']=='select')
-                        $input['selected'] = $value[$input['name']];
+                        $input['value'] = $value[$input['name']];
                     else
                         $input['value'] = $value[$input['name']];
                     $input['name'] = $input['name'].'[]';

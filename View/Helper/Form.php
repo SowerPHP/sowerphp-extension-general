@@ -207,7 +207,7 @@ class View_Helper_Form
      * @param config Arreglo con la configuración para el elemento
      * @return String Código HTML de lo solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2015-04-11
+     * @version 2015-04-12
      */
     public function input($config)
     {
@@ -263,7 +263,7 @@ class View_Helper_Form
         }
         // limpiar valor del campo
         if ($config['sanitize'] and isset($config['value'][0])) {
-            $config['value'] = htmlspecialchars(strip_tags(trim($config['value'])));
+            $config['value'] = strip_tags(trim($config['value']));
         }
         // generar campo, formatear y entregar
         return $this->_formatear($this->{'_'.$config['type']}($config), $config);

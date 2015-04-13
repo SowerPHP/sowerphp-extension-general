@@ -171,7 +171,7 @@ class Utility_Spreadsheet
     /**
      * Método que lee una hoja de cálculo y dibuja una tabla en HTML
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-03-26
+     * @version 2014-04-13
      */
     public static function file2html ($file, $sheet = -1, $options = array())
     {
@@ -187,28 +187,26 @@ class Utility_Spreadsheet
         $sheets = self::sheets($file);
         if ($sheet>-1)
             $sheets = array($sheet=>$sheets[$sheet]);
-        // buffer para ir guardando lo que se va generando
-        $buffer = '';
-        // scripts
-        $buffer .= '<style>#'.$options['id'].' > ul { height: '.$options['height'].'px; }</style>'."\n";
-        $buffer .= '<script>$(function() { $("#'.$options['id'].'").tabs(); }); </script>'."\n";
-        // iniciar pestañas
-        $buffer .= '<div id="'.$options['id'].'" style="margin-top: 1em">'."\n";
         // agregar títulos de la pestaña
-        $buffer .= '<ul>'."\n";
+        $buffer = '<script type="text/javascript"> $(function(){ var url = document.location.toString(); if (url.match(\'#\')) $(\'.nav-tabs a[href=#\'+url.split(\'#\')[1]+\']\').tab(\'show\'); else $(\'.nav-tabs > li:first-child > a\').tab(\'show\'); }); </script>'."\n";
+        $buffer .= '<div role="tabpanel">'."\n";
+        $buffer .= '<ul class="nav nav-tabs" role="tablist">'."\n";
         foreach ($sheets as $id => &$name) {
-            $buffer .= '<li><a href="#'.$options['id'].'_'.\sowerphp\core\Utility_String::normalize($name).'">'.$name.'</a></li>'."\n";
+            $id = $options['id'].'_'.\sowerphp\core\Utility_String::normalize($name);
+            $buffer .= '<li role="presentation"><a href="#'.$id.'" aria-controls="'.$id.'" role="tab" data-toggle="tab">'.$name.'</a></li>'."\n";
         }
         $buffer .= '</ul>'."\n";
         // agregar hojas
+        $buffer .= '<div class="tab-content">'."\n";
         foreach ($sheets as $id => &$name) {
             $nameN = \sowerphp\core\Utility_String::normalize($name);
-            $buffer .= '<div id="'.$options['id'].'_'.$nameN.'">'."\n";
+            $buffer .= '<div role="tabpanel" class="tab-pane" id="'.$options['id'].'_'.$nameN.'">'."\n";
             $table->setId($nameN);
             $buffer .= $table->generate(self::read($file, $id));
             $buffer .= '</div>'."\n";
         }
         // finalizar
+        $buffer .= '</div>'."\n";
         $buffer .= '</div>'."\n";
         // entregar buffer
         return $buffer;

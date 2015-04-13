@@ -26,7 +26,7 @@ namespace sowerphp\general;
 /**
  * Helper para la creación de formularios en HTML
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2015-03-25
+ * @version 2015-04-13
  */
 class View_Helper_Form
 {
@@ -353,6 +353,18 @@ class View_Helper_Form
     {
         $id = isset($config['id']) ? ' id="'.$config['id'].'"' : '';
         return '<input type="file" name="'.$config['name'].'"'.$id.' class="'.$config['class'].'" '.$config['attr'].' />';
+    }
+
+    private function _files($config)
+    {
+        return $this->_js([
+            'id' => $config['id'],
+            'label' => $config['label'],
+            'titles' => [$config['title']],
+            'inputs' => [
+                ['type'=>'file', 'name'=>$config['name']],
+            ]
+        ]);
     }
 
     private function _select ($config)

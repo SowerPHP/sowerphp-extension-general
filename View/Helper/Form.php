@@ -207,7 +207,7 @@ class View_Helper_Form
      * @param config Arreglo con la configuración para el elemento
      * @return String Código HTML de lo solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2015-04-12
+     * @version 2015-04-13
      */
     public function input($config)
     {
@@ -262,7 +262,7 @@ class View_Helper_Form
             $config['popover'] = ' data-toggle="popover" data-trigger="focus" title="'.$config['label'].'" data-placement="top" data-content="'.$config['popover'].'" onmouseover="$(this).popover(\'show\')" onmouseout="$(this).popover(\'hide\')"';
         }
         // limpiar valor del campo
-        if ($config['sanitize'] and isset($config['value'][0])) {
+        if ($config['type']!='div' and $config['sanitize'] and isset($config['value'][0])) {
             $config['value'] = trim(strip_tags($config['value']));
         }
         // generar campo, formatear y entregar

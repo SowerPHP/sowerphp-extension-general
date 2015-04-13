@@ -169,24 +169,29 @@ class Utility_Spreadsheet
     }
 
     /**
-     * Método que lee una hoja de cálculo y dibuja una tabla en HTML
+     * Método que lee una o varias hojas de cálculo y dibuja una tabla en HTML
+     * por cada una de ellas
+     * @param file Archivo con la planilla que se desea renderizar
+     * @param options Opciones que se desean utilizar en el renderizado
+     * @return Código HTML con las hojas del archivo
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2014-04-13
      */
-    public static function file2html ($file, $sheet = -1, $options = array())
+    public static function file2html($file, $options = [])
     {
-        // helper
-        $table = new View_Helper_Table();
-        $table->setExport();
         // opciones
         $options = array_merge(array(
             'id' => 'file2html',
-            'height' => 38,
+            'sheet' => -1,
+            'export' => true,
         ), $options);
+        // helper
+        $table = new View_Helper_Table();
+        $table->setExport($options['export']);
         // obtener las hojas del archivo
         $sheets = self::sheets($file);
-        if ($sheet>-1)
-            $sheets = array($sheet=>$sheets[$sheet]);
+        if ($options['sheet']>-1)
+            $sheets = array($options['sheet']=>$sheets[$options['sheet']]);
         // agregar títulos de la pestaña
         $buffer = '<script type="text/javascript"> $(function(){ var url = document.location.toString(); if (url.match(\'#\')) $(\'.nav-tabs a[href=#\'+url.split(\'#\')[1]+\']\').tab(\'show\'); else $(\'.nav-tabs > li:first-child > a\').tab(\'show\'); }); </script>'."\n";
         $buffer .= '<div role="tabpanel">'."\n";
@@ -201,7 +206,8 @@ class Utility_Spreadsheet
         foreach ($sheets as $id => &$name) {
             $nameN = \sowerphp\core\Utility_String::normalize($name);
             $buffer .= '<div role="tabpanel" class="tab-pane" id="'.$options['id'].'_'.$nameN.'">'."\n";
-            $table->setId($nameN);
+            if ($options['export'])
+                $table->setId($nameN);
             $buffer .= $table->generate(self::read($file, $id));
             $buffer .= '</div>'."\n";
         }

@@ -263,7 +263,7 @@ class View_Helper_Form
         }
         // limpiar valor del campo
         if ($config['sanitize'] and isset($config['value'][0])) {
-            $config['value'] = strip_tags(trim($config['value']));
+            $config['value'] = trim(strip_tags($config['value']));
         }
         // generar campo, formatear y entregar
         return $this->_formatear($this->{'_'.$config['type']}($config), $config);

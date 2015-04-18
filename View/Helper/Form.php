@@ -343,9 +343,14 @@ class View_Helper_Form
             (array)\sowerphp\core\Configure::read('datepicker'),
             isset($config['datepicker']) ? $config['datepicker'] : []
         );
-        $id = isset($config['id']) ? ' id="'.$config['id'].'"' : '';
-        $buffer = '<script type="text/javascript">$(function() { $("#'.$config['id'].'").datepicker('.json_encode($config['datepicker']).'); }); </script>';
-        $buffer .= '<input type="text" name="'.$config['name'].'" value="'.$config['value'].'"'.$id.' class="'.$config['class'].'" placeholder="'.$config['placeholder'].'" '.$config['attr'].$config['popover'].' />';
+        $buffer = '';
+        if (isset($config['id'])) {
+            $attr = ' id="'.$config['id'].'"';
+            $buffer .= '<script type="text/javascript">$(function() { $("#'.$config['id'].'").datepicker('.json_encode($config['datepicker']).'); }); </script>';
+        } else {
+            $attr = ' onmouseover="$(this).datepicker('.str_replace('"', '\'', json_encode($config['datepicker'])).')"';
+        }
+        $buffer .= '<input type="text" name="'.$config['name'].'" value="'.$config['value'].'"'.$attr.' class="'.$config['class'].'" placeholder="'.$config['placeholder'].'" '.$config['attr'].$config['popover'].' />';
         return $buffer;
     }
 

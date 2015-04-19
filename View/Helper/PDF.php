@@ -32,7 +32,7 @@ define ('K_PATH_IMAGES', '');
 /**
  * Clase para generar PDFs
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2014-10-15
+ * @version 2015-04-18
  */
 class View_Helper_PDF extends \TCPDF
 {
@@ -154,6 +154,36 @@ class View_Helper_PDF extends \TCPDF
             $widths[] = $width;
         }
         return $widths;
+    }
+
+    /**
+     * Agregar una tabla al PDF removiendo aquellas columnas donde no existen
+     * dantos en la columna para todas las filas
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2015-04-18
+     */
+    public function addTableWithoutEmptyCols($titles, $data, $options = [], $html = false)
+    {
+        $cols_empty = [];
+        foreach ($data as $row) {
+            foreach ($row as $col => $value) {
+                if (empty($value)) {
+                    if (!array_key_exists($col, $cols_empty))
+                        $cols_empty[$col] = 0;
+                    $cols_empty[$col]++;
+                }
+            }
+        }
+        $n_rows = count($data);
+        foreach ($cols_empty as $col => $rows) {
+            if ($rows==$n_rows) {
+                unset($titles[$col]);
+                foreach ($data as &$row) {
+                    unset($row[$col]);
+                }
+            }
+        }
+        $this->addTable($titles, $data, $options, $html);
     }
 
     /**

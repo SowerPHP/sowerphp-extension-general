@@ -206,7 +206,7 @@ class View_Helper_PDF extends \TCPDF
      * Agregar una tabla generada a través de código HTML al PDF
      * @todo Utilizar las opciones para definir estilo de la tabla HTML
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-02-16
+     * @version 2015-04-19
      */
     private function addHTMLTable ($headers, $data, $options = array())
     {
@@ -214,14 +214,14 @@ class View_Helper_PDF extends \TCPDF
         // Definir títulos de columnas
         $buffer .= '<tr>';
         foreach ($headers as &$col) {
-            $buffer .= '<th style="background-color:#000;color:#fff;text-align:center;font-size:10px"><strong>'.strip_tags($col).'</strong></th>';
+            $buffer .= '<th style="background-color:#000;color:#fff;text-align:center"><strong>'.strip_tags($col).'</strong></th>';
         }
         $buffer .= '</tr>';
         // Definir datos de la tabla
         foreach ($data as &$row) {
             $buffer .= '<tr>';
             foreach ($row as &$col) {
-                $buffer .= '<td style="border-bottom:1px solid #ddd;text-align:center;font-size:10px">'.$col.'</td>';
+                $buffer .= '<td style="border-bottom:1px solid #ddd;text-align:center">'.$col.'</td>';
             }
             $buffer .= '</tr>';
         }

@@ -137,18 +137,22 @@ class Utility_Date
      * @param timestamp Fecha en formto (de función date): Y-m-d H:i:s
      * @param hora Si se desea (true) o no (false) mostrar la hora
      * @param letrasFormato Si van en mayúscula ('u'), mínuscula ('l') o normal ('')
+     * @param mostrarDia Si se incluye (=true) o no el día
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2015-03-29
+     * @version 2015-04-19
      */
-    public static function timestamp2string ($timestamp, $hora = true, $letrasFormato = '')
+    public static function timestamp2string ($timestamp, $hora = true, $letrasFormato = '', $mostrarDia = true)
     {
         $puntoPos = strpos($timestamp, '.');
         if ($puntoPos) {
             $timestamp = substr($timestamp, 0, $puntoPos);
         }
         $unixtime = strtotime($timestamp);
-        $fecha = date('\D\I\A j \d\e \M\E\S \d\e\l Y', $unixtime);
-        if ($hora) $fecha .= ', a las '.date ('H:i', $unixtime);
+        if ($mostrarDia)
+            $fecha = date('\D\I\A j \d\e \M\E\S \d\e\l Y', $unixtime);
+        else
+            $fecha = date('j \d\e \M\E\S \d\e\l Y', $unixtime);
+        if ($hora) $fecha .= ' a las '.date ('H:i', $unixtime);
         $dia = self::$dias[date('w', $unixtime)];
         $mes = self::$meses[date('n', $unixtime)-1];
         if ($letrasFormato == 'l') {

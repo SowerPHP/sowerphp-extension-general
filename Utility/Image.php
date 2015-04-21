@@ -250,11 +250,12 @@ class Utility_Image
     /**
      * Función para cambiar el tamaño de una imagen
      * @param file Archivo de la imagen en el sistema de archivos
-     * @todo Utilizar file como arreglo y autodetectar extensión si no se pasa
+     * @param dst_w Ancho de la nueva imagen
+     * @param dst_h Alto de la nueva imagen
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-05-10
+     * @version 2015-04-21
      */
-    public static function resize ($file, $dst_w, $dst_h, $ext = null)
+    public static function resize($file, $dst_w, $dst_h)
     {
         // obtener imagen fuente
         list($src_w, $src_h) = getimagesize($file);
@@ -270,6 +271,7 @@ class Utility_Image
         // guardar imagen
         ob_clean();
         ob_start();
+        $ext = Utility_File::extension($file);
         if ($ext=='jpg'||$ext=='jpeg') imagejpeg($dst);
         else if ($ext=='gif') imagegif($dst);
         else if ($ext=='png') imagepng($dst);

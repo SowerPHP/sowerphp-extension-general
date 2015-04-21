@@ -248,10 +248,12 @@ class Utility_Image
     }
 
     /**
-     * Función para cambiar el tamaño de una imagen
+     * Método para cambiar el tamaño de una imagen y entregar los datos y tamaño
+     * de la nueva imagen
      * @param file Archivo de la imagen en el sistema de archivos
      * @param dst_w Ancho de la nueva imagen
      * @param dst_h Alto de la nueva imagen
+     * @return Arreglo con índices: size y data
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2015-04-21
      */
@@ -284,6 +286,49 @@ class Utility_Image
         imagedestroy($src);
         imagedestroy($dst);
         return $image;
+    }
+
+    /**
+     * Método para cambiar el tamaño de una imagen modificando el archivo de la
+     * misma y entregar su nuevo ancho y alto
+     * @param file Archivo de la imagen en el sistema de archivos
+     * @param dst_w Ancho de la nueva imagen
+     * @param dst_h Alto de la nueva imagen
+     * @return Arreglo con ancho y alto
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2015-04-21
+     */
+    public static function resizeOnFile($file, $dst_w, $dst_h)
+    {
+        // determinar el nuevo ancho y alto que tendra la imagen (manteniendo proporciones)
+        list($ancho, $alto) = getimagesize($file);
+        $ratio = min($dst_w/$ancho, $dst_h/$alto);
+        $new_w = round($ancho * $ratio);
+        $new_h = round($alto * $ratio);
+        // crear variable para la imagen segun el formato de la misma
+        $mimetype = Utility_File::mimetype($file);
+        if ($mimetype=='image/png') $src_img = imagecreatefrompng($file);
+        else if ($mimetype=='image/jpeg') $src_img = imagecreatefromjpeg($file);
+        else if ($mimetype=='image/gif') $src_img = imagecreatefromgif($file);
+        // generar imagen nueva
+        $dst_img = imagecreatetruecolor($new_w, $new_h);
+        // mantener transparencia
+        if ($mimetype=='image/png' || $mimetype=='image/gif'){
+            imagecolortransparent($dst_img, imagecolorallocatealpha($dst_img, 0, 0, 0, 127));
+            imagealphablending($dst_img, false);
+            imagesavealpha($dst_img, true);
+        }
+        // copiar imagen desde src_img a dst_img
+        imagecopyresampled($dst_img, $src_img, 0, 0, 0, 0, $new_w, $new_h, $ancho, $alto);
+        // copiar imagen devuelta al archivo
+        if ($mimetype=='image/png') imagepng($src_img, $file, 100);
+        else if ($mimetype=='image/jpeg') imagejpeg($dst_img, $file, 100);
+        else if ($mimetype=='image/gif') imagegif($dst_img, $file);
+        // destruir imagenes usadas
+        imagedestroy($src_img);
+        imagedestroy($dst_img);
+        // entregar nuevo ancho y alto
+        return [$new_w, $new_h];
     }
 
 }

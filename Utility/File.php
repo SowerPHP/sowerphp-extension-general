@@ -23,23 +23,92 @@
 
 namespace sowerphp\general;
 
-// constantes para errores de la subida de archivos
-define('FILE_UPLOAD_ERROR_SIZE', 1);
-define('FILE_UPLOAD_ERROR_MIMETYPE', 2);
-define('FILE_UPLOAD_ERROR', 3);
-
 /**
- * Manejar archivos y directorios
+ * Clase para manejar archivos y directorios
  *
  * Esta clase permite realizar diversas acciones sobre archivos y directorios
  * que se encuentren en el servidor donde se ejecuta la aplicación. Tales como:
  * listar contenido de directorios, subir archivos al servidor, extraer archivos
- * comprimidos, etc.
+ * comprimidos, comprimir archivos y directorios, etc.
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2012-11-22
+ * @version 2015-04-21
  */
 class Utility_File
 {
+
+    // constantes para errores de la subida de archivos
+    const UPLOAD_ERROR = 1;
+    const UPLOAD_ERROR_EXTENSION = 2;
+    const UPLOAD_ERROR_MIMETYPE = 3;
+    const UPLOAD_ERROR_SIZE = 4;
+
+    /**
+     * Recibe y procesa un archivo enviado por POST a la apliación
+     * Si se especifican las dimensiones w y/o h se asume que es una imagen.
+     * Si hay algún error se retornarán las constantes:
+     *   - UPLOAD_ERROR: error del servidor o cliente al subir la imagen
+     *   - UPLOAD_ERROR_EXTENSION: extensión no válida
+     *   - UPLOAD_ERROR_MIMETYPE: mimetype no válido
+     *   - UPLOAD_ERROR_SIZE: se excede tamaño
+     * @param src Arreglo de $_FILES o bien el índice de $_FILES
+     * @param filters Filtros que se deben validar al subir la imagen (extensions, mimetypes, size, width y height)
+     * @return Arreglo con los datos del archivo (índices: data, name, type y size) o error en caso de falló
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2015-04-21
+     */
+    public static function upload($src, $filters = [])
+    {
+        // si es string se debe recuperar el valor desde variables $_FILES
+        if (is_string($src)) {
+            if (!isset($_FILES[$src]))
+                return self::UPLOAD_ERROR;
+            $src = &$_FILES[$src];
+        }
+        // verificar que exista el archivo y haya sido subido
+        if ($src['error']) {
+            return self::UPLOAD_ERROR;
+        }
+        // asignar filtros por defecto
+        $filters = array_merge([
+            'extensions' => [],
+            'mimetypes' => [],
+            'size' => 0,
+            'width' => 0,
+            'height' => 0,
+        ], $filters);
+        // verificar extensión
+        if (!empty($filters['extensions'])) {
+            if (is_string($filters['extensions']))
+                $filters['extensions'] = [$filters['extensions']];
+            if (!in_array(self::extension($src['name']), $filters['extensions']))
+                return self::UPLOAD_ERROR_EXTENSION;
+        }
+        // verificar mimetype
+        if (!empty($filters['mimetypes'][0])) {
+            if (is_string($filters['mimetypes']))
+                $filters['mimetypes'] = [$filters['mimetypes']];
+            if (!in_array($src['type'], $filters['mimetypes']))
+                return self::UPLOAD_ERROR_MIMETYPE;
+        }
+        // verificar tamaño
+        if ($filters['size'] and $src['size']>($filters['size']*1024)) {
+            return self::UPLOAD_ERROR_SIZE;
+        }
+        // si se ha definido ancho o algo máximo entonces es una imagen y se
+        // debe verificar su tamaño, si lo excede la imagen se debe escalar
+        if ($filters['width'] and $filters['height']) {
+            list($file['width'], $file['height']) = getimagesize($src['tmp_name']);
+            if ($file['width']>$filters['width'] || $file['height']>$filters['height']) {
+                list($file['width'], $file['height']) = Utility_Image::resizeOnFile($src['tmp_name'], $filters['width'], $filters['height']);
+            }
+        }
+        // crear arreglo con los datos del archivo y entregar
+        $file['data'] = fread(fopen($src['tmp_name'], 'rb'), filesize($src['tmp_name']));
+        $file['name'] = $src['name'];
+        $file['type'] = $src['type'];
+        $file['size'] = filesize($src['tmp_name']);
+        return $file;
+    }
 
     /**
      * Recupera los archivos/directorios desde una carpeta
@@ -49,7 +118,7 @@ class Utility_File
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2014-10-01
      */
-    public static function browseDirectory ($dir)
+    public static function browseDirectory($dir)
     {
         $filesAux = scandir($dir);
         foreach($filesAux as &$file) {
@@ -66,7 +135,7 @@ class Utility_File
      * @author Desconocido, http://www.blasten.com/contenidos/?id=Tama?o_de_archivo_en_byte,_Kb,_Mb,_y_Gb
      * @version 2015-01-12
      */
-    public static function getSize ($filepath, $mostrarUnidad = true)
+    public static function getSize($filepath, $mostrarUnidad = true)
     {
         $method = array('B','KiB','MiB','GiB', 'TiB');
         $size = 0;
@@ -112,7 +181,7 @@ class Utility_File
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2011-08-11
      */
-    public static function get ($file_name)
+    public static function get($file_name)
     {
         // si el archivo no existe se retorna null
         if (!file_exists($file_name)) return null;
@@ -130,90 +199,6 @@ class Utility_File
     }
 
     /**
-     * Recibe un archivo subido por post desde un formulario
-     *
-     * Procesa el archivo enviado y lo devuelve en un arreglo,
-     * el arreglo contiene los datos, nombre, tipo y tamaño, si w y h
-     * se indican como 0 se asume que el archivo NO es una foto.
-     * @param src Arreglo con la información del archivo recibido mediante $_FILES
-     * @param mimetype Arreglo con los tipos mime válidos
-     * @param size Tamaño máximo permitido en KB (0 para cualquier tamaño)
-     * @param w Ancho máximo de una foto (0 para cualquier archivo)
-     * @param h Alto maximo de una foto (0 para cualquier archivo)
-     * @return Arreglo con los datos del archivo (índices: data, name, type y size), en caso de error se retorna FILE_UPLOAD_ERROR_SIZE, FILE_UPLOAD_ERROR_MIMETYPE o FILE_UPLOAD_ERROR
-     * @todo CONSTANTES PARA LOS ERRORES
-     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2011-07-27
-     */
-    public static function upload ($src, $mimetype = null, $size = 0, $w = 0, $h = 0)
-    {
-        // verificar que exista el archivo y haya sido subido
-        if (!empty($src['name'])) {
-            // verificar el formato del archivo
-            if (!$mimetype || in_array($src['type'],$mimetype)) { // verificar tipo de archivo si es que se indico
-                if ($w&&$h) { // verificar el tamaño de la imagen
-                    // obtener ancho y alto de la imagen
-                    list($ancho, $alto) = getimagesize($src['tmp_name']);
-                    // si el alto y/o ancho son mas grandes que los permitidos se redimencionara la imagen
-                    if ($ancho>$w||$alto>$h) {
-                        // determinar el nuevo ancho y alto que tendra la imagen (manteniendo proporciones)
-                        $ratio = min($w/$ancho, $h/$alto);
-                        $new_w = round($ancho * $ratio);
-                        $new_h = round($alto * $ratio);
-                        // crear variable para la imagen segun el formato de la misma
-                        if ($src['type']=='image/png') $src_img = imagecreatefrompng($src['tmp_name']);
-                        else if ($src['type']=='image/jpeg') $src_img = imagecreatefromjpeg($src['tmp_name']);
-                        else if ($src['type']=='image/gif') $src_img = imagecreatefromgif($src['tmp_name']);
-                        // generar imagen nueva
-                        $dst_img = imagecreatetruecolor($new_w, $new_h);
-                        // mantener transparencia
-                        if ($src['type']=='image/png' || $src['type']=='image/gif'){
-                            imagecolortransparent($dst_img, imagecolorallocatealpha($dst_img, 0, 0, 0, 127));
-                            imagealphablending($dst_img, false);
-                            imagesavealpha($dst_img, true);
-                        }
-                        // copiar imagen desde src_img a dst_img
-                        imagecopyresampled($dst_img, $src_img, 0, 0, 0, 0, $new_w, $new_h, $ancho, $alto);
-                        // copiar imagen devuelta al archivo
-                        if ($src['type']=='image/png') imagepng ($src_img, $src['tmp_name'], 100);
-                        else if ($src['type']=='image/jpeg') imagejpeg ($dst_img, $src['tmp_name'], 100);
-                        else if ($src['type']=='image/gif') imagegif ($dst_img, $src['tmp_name']);
-                        // guardar tamaño de la imagen
-                        $file['w'] = $new_w;
-                        $file['h'] = $new_h;
-                        // destruir imagenes usadas
-                        imagedestroy($src_img);
-                        imagedestroy($dst_img);
-                    } else {
-                        $file['w'] = $ancho;
-                        $file['h'] = $alto;
-                    }
-                }
-                if (!$size || $src['size']<=($size*1024)) { // se verifica si hay limitacion de tamaño
-                    $file['data'] = fread( // se lee el contenido del archivo
-                        fopen($src['tmp_name'], 'rb'),
-                        filesize($src['tmp_name'])
-                    );
-                    $file['name'] = $src['name'];
-                    $file['type'] = $src['type'];
-                    $file['size'] = filesize($src['tmp_name']);
-                    unset($src, $mimetype, $size, $w, $h, $tam, $ok);
-                    return $file; // se retorna un arreglo con los datos del archivo
-                } else {
-                    // tamaño excedido
-                    return FILE_UPLOAD_ERROR_SIZE;
-                }
-            } else {
-                // tipo de archivo inválido
-                return FILE_UPLOAD_ERROR_MIMETYPE;
-            }
-        } else {
-            // no se ha enviado correctamente el archivo
-            return FILE_UPLOAD_ERROR;
-        }
-    }
-
-    /**
      * Extrae un archivo de un fichero comprimido zip
      * @param archivoZip Nombre del archivo comprimido
      * @param archivoBuscado Nombre del archivo que se busca extraer
@@ -223,7 +208,7 @@ class Utility_File
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2010-07-15
      */
-    public static function ezip ($archivoZip, $archivoBuscado)
+    public static function ezip($archivoZip, $archivoBuscado)
     {
         $zip = zip_open($archivoZip);
         if (is_resource($zip)) {
@@ -255,7 +240,7 @@ class Utility_File
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2011-03-24
      */
-    public static function targz ($filepath, $delete = false)
+    public static function targz($filepath, $delete = false)
     {
         // obtener directorio que contiene al archivo/directorio y el nombre de este
         $dir = dirname($filepath);
@@ -283,7 +268,7 @@ class Utility_File
      * @author http://en.kioskea.net/faq/793-warning-rmdir-directory-not-empty
      * @version 2011-03-24
      */
-    public static function rmdir_recursive ($dir)
+    public static function rmdir_recursive($dir)
     {
         // List the contents of the directory table
         $dir_content = scandir ($dir);
@@ -315,7 +300,7 @@ class Utility_File
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2015-03-11
      */
-    public static function extension ($file)
+    public static function extension($file)
     {
         $dot = strrpos($file, '.');
         return $dot!==false ? strtolower(substr($file, $dot+1)) : null;

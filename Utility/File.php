@@ -199,76 +199,12 @@ class Utility_File
     }
 
     /**
-     * Extrae un archivo de un fichero comprimido zip
-     * @param archivoZip Nombre del archivo comprimido
-     * @param archivoBuscado Nombre del archivo que se busca extraer
-     * @return Arreglo con índices name, type (no definido), size y data (idem self::upload)
-     * @warning Sólo extrae un archivo del primer nivel (fuera de directorios)
-     * @todo Extracción de un fichero que este en subdirectorios
-     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2010-07-15
-     */
-    public static function ezip($archivoZip, $archivoBuscado)
-    {
-        $zip = zip_open($archivoZip);
-        if (is_resource($zip)) {
-            // buscar contenido
-            do {
-                $entry = zip_read($zip);
-                $name = zip_entry_name($entry);
-            } while ($entry && $name != $archivoBuscado);
-            // abrir contenido
-            zip_entry_open($zip, $entry, 'r');
-            $size = zip_entry_filesize($entry);
-            $entry_content = zip_entry_read($entry, $size);
-            // pasar datos del archivo
-            $archivo['name'] = $name;
-            $archivo['type'] = null;
-            $archivo['size'] = $size;
-            $archivo['data'] = $entry_content;
-        } else {
-            $archivo = false;
-        }
-        unset($archivoZip, $archivoBuscado, $zip, $entry, $name, $size, $entry_content);
-        return $archivo;
-    }
-
-    /**
-     * Empaqueta un directorio (o un archivo), lo comprime y descarga
-     * @param filepath Directorio (o archivo) que se desea bajar
-     * @param delete =true se intentara borrar filepath
-     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2011-03-24
-     */
-    public static function targz($filepath, $delete = false)
-    {
-        // obtener directorio que contiene al archivo/directorio y el nombre de este
-        $dir = dirname($filepath);
-        $file = basename($filepath);
-        // empaquetar directorio/archivo
-        exec('cd '.$dir.'; tar czf '.$file.'.tar.gz '.$file);
-        // enviar archivo
-        ob_clean();
-        header ('Content-Disposition: attachment; filename='.$file.'.tar.gz');
-        header ('Content-Type: application/x-gtar');
-        header ('Content-Length: '.filesize($dir.DIRECTORY_SEPARATOR.$file.'.tar.gz'));
-        readfile($dir.DIRECTORY_SEPARATOR.$file.'.tar.gz');
-        // borrar archivo generado
-        unlink($dir.DIRECTORY_SEPARATOR.$file.'.tar.gz');
-        // borrar filepath
-        if ($delete) {
-            if (is_dir($filepath)) self::rmdir_recursive($filepath);
-            else unlink($filepath);
-        }
-    }
-
-    /**
      * Borra recursivamente un directorio
      * @param dir Directorio a borrar
      * @author http://en.kioskea.net/faq/793-warning-rmdir-directory-not-empty
-     * @version 2011-03-24
+     * @version 2015-04-21
      */
-    public static function rmdir_recursive($dir)
+    public static function rmdir($dir)
     {
         // List the contents of the directory table
         $dir_content = scandir ($dir);
@@ -284,7 +220,7 @@ class Utility_File
                     if (!is_dir($entry)) {
                         unlink ($entry);
                     } else { // This entry is a folder, it again on this issue
-                        self::rmdir_recursive ($entry);
+                        self::rmdir($entry);
                     }
                 }
             }
@@ -337,6 +273,98 @@ class Utility_File
         $mimetype = finfo_file($finfo, $file);
         finfo_close($finfo);
         return $mimetype;
+    }
+
+    /**
+     * Método que empaqueta y comprime archivos (uno o varios, o directorios)
+     * @param filepath Directorio (o archivo) que se desea comprimir
+     * @param options Arreglo con opciones para comprmir (format, download, delete)
+     * @todo Preparar datos si se pasa un arreglo
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2015-04-21
+     */
+    public static function compress($file, $options = [])
+    {
+        // definir opciones por defecto
+        $options = array_merge([
+            'format' => 'gz',
+            'delete' => false,
+            'download' => true,
+            'commands' => [
+                'gz' => 'gzip --keep :in',
+                'tar.gz' => 'tar czf :in.tar.gz :in',
+                'tar' => 'tar cf :in.tar :in',
+                'bz2' => 'bzip2 --keep :in',
+                'tar.bz2' => 'tar cjf :in.tar.bz2 :in',
+                'zip' => 'zip -r :in.zip :in',
+            ],
+        ], $options);
+        // si la ruta del archivo es una arreglo los archivos se deben preparar
+        // antes de ser empaquetados y comprimidos
+        if (is_array($file)) {
+            // TODO
+        }
+        // si es formato gz y es directorio se cambia a tgz
+        if (is_dir($file)) {
+            if ($options['format']=='gz') $options['format'] = 'tar.gz';
+            else if ($options['format']=='bz2') $options['format'] = 'tar.bz2';
+        }
+        // obtener directorio que contiene al archivo/directorio y el nombre de este
+        $filepath = $file;
+        $dir = dirname($file);
+        $file = basename($file);
+        // empaquetar/comprimir directorio/archivo
+        exec('cd '.$dir.' && '.str_replace(':in', $file, $options['commands'][$options['format']]));
+        $file_compressed = $file.'.'.$options['format'];
+        // enviar archivo
+        ob_clean();
+        header ('Content-Disposition: attachment; filename='.$file_compressed);
+        header ('Content-Type: '.self::mimetype($dir.DIRECTORY_SEPARATOR.$file_compressed));
+        header ('Content-Length: '.filesize($dir.DIRECTORY_SEPARATOR.$file_compressed));
+        readfile($dir.DIRECTORY_SEPARATOR.$file_compressed);
+        // borrar archivo generado
+        unlink($dir.DIRECTORY_SEPARATOR.$file_compressed);
+        // borrar directorio o archivo que se está comprimiendo si así se ha
+        // solicitado
+        if ($options['download']) {
+            if (is_dir($filepath)) self::rmdir($filepath);
+            else unlink($filepath);
+        }
+    }
+
+    /**
+     * Extrae un archivo de un fichero comprimido zip
+     * @param archivoZip Nombre del archivo comprimido
+     * @param archivoBuscado Nombre del archivo que se busca extraer
+     * @return Arreglo con índices name, type (no definido), size y data (idem self::upload)
+     * @warning Sólo extrae un archivo del primer nivel (fuera de directorios)
+     * @todo Extracción de un fichero que este en subdirectorios
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2010-07-15
+     */
+    public static function ezip($archivoZip, $archivoBuscado)
+    {
+        $zip = zip_open($archivoZip);
+        if (is_resource($zip)) {
+            // buscar contenido
+            do {
+                $entry = zip_read($zip);
+                $name = zip_entry_name($entry);
+            } while ($entry && $name != $archivoBuscado);
+            // abrir contenido
+            zip_entry_open($zip, $entry, 'r');
+            $size = zip_entry_filesize($entry);
+            $entry_content = zip_entry_read($entry, $size);
+            // pasar datos del archivo
+            $archivo['name'] = $name;
+            $archivo['type'] = null;
+            $archivo['size'] = $size;
+            $archivo['data'] = $entry_content;
+        } else {
+            $archivo = false;
+        }
+        unset($archivoZip, $archivoBuscado, $zip, $entry, $name, $size, $entry_content);
+        return $archivo;
     }
 
 }

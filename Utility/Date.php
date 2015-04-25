@@ -185,4 +185,17 @@ class Utility_Date
         return $fecha;
     }
 
+    /**
+     * Método que calcula los años que han pasado a partir de una fecha
+     * @param fecha Desde cuando calcular los años
+     * @return Años que han pasado desde la fecha indicada
+     * @author http://es.wikibooks.org/wiki/Programaci%C3%B3n_en_PHP/Ejemplos/Calcular_edad
+     * @version 2015-03-27
+     */
+    public static function edad($fecha)
+    {
+        list($Y, $m, $d) = explode('-', $fecha);
+        return date('md') < $m.$d ? date('Y')-$Y-1 : date('Y')-$Y;
+    }
+
 }

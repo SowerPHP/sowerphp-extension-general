@@ -133,7 +133,7 @@ class Utility_File
      * @param mostrarUnidad =true mostrara la unidad (KB, MB, etc)
      * @return Tamaño del archivo/directorio o bien descripción del error ocurrido
      * @author Desconocido, http://www.blasten.com/contenidos/?id=Tama?o_de_archivo_en_byte,_Kb,_Mb,_y_Gb
-     * @version 2015-01-12
+     * @version 2015-04-24
      */
     public static function getSize($filepath, $mostrarUnidad = true)
     {
@@ -144,7 +144,7 @@ class Utility_File
         } else if (!is_file($filepath) && !is_dir($filepath)) { // verificar que sea un fichero o directorio
             return '"'.$file.'" no válido';
         } else {
-            if ($dir = opendir($filepath)) { // abrir el directorio
+            if (is_dir($filepath) and $dir = opendir($filepath)) { // abrir el directorio
                 while ($file = readdir($dir)) {
                     if (is_dir($filepath.DIRECTORY_SEPARATOR.$file)) { // si el archivo es un directorio lo recorre recursivamente
                         if ($file != '.' && $file != '..') { // no recorre el dir padre ni el mismo recursivamente

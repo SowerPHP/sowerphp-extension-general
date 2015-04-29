@@ -192,7 +192,7 @@ function dataTable(tableSelector, aoColumns) {
     };
     if (aoColumns!==undefined)
         options.aoColumns = aoColumns;
-    $(tableSelector).dataTable(options);
+    return $(tableSelector).dataTable(options);
 }
 
 function dataTableNum(data, type, full) {

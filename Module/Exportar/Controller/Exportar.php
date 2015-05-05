@@ -64,7 +64,7 @@ class Controller_Exportar extends \Controller_App
     {
         $data = (new \sowerphp\core\Cache())->get('session.'.session_id().'.export.'.$id);
         if (!$data) {
-            throw new \sowerphp\core\Exception('No hay datos que exportar');
+            throw new Exception_Data_Missing(['id'=>$id]);
         }
         $this->set(array(
             'id' => $id,

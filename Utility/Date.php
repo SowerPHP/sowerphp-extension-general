@@ -192,10 +192,44 @@ class Utility_Date
      * @author http://es.wikibooks.org/wiki/Programaci%C3%B3n_en_PHP/Ejemplos/Calcular_edad
      * @version 2015-03-27
      */
-    public static function edad($fecha)
+    public static function age($fecha)
     {
         list($Y, $m, $d) = explode('-', $fecha);
         return date('md') < $m.$d ? date('Y')-$Y-1 : date('Y')-$Y;
+    }
+
+    /**
+     * Método que calcula cuanto tiempo ha pasado desde cierta fecha y hora
+     * @param datetime Fecha y hora en cualquier formato soportado por clase \DateTime
+     * @param full Si se debe mostrar todo el string o solo una parte
+     * @return String con el tiempo que ha pasado para la fecha
+     * @author http://stackoverflow.com/a/18602474
+     */
+    public static function ago($datetime, $full = false)
+    {
+        $now = new \DateTime;
+        $ago = new \DateTime($datetime);
+        $diff = $now->diff($ago);
+        $diff->w = floor($diff->d / 7);
+        $diff->d -= $diff->w * 7;
+        $string = array(
+            'y' => 'año',
+            'm' => 'mes',
+            'w' => 'semana',
+            'd' => 'día',
+            'h' => 'hora',
+            'i' => 'minuto',
+            's' => 'segundo',
+        );
+        foreach ($string as $k => &$v) {
+            if ($diff->$k) {
+                $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? ($k=='m'?'es':'s') : '');
+            } else {
+                unset($string[$k]);
+            }
+        }
+        if (!$full) $string = array_slice($string, 0, count($string)>=2 ? 2 : 1);
+        return $string ? 'hace '.implode(', ', $string) : 'recién';
     }
 
 }

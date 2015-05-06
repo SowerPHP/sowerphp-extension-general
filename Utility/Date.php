@@ -199,15 +199,17 @@ class Utility_Date
     }
 
     /**
-     * Método que calcula cuanto tiempo ha pasado desde cierta fecha y hora
+     * Método que calcula cuanto tiempo ha pasado desde cierta fecha y hora y lo
+     * entrega en un string que representa dicho tiempo
      * @param datetime Fecha y hora en cualquier formato soportado por clase \DateTime
      * @param full Si se debe mostrar todo el string o solo una parte
      * @return String con el tiempo que ha pasado para la fecha
      * @author http://stackoverflow.com/a/18602474
+     * @version 2014-08-19
      */
     public static function ago($datetime, $full = false)
     {
-        $now = new \DateTime;
+        $now = new \DateTime();
         $ago = new \DateTime($datetime);
         $diff = $now->diff($ago);
         $diff->w = floor($diff->d / 7);
@@ -230,6 +232,24 @@ class Utility_Date
         }
         if (!$full) $string = array_slice($string, 0, count($string)>=2 ? 2 : 1);
         return $string ? 'hace '.implode(', ', $string) : 'recién';
+    }
+
+    /**
+     * Método que calcula cuanto tiempo ha pasado desde cierta fecha y hora y lo
+     * entrega como la cantidad de días
+     * @param from Fecha desde cuando contar
+     * @param to Fecha hasta cuando contar (si es null será la fecha actual)
+     * @return Días que han pasado entre las fechas
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2015-05-06
+     */
+    public static function count($from, $to = null)
+    {
+        if (!$to) $now = new \DateTime();
+        else $now = new \DateTime($to);
+        $ago = new \DateTime($from);
+        $diff = $now->diff($ago);
+        return $diff->days;
     }
 
 }

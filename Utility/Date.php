@@ -26,7 +26,7 @@ namespace sowerphp\general;
 /**
  * Clase para trabajar con fechas
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2015-03-29
+ * @version 2015-05-07
  */
 class Utility_Date
 {
@@ -250,6 +250,19 @@ class Utility_Date
         $ago = new \DateTime($from);
         $diff = $now->diff($ago);
         return $diff->days;
+    }
+
+    /**
+     * Método que aplica un formato en particular a un timestamp
+     * @param datetime Fecha y hora (http://php.net/manual/es/datetime.formats.php)
+     * @param format Formato de salida requerido (http://php.net/manual/es/function.date.php)
+     * @return Fecha formateada según formato solicitado
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2015-05-07
+     */
+    public static function format($datetime, $format = 'd/m/Y')
+    {
+        return date($format, strtotime($datetime));
     }
 
 }

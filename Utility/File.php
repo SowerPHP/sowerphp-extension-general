@@ -281,7 +281,7 @@ class Utility_File
      * @param options Arreglo con opciones para comprmir (format, download, delete)
      * @todo Preparar datos si se pasa un arreglo
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2015-04-21
+     * @version 2015-05-08
      */
     public static function compress($file, $options = [])
     {
@@ -315,18 +315,19 @@ class Utility_File
         $file = basename($file);
         // empaquetar/comprimir directorio/archivo
         exec('cd '.$dir.' && '.str_replace(':in', $file, $options['commands'][$options['format']]));
-        $file_compressed = $file.'.'.$options['format'];
         // enviar archivo
-        ob_clean();
-        header ('Content-Disposition: attachment; filename='.$file_compressed);
-        header ('Content-Type: '.self::mimetype($dir.DIRECTORY_SEPARATOR.$file_compressed));
-        header ('Content-Length: '.filesize($dir.DIRECTORY_SEPARATOR.$file_compressed));
-        readfile($dir.DIRECTORY_SEPARATOR.$file_compressed);
-        // borrar archivo generado
-        unlink($dir.DIRECTORY_SEPARATOR.$file_compressed);
+        if ($options['download']) {
+            $file_compressed = $file.'.'.$options['format'];
+            ob_clean();
+            header ('Content-Disposition: attachment; filename='.$file_compressed);
+            header ('Content-Type: '.self::mimetype($dir.DIRECTORY_SEPARATOR.$file_compressed));
+            header ('Content-Length: '.filesize($dir.DIRECTORY_SEPARATOR.$file_compressed));
+            readfile($dir.DIRECTORY_SEPARATOR.$file_compressed);
+            unlink($dir.DIRECTORY_SEPARATOR.$file_compressed);
+        }
         // borrar directorio o archivo que se está comprimiendo si así se ha
         // solicitado
-        if ($options['download']) {
+        if ($options['delete']) {
             if (is_dir($filepath)) self::rmdir($filepath);
             else unlink($filepath);
         }

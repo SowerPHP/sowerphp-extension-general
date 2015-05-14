@@ -258,10 +258,11 @@ class Utility_Date
      * @param format Formato de salida requerido (http://php.net/manual/es/function.date.php)
      * @return Fecha formateada según formato solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2015-05-07
+     * @version 2015-05-13
      */
     public static function format($datetime, $format = 'd/m/Y')
     {
+        if (!$datetime) return null;
         return date($format, strtotime($datetime));
     }
 

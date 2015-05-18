@@ -46,20 +46,23 @@ class Controller_Module extends \Controller_App
     /**
      * Renderizará (sin autenticación) el archivo en View/index
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-02-05
+     * @version 2015-05-18
      */
     public function index ()
     {
-        $this->autoRender = false;
-        $this->render('index');
+        if ($this->autoRender) {
+            $this->autoRender = false;
+            $this->render('index');
+        }
     }
 
     /**
      * Mostrar la página principal para el módulo (con sus opciones de menú)
-     * @version 2014-05-05
+     * @version 2015-05-18
      */
     public function display ()
     {
+        if (!$this->autoRender) return;
         // desactivar renderizado automático
         $this->autoRender = false;
         // Si existe una vista para el del modulo se usa

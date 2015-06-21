@@ -104,6 +104,45 @@ class Utility_Date
     }
 
     /**
+     * Método que obtiene el número de día hábil dentro de un mes que
+     * corresponde el día de la fecha que se está pasando
+     * @param fecha Fecha que se quiere saber que día hábil del mes correspone
+     * @param feriados Arreglo con los feriados del mes (si no se pasa solo se omitirán fin de semanas)
+     * @return Número de día hábil del mes que corresponde la fecha pasada o =false si no es día hábil
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2015-06-21
+     */
+    public static function whatWorkingDay($fecha, $feriados = [])
+    {
+        list($anio, $mes, $dia) = explode('-', $fecha);
+        $desde = $anio.'-'.$mes.'-01';
+        for($i=0; $i<$dia; $i++) {
+            $f = self::addWorkingDays($desde, $i, $feriados);
+            if ($f == $fecha)
+                return $i+1;
+        }
+        return false;
+    }
+
+    /**
+     * Método que obtiene la fecha de un día hábil X en un mes
+     * @param anio Año del día hábil que se busca
+     * @param mes Mes del día hábil que se busca
+     * @param dia_habil Número de día hábil dentro del mes y año que se busca
+     * @param feriados Arreglo con los feriados del mes (si no se pasa solo se omitirán fin de semanas)
+     * @return Fecha del día hábil
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2015-06-21
+     */
+    public static function getWorkingDay($anio, $mes, $dia_habil, $feriados = [])
+    {
+        $fecha = self::addWorkingDays($anio.'-'.$mes.'-01', 0, $feriados); // obtiene primer día hábil
+        $fecha = self::addWorkingDays($fecha, $dia_habil-1, $feriados);
+        list($anio2, $mes2, $dia2) = explode('-', $fecha);
+        return ($anio2 == $anio and $mes2 == $mes) ? $fecha : false;
+    }
+
+    /**
      * Método que cuenta cuantos de los días de la variable 'days' existen en el
      * rango desde 'from' hasta 'to'.
      * @param from Desde cuando revisar

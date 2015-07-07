@@ -206,29 +206,44 @@ class View_Helper_PDF extends \TCPDF
      * Agregar una tabla generada a través de código HTML al PDF
      * @todo Utilizar las opciones para definir estilo de la tabla HTML
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2015-07-01
+     * @version 2015-07-07
      */
     private function addHTMLTable ($headers, $data, $options = array())
     {
+        $w = (isset($options['width']) and is_array($options['width'])) ? $options['width'] : null;
+        $a = (isset($options['align']) and is_array($options['align'])) ? $options['align'] : [];
         $buffer = '<table>';
         // Definir títulos de columnas
+        $thead = isset($options['width']) and is_array($options['width']) and count($options['width']) == count($headers);
+        if ($thead)
+            $buffer .= '<thead>';
         $buffer .= '<tr>';
-        $w = is_array($options['width']) ? $options['width'] : null;
         $i = 0;
         foreach ($headers as &$col) {
             $width = ($w and $w[$i]!==null) ? (';width:'.$w[$i].'mm') : '';
-            $buffer .= '<th style="background-color:#000;color:#fff;text-align:center'.$width.'"><strong>'.strip_tags($col).'</strong></th>';
+            $align = isset($a[$i]) ? $a[$i] : 'center';
+            $buffer .= '<th style="background-color:#000;color:#fff;text-align:'.$align.$width.'"><strong>'.strip_tags($col).'</strong></th>';
             $i++;
         }
         $buffer .= '</tr>';
+        if ($thead)
+            $buffer .= '</thead>';
         // Definir datos de la tabla
+        if ($thead)
+            $buffer .= '<tbody>';
         foreach ($data as &$row) {
             $buffer .= '<tr>';
+            $i = 0;
             foreach ($row as &$col) {
-                $buffer .= '<td style="border-bottom:1px solid #ddd;text-align:center">'.$col.'</td>';
+                $width = ($w and $w[$i]!==null) ? (';width:'.$w[$i].'mm') : '';
+                $align = isset($a[$i]) ? $a[$i] : 'center';
+                $buffer .= '<td style="border-bottom:1px solid #ddd;text-align:'.$align.$width.'">'.$col.'</td>';
+                $i++;
             }
             $buffer .= '</tr>';
         }
+        if ($thead)
+            $buffer .= '</tbody>';
         // Finalizar tabla
         $buffer .= '</table>';
         // generar tabla en HTML

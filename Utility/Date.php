@@ -305,4 +305,16 @@ class Utility_Date
         return date($format, strtotime($datetime));
     }
 
+    /**
+     * Método que obtiene la fecha a partir de un número serial
+     * @param n número serial
+     * @return Fecha en formato YYYY-MM-DD
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2015-07-07
+     */
+    public static function fromSerialNumber($n)
+    {
+        return date('Y-m-d', ($n - 25568) * 86400);
+    }
+
 }

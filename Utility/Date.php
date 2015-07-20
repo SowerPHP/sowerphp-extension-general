@@ -26,7 +26,7 @@ namespace sowerphp\general;
 /**
  * Clase para trabajar con fechas
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2015-05-07
+ * @version 2015-07-20
  */
 class Utility_Date
 {
@@ -140,6 +140,24 @@ class Utility_Date
         $fecha = self::addWorkingDays($fecha, $dia_habil-1, $feriados);
         list($anio2, $mes2, $dia2) = explode('-', $fecha);
         return ($anio2 == $anio and $mes2 == $mes) ? $fecha : false;
+    }
+
+    /**
+     * Método que indica si una fecha es el último día laboral del mes
+     * @param fecha Fecha que se quiere saber si es el último día laboral del mes
+     * @param feriados Arreglo con los feriados del mes (si no se pasa solo se omitirán fin de semanas)
+     * @return =true si es el último día laboral del mes
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2015-07-20
+     */
+    public static function isLastWorkingDay($fecha, $feriados = [])
+    {
+        if (!self::whatWorkingDay($fecha, $feriados))
+            return false;
+        $fecha2 = self::addWorkingDays($fecha, 1, $feriados);
+        list($anio, $mes, $dia) = explode('-', $fecha);
+        list($anio2, $mes2, $dia2) = explode('-', $fecha2);
+        return ($anio2 == $anio and $mes2 == $mes) ? false : true;
     }
 
     /**

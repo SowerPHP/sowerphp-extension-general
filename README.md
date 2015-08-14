@@ -2,7 +2,7 @@ Extensión: general
 ==================
 
 Extensión de propósito general, ya que el framework base (directorio
-*standard*) solo provee un conjunto muy pequeño de funcionalidades, por lo
+*lib/core*) solo provee un conjunto muy pequeño de funcionalidades, por lo
 general será interesante y útil para el programador incluir esta extensión. A
 menos claro que desee implementar sus propias funcionalidades o no quiera
 depender de librerías que aquí existan.
@@ -13,26 +13,6 @@ información.
 
 MVC (modelos, vistas y controladores)
 -------------------------------------
-
--	**Contacto**: provee un formulario de contacto que se envía por correo
-	electrónico. Es requisito que esté configurado el correo en
-	*Config/core.php*, por ejemplo (para Gmail):
-
-		// Configuración para el correo electrónico
-		\sowerphp\core\Configure::write('email.default', array(
-			'type' => 'smtp',
-			'host' => 'ssl://smtp.gmail.com',
-			'port' => 465,
-			'user' => 'de@gmail.com',
-			'pass' => 'secretpassword',
-			'from' => array(
-				'email'=>'de@gmail.com',
-				'name'=>'Mi nombre'
-			),
-			'to' => 'para@gmail.com',
-		));
-
-	El índice *from* es opcional.
 
 -	**Module**: permite desplegar los enlaces (iconos) del módulo que se
 	está consultando o bien su página View/index.php en caso de que exista.
@@ -89,7 +69,7 @@ Módulos
 	puede crear una galería con imagenes de cierto directorio de la
 	siguiente forma:
 
-		new \sowerphp\general\Multimedia\Utility_Imagenes(
+		new \sowerphp\general\Multimedia\View_Helper_Imagenes(
 			'/archivos/multimedia/imagenes'
 		);
 

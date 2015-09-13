@@ -50,7 +50,7 @@ class Shell_Command_Pump extends \sowerphp\core\Shell_App
     private function getEntries($user, $limit = false, $sslcheck = true)
     {
         $body = file_get_contents(
-            'http://pump2rss.com/feed/'.$user.'.atom',
+            'https://pump2rss.com/feed/'.$user.'.atom',
             false,
             stream_context_create([
                 'ssl' => [

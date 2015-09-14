@@ -276,7 +276,8 @@ class View_Helper_Form
 
     private function _button($config)
     {
-        return '<button type="'.$config['type'].'" name="'.$config['name'].'" class="'.$config['class'].' btn btn-default" '.$config['attr'].'>'.$config['value'].'</button>';
+        $id = isset($config['id']) ? ' id="'.$config['id'].'"' : '';
+        return '<button type="'.$config['type'].'" name="'.$config['name'].'"'.$id.' class="'.$config['class'].' btn btn-default" '.$config['attr'].'>'.$config['value'].'</button>';
     }
 
     private function _hidden ($config)

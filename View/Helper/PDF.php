@@ -160,7 +160,7 @@ class View_Helper_PDF extends \TCPDF
      * Agregar una tabla al PDF removiendo aquellas columnas donde no existen
      * dantos en la columna para todas las filas
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2015-04-18
+     * @version 2015-09-16
      */
     public function addTableWithoutEmptyCols($titles, $data, $options = [], $html = false)
     {
@@ -175,14 +175,34 @@ class View_Helper_PDF extends \TCPDF
             }
         }
         $n_rows = count($data);
+        $titles_keys = array_flip(array_keys($titles));
         foreach ($cols_empty as $col => $rows) {
             if ($rows==$n_rows) {
                 unset($titles[$col]);
                 foreach ($data as &$row) {
                     unset($row[$col]);
                 }
+                if (isset($options['width']))
+                    unset($options['width'][$titles_keys[$col]]);
+                if (isset($options['align']))
+                    unset($options['align'][$titles_keys[$col]]);
             }
         }
+        if (isset($options['width'])) {
+            $options['width'] = array_slice($options['width'], 0);
+            $key_0 = null;
+            $suma = 0;
+            foreach ($options['width'] as $key => $val) {
+                if ($val===0)
+                    $key_0 = $key;
+                $suma += $val;
+            }
+            if ($key_0!==null) {
+                $options['width'][$key_0] = 190 - $suma;
+            }
+        }
+        if (isset($options['align']))
+            $options['align'] = array_slice($options['align'], 0);
         $this->addTable($titles, $data, $options, $html);
     }
 
@@ -220,7 +240,7 @@ class View_Helper_PDF extends \TCPDF
         $buffer .= '<tr>';
         $i = 0;
         foreach ($headers as &$col) {
-            $width = ($w and $w[$i]!==null) ? (';width:'.$w[$i].'mm') : '';
+            $width = ($w and isset($w[$i])) ? (';width:'.$w[$i].'mm') : '';
             $align = isset($a[$i]) ? $a[$i] : 'center';
             $buffer .= '<th style="background-color:#000;color:#fff;text-align:'.$align.$width.'"><strong>'.strip_tags($col).'</strong></th>';
             $i++;
@@ -235,7 +255,7 @@ class View_Helper_PDF extends \TCPDF
             $buffer .= '<tr>';
             $i = 0;
             foreach ($row as &$col) {
-                $width = ($w and $w[$i]!==null) ? (';width:'.$w[$i].'mm') : '';
+                $width = ($w and isset($w[$i])) ? (';width:'.$w[$i].'mm') : '';
                 $align = isset($a[$i]) ? $a[$i] : 'center';
                 $buffer .= '<td style="border-bottom:1px solid #ddd;text-align:'.$align.$width.'">'.$col.'</td>';
                 $i++;

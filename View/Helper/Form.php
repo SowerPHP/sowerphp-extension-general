@@ -411,12 +411,12 @@ class View_Helper_Form
     private function _js ($config, $js = true)
     {
         // configuración por defecto
-        $config = array_merge(array('titles'=>array(), 'width'=>'100%'), $config);
+        $config = array_merge(array('titles'=>array(), 'width'=>'100%', 'accesskey'=>'+'), $config);
         // respaldar formato
         $formato = $this->_style;
         $this->_style = null;
         // determinar inputs
-        $delete = '<td><a href="" onclick="Form.delJS(this); return false" title="Eliminar"><span class="glyphicon glyphicon-remove-circle btn btn-default" aria-hidden="true"></span></a></td>';
+        $delete = '<td><a href="" onclick="Form.delJS(this); return false" onblur="Form.addJS(\''.$config['id'].'\', this)" title="Eliminar"><span class="glyphicon glyphicon-remove-circle btn btn-default" aria-hidden="true"></span></a></td>';
         $inputs = '<tr>';
         foreach ($config['inputs'] as $input) {
             $input['name'] = $input['name'].'[]';
@@ -484,7 +484,7 @@ class View_Helper_Form
             $buffer .= '<th>'.$title.'</th>';
         }
         if ($js) {
-            $buffer .= '<th style="width:1px"><a href="javascript:Form.addJS(\''.$config['id'].'\')" title="Agregar [+]" accesskey="+"><span class="glyphicon glyphicon-plus btn btn-default" aria-hidden="true"></span></a></th>';
+            $buffer .= '<th style="width:1px"><a href="javascript:Form.addJS(\''.$config['id'].'\')" title="Agregar ['.$config['accesskey'].']" accesskey="'.$config['accesskey'].'"><span class="glyphicon glyphicon-plus btn btn-default" aria-hidden="true"></span></a></th>';
         }
         $buffer .= '</tr></thead>';
         $buffer .= '<tbody>'.$values.'</tbody>';

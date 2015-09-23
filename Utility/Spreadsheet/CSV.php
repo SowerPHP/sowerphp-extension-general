@@ -64,7 +64,7 @@ final class Utility_Spreadsheet_CSV
      * @param id Identificador de la planilla
      * @param separador separador a utilizar para diferenciar entre una columna u otra
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2015-05-29
+     * @version 2015-09-23
      */
     public static function generate ($data, $id, $separador = null, $delimitadortexto = '"')
     {
@@ -76,7 +76,7 @@ final class Utility_Spreadsheet_CSV
         header('Expires: 0');
         foreach($data as &$row) {
             foreach($row as &$col) {
-                $col = $delimitadortexto.rtrim(str_replace('<br />', ', ', strip_tags($col, '<br>')), " \t\n\r\0\x0B,").$delimitadortexto;
+                $col = $delimitadortexto.rtrim(str_replace(['<br />', '<br/>', '<br>'], ', ', strip_tags($col, '<br>')), " \t\n\r\0\x0B,").$delimitadortexto;
             }
             echo implode($separador, $row),"\r\n";
             unset($row);

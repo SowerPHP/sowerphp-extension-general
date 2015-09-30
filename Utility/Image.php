@@ -296,7 +296,7 @@ class Utility_Image
      * @param dst_h Alto de la nueva imagen
      * @return Arreglo con ancho y alto
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2015-04-21
+     * @version 2015-09-29
      */
     public static function resizeOnFile($file, $dst_w, $dst_h)
     {
@@ -321,7 +321,7 @@ class Utility_Image
         // copiar imagen desde src_img a dst_img
         imagecopyresampled($dst_img, $src_img, 0, 0, 0, 0, $new_w, $new_h, $ancho, $alto);
         // copiar imagen devuelta al archivo
-        if ($mimetype=='image/png') imagepng($src_img, $file, 100);
+        if ($mimetype=='image/png') imagepng($src_img, $file, 9);
         else if ($mimetype=='image/jpeg') imagejpeg($dst_img, $file, 100);
         else if ($mimetype=='image/gif') imagegif($dst_img, $file);
         // destruir imagenes usadas

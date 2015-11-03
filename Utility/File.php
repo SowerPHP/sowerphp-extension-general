@@ -263,12 +263,14 @@ class Utility_File
     /**
      * Método que entrega el mimetype de un archivo
      * @param file Ruta hacia el fichero
-     * @return Mimetype del fichero
+     * @return Mimetype del fichero o =false si no se pudo determinar
      * @author http://stackoverflow.com/a/23287361
-     * @version 2014-04-25
+     * @version 2015-11-03
      */
     public static function mimetype($file)
     {
+        if (!function_exists('finfo_open'))
+            return false;
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mimetype = finfo_file($finfo, $file);
         finfo_close($finfo);
@@ -283,7 +285,7 @@ class Utility_File
      * @param options Arreglo con opciones para comprmir (format, download, delete)
      * @todo Preparar datos si se pasa un arreglo
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2015-09-10
+     * @version 2015-11-03
      */
     public static function compress($file, $options = [])
     {
@@ -349,7 +351,9 @@ class Utility_File
         if ($options['download']) {
             ob_clean();
             header ('Content-Disposition: attachment; filename='.$file_compressed);
-            header ('Content-Type: '.self::mimetype($dir.DIRECTORY_SEPARATOR.$file_compressed));
+            $mimetype = self::mimetype($dir.DIRECTORY_SEPARATOR.$file_compressed);
+            if ($mimetype)
+                header ('Content-Type: '.$mimetype);
             header ('Content-Length: '.filesize($dir.DIRECTORY_SEPARATOR.$file_compressed));
             readfile($dir.DIRECTORY_SEPARATOR.$file_compressed);
             unlink($dir.DIRECTORY_SEPARATOR.$file_compressed);

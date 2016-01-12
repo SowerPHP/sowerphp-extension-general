@@ -1,10 +1,11 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6527dcd56ac5c5d4fe729fae93a8c3d5",
+    "hash": "f19d58e37e9d8053a09fbbe7caf62c18",
+    "content-hash": "1e70c52eff444b742d7630176ffe854f",
     "packages": [
         {
             "name": "clue/graph",
@@ -154,12 +155,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/estebandelaf/odsPhpGenerator.git",
-                "reference": "a277381fdcd69fa2f3013c132974ce11170076d6"
+                "reference": "dde80b826f3a826e4c6309fc3474789a40920343"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/estebandelaf/odsPhpGenerator/zipball/a277381fdcd69fa2f3013c132974ce11170076d6",
-                "reference": "a277381fdcd69fa2f3013c132974ce11170076d6",
+                "url": "https://api.github.com/repos/estebandelaf/odsPhpGenerator/zipball/dde80b826f3a826e4c6309fc3474789a40920343",
+                "reference": "dde80b826f3a826e4c6309fc3474789a40920343",
                 "shasum": ""
             },
             "require": {
@@ -178,15 +179,15 @@
                 }
             ],
             "description": "The ods file generator in php",
-            "time": "2014-04-06 04:07:03"
+            "time": "2015-05-07 17:22:51"
         },
         {
             "name": "libchart/libchart",
             "version": "1.4.0",
             "source": {
-                "type": "hg",
-                "url": "https://code.google.com/r/alexanderstehlik-libchart-package/",
-                "reference": "de03e29ea70b"
+                "type": "git",
+                "url": "https://github.com/astehlik/libchart.git",
+                "reference": "0be2ff6d3466e17838229780520b65e6a1a5ebdf"
             },
             "type": "library",
             "autoload": {
@@ -283,17 +284,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/smalot/pdfparser.git",
-                "reference": "da38fd467596666440923882b1ded2e8d7abf1a0"
+                "reference": "31590f7938a22f1c7fc4fb292611e3742a62ebaa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smalot/pdfparser/zipball/da38fd467596666440923882b1ded2e8d7abf1a0",
-                "reference": "da38fd467596666440923882b1ded2e8d7abf1a0",
+                "url": "https://api.github.com/repos/smalot/pdfparser/zipball/31590f7938a22f1c7fc4fb292611e3742a62ebaa",
+                "reference": "31590f7938a22f1c7fc4fb292611e3742a62ebaa",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
-                "tecnick.com/tcpdf": ">=6.0.050"
+                "tecnickcom/tcpdf": ">=6.0.050"
             },
             "require-dev": {
                 "atoum/atoum": "dev-master"
@@ -318,20 +319,20 @@
             ],
             "description": "Pdf parser library. Can read and extract information from pdf file.",
             "homepage": "http://www.pdfparser.org",
-            "time": "2015-03-18 08:54:03"
+            "time": "2015-09-18 08:29:33"
         },
         {
-            "name": "tecnick.com/tcpdf",
-            "version": "6.0.096",
+            "name": "tecnickcom/tcpdf",
+            "version": "6.2.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tecnickcom/TCPDF.git",
-                "reference": "ff8799164231d5c99a69bee276ce33bcb7f52a54"
+                "reference": "2f732eaa91b5665274689b1d40b285a7bacdc37f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/ff8799164231d5c99a69bee276ce33bcb7f52a54",
-                "reference": "ff8799164231d5c99a69bee276ce33bcb7f52a54",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/2f732eaa91b5665274689b1d40b285a7bacdc37f",
+                "reference": "2f732eaa91b5665274689b1d40b285a7bacdc37f",
                 "shasum": ""
             },
             "require": {
@@ -381,7 +382,7 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2014-10-06 17:50:43"
+            "time": "2015-09-12 10:08:34"
         }
     ],
     "packages-dev": [],
@@ -394,7 +395,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "~5.5"
+        "php": ">=5.5"
     },
     "platform-dev": []
 }

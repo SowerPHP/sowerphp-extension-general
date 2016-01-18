@@ -181,7 +181,7 @@ class View_Helper_Form
             if ($config['type']!='checkbox')
                 $buffer .= '<label class="sr-only"'.(isset($config['id'])?' for="'.$config['id'].'"':'').'>'.$config['label'].'</label>'."\n";
             if (isset($config['addon-icon']))
-                $buffer .= '<div class="input-group-addon"><span class="glyphicon glyphicon-'.$config['addon-icon'].'" aria-hidden="true"></span></div>'."\n";
+                $buffer .= '<div class="input-group-addon"><span class="fa fa-'.$config['addon-icon'].'" aria-hidden="true"></span></div>'."\n";
             else if (isset($config['addon-text']))
                 $buffer .= '<div class="input-group-addon">'.$config['addon-text'].'</div>'."\n";
             $buffer .= $field;
@@ -416,8 +416,8 @@ class View_Helper_Form
         $formato = $this->_style;
         $this->_style = null;
         // determinar inputs
-        //$delete = '<td><a href="" onclick="Form.delJS(this); return false" onblur="Form.addJS(\''.$config['id'].'\', this)" title="Eliminar"><span class="glyphicon glyphicon-remove-circle btn btn-default" aria-hidden="true"></span></a></td>'; // WARNING: onblur no funcionca correctamente con onclick en chrome
-        $delete = '<td><a href="" onclick="Form.delJS(this); return false" title="Eliminar"><span class="glyphicon glyphicon-remove-circle btn btn-default" aria-hidden="true"></span></a></td>';
+        //$delete = '<td><a href="" onclick="Form.delJS(this); return false" onblur="Form.addJS(\''.$config['id'].'\', this)" title="Eliminar"><span class="fa fa-remove btn btn-default" aria-hidden="true"></span></a></td>'; // WARNING: onblur no funcionca correctamente con onclick en chrome
+        $delete = '<td><a href="" onclick="Form.delJS(this); return false" title="Eliminar"><span class="fa fa-remove btn btn-default" aria-hidden="true"></span></a></td>';
         $inputs = '<tr>';
         foreach ($config['inputs'] as $input) {
             $input['name'] = $input['name'].'[]';
@@ -485,7 +485,7 @@ class View_Helper_Form
             $buffer .= '<th>'.$title.'</th>';
         }
         if ($js) {
-            $buffer .= '<th style="width:1px"><a href="javascript:Form.addJS(\''.$config['id'].'\')" title="Agregar ['.$config['accesskey'].']" accesskey="'.$config['accesskey'].'"><span class="glyphicon glyphicon-plus btn btn-default" aria-hidden="true"></span></a></th>';
+            $buffer .= '<th style="width:1px"><a href="javascript:Form.addJS(\''.$config['id'].'\')" title="Agregar ['.$config['accesskey'].']" accesskey="'.$config['accesskey'].'"><span class="fa fa-plus btn btn-default" aria-hidden="true"></span></a></th>';
         }
         $buffer .= '</tr></thead>';
         $buffer .= '<tbody>'.$values.'</tbody>';

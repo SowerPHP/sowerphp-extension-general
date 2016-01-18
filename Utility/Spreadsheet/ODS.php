@@ -48,11 +48,10 @@ final class Utility_Spreadsheet_ODS
      * @param data Arreglo utilizado para generar la planilla
      * @param id Identificador de la planilla
      * @author DeLaF, esteban[at]delaf.cl
-     * @version 2014-03-03
+     * @version 2016-01-17
      */
     public static function generate ($data, $id)
     {
-        \sowerphp\core\App::import('Vendor/lapinator.net/ods-php-generator/ods');
         $ods = new \odsphpgenerator\ods();
         // si las llaves de $data no son strings, entonces es solo una hoja
         if (!is_string(array_keys($data)[0])) {

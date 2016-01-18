@@ -23,9 +23,6 @@
 
 namespace sowerphp\general;
 
-// Incluir biblioteca PHPExcel
-\sowerphp\core\App::import('Vendor/phpoffice/phpexcel/Classes/PHPExcel');
-
 /**
  * Helper para generar planillas de cálculo
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)

@@ -23,9 +23,6 @@
 
 namespace sowerphp\general;
 
-// importar biblioteca para gráficos
-\sowerphp\core\App::import('Vendor/libchart/libchart/vendor/autoload');
-
 /**
  * Clase para generar gráficos
  * Hace uso de libchart, presentando métodos más simples y evitando que el

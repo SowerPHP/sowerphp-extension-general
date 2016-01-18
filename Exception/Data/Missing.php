@@ -21,9 +21,13 @@
  * En caso contrario, consulte <http://www.gnu.org/licenses/gpl.html>.
  */
 
-// ruta para las acciones de exportar
-\sowerphp\core\Routing_Router::connect('/exportar/:action', array(
-    'module' => 'Exportar',
-    'controller' => 'exportar',
-    'action' => '',
-));
+namespace sowerphp\general;
+
+/**
+ * Excepción cuando no se encuentran datos que exportar
+ */
+class Exception_Data_Missing extends \sowerphp\core\Exception
+{
+    protected $_messageTemplate = 'No hay datos que exportar con el id <em>%s</em>';
+    protected $severity = LOG_DEBUG;
+}

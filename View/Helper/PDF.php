@@ -26,9 +26,6 @@ namespace sowerphp\general;
 // Directorio para imagenes vació (no se asume nada)
 define ('K_PATH_IMAGES', '');
 
-// Importar clase TCPDF
-\sowerphp\core\App::import('Vendor/tecnick.com/tcpdf/tcpdf');
-
 /**
  * Clase para generar PDFs
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)

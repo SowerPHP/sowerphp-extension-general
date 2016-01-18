@@ -24,7 +24,7 @@
         "php": ">=5.5",
         "libchart/libchart": "1.4.0",
         "lapinator.net/ods-php-generator": "dev-master",
-        "phpoffice/phpexcel": "1.8.0",
+        "phpoffice/phpexcel": "1.8.1",
         "tecnickcom/tcpdf": "6.2.12",
         "smalot/pdfparser": "dev-master",
         "clue/graph": "~0.8.0",

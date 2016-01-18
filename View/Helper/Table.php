@@ -213,7 +213,7 @@ class View_Helper_Table
      * Crea los datos de la sesión de la tabla para poder exportarla
      * @param table Tabla que se está exportando
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-05-14
+     * @version 2016-01-17
      */
     private function export (&$table)
     {
@@ -257,7 +257,7 @@ class View_Helper_Table
         if ((new \sowerphp\core\Cache())->set('session.'.session_id().'.export.'.$this->_id, $data)) {
             $extensions = array('ods', 'xls', 'csv', 'pdf', 'xml', 'json');
             foreach ($extensions as $e) {
-                $buffer .= '<a href="'._BASE.'/exportar/'.$e.'/'.$this->_id.'" title="Exportar a '.strtoupper($e).'"><img src="'._BASE.'/exportar/img/icons/16x16/'.$e.'.png" alt="" /></a> ';
+                $buffer .= '<a href="'._BASE.'/exportar/'.$e.'/'.$this->_id.'" title="Exportar a '.strtoupper($e).'"><img src="'._BASE.'/img/icons/16x16/files/'.$e.'.png" alt="" /></a> ';
             }
         }
         return $buffer;

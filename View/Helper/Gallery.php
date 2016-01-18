@@ -21,14 +21,14 @@
  * En caso contrario, consulte <http://www.gnu.org/licenses/gpl.html>.
  */
 
-namespace sowerphp\general\Multimedia;
+namespace sowerphp\general;
 
 /**
  * Clase para crear una galería de imágenes
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
  * @version 2014-11-23
  */
-class View_Helper_Imagenes
+class View_Helper_Gallery
 {
 
     private $_base;
@@ -76,9 +76,9 @@ class View_Helper_Imagenes
     private function header ()
     {
         return '
-            <link rel="stylesheet" href="'.$this->_base.'/multimedia/css/prettyPhoto.css" type="text/css" media="screen" charset="utf-8" />
-            <script src="'.$this->_base.'/multimedia/js/jquery.browser.min.js" type="text/javascript" charset="utf-8"></script>
-            <script src="'.$this->_base.'/multimedia/js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
+            <link rel="stylesheet" href="'.$this->_base.'/css/prettyPhoto.css" type="text/css" media="screen" charset="utf-8" />
+            <script src="'.$this->_base.'/js/jquery.browser.min.js" type="text/javascript" charset="utf-8"></script>
+            <script src="'.$this->_base.'/js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
             <style type="text/css">
             img.pp-thumbnail {
                 margin: 5px;

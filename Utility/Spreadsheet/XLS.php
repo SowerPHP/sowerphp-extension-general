@@ -23,9 +23,6 @@
 
 namespace sowerphp\general;
 
-// Incluir biblioteca PHPExcel
-\sowerphp\core\App::import('Vendor/phpoffice/phpexcel/Classes/PHPExcel');
-
 /**
  * Manejar archivos en excel
  *

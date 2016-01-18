@@ -21,13 +21,5 @@
  * En caso contrario, consulte <http://www.gnu.org/licenses/gpl.html>.
  */
 
-namespace sowerphp\general\Exportar;
-
-/**
- * Excepción cuando no se encuentran datos que exportar
- */
-class Exception_Data_Missing extends \sowerphp\core\Exception
-{
-    protected $_messageTemplate = 'No hay datos que exportar con el id <em>%s</em>';
-    protected $severity = LOG_DEBUG;
-}
+// incluir autocarga de composer
+require('Vendor/autoload.php');

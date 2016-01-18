@@ -42,6 +42,8 @@ final class Utility_Spreadsheet_JSON
     /**
      * Método que genera un string JSON a partir de una tabla en un arreglo
      * bidimensional
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2016-01-17
      */
     public static function generate ($data, $id)
     {
@@ -49,18 +51,25 @@ final class Utility_Spreadsheet_JSON
         ob_clean();
         // cabeceras del archivo
         header('Content-type: application/json');
-        header('Content-Disposition: inline; filename='.$id.'.json');
+        header('Content-Disposition: attachment; filename='.$id.'.json');
         header('Pragma: no-cache');
         header('Expires: 0');
         // cuerpo del archivo
-        foreach ($data as &$row) {
-            foreach ($row as &$col) {
-                $col = rtrim(str_replace('<br />', ', ', strip_tags($col, '<br>')), " \t\n\r\0\x0B,");
-            }
+        $datos = [];
+        $titles = array_shift($data);
+        foreach ($titles as &$col) {
+            $col = \sowerphp\core\Utility_String::normalize(trim(strip_tags($col)));
         }
-        echo json_encode($data);
+        foreach($data as &$row) {
+            $dato = [];
+            foreach($row as $key => &$col) {
+                $dato[$titles[$key]] = rtrim(str_replace('<br />', ', ', strip_tags($col, '<br>')), " \t\n\r\0\x0B,");
+            }
+            $datos[] = $dato;
+        }
+        echo json_encode($datos, JSON_PRETTY_PRINT);
         // liberar memoria y terminar script
-        unset($titles, $data, $id);
+        unset($titles, $data, $datos, $id);
         exit(0);
     }
 

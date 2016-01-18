@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f19d58e37e9d8053a09fbbe7caf62c18",
-    "content-hash": "1e70c52eff444b742d7630176ffe854f",
+    "hash": "13a8d2bc1ab9e09cbc906278f41df6b7",
+    "content-hash": "9768f6f9f8e543095ccfdbabceee1c75",
     "packages": [
         {
             "name": "clue/graph",
@@ -154,19 +154,25 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/estebandelaf/odsPhpGenerator.git",
-                "reference": "dde80b826f3a826e4c6309fc3474789a40920343"
+                "url": "https://github.com/sascocl/odsPhpGenerator.git",
+                "reference": "2eae349d24622f3d36e9ae12edad9e1d4932a82c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/estebandelaf/odsPhpGenerator/zipball/dde80b826f3a826e4c6309fc3474789a40920343",
-                "reference": "dde80b826f3a826e4c6309fc3474789a40920343",
+                "url": "https://api.github.com/repos/sascocl/odsPhpGenerator/zipball/2eae349d24622f3d36e9ae12edad9e1d4932a82c",
+                "reference": "2eae349d24622f3d36e9ae12edad9e1d4932a82c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.0"
             },
             "type": "library",
+            "autoload": {
+                "classmap": [
+                    "class/",
+                    "ods.php"
+                ]
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "LGPL-3.0"
@@ -179,7 +185,7 @@
                 }
             ],
             "description": "The ods file generator in php",
-            "time": "2015-05-07 17:22:51"
+            "time": "2016-01-18 01:58:09"
         },
         {
             "name": "libchart/libchart",
@@ -223,16 +229,16 @@
         },
         {
             "name": "phpoffice/phpexcel",
-            "version": "1.8.0",
+            "version": "1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PHPExcel.git",
-                "reference": "e69a5e4d0ffa7fb6f171859e0a04346e580df30b"
+                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/e69a5e4d0ffa7fb6f171859e0a04346e580df30b",
-                "reference": "e69a5e4d0ffa7fb6f171859e0a04346e580df30b",
+                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
+                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
                 "shasum": ""
             },
             "require": {
@@ -276,7 +282,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2014-03-02 15:22:49"
+            "time": "2015-05-01 07:00:55"
         },
         {
             "name": "smalot/pdfparser",

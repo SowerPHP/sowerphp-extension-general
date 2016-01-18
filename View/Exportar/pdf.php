@@ -24,5 +24,5 @@ $pdf->AddPage();
 $pdf->addTable (array_shift($data), $data, array(), true);
 
 // generar pdf y terminar
-$pdf->Output($id.'.pdf', 'I');
+$pdf->Output($id.'.pdf', 'D');
 exit(0);

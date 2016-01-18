@@ -21,7 +21,7 @@
  * En caso contrario, consulte <http://www.gnu.org/licenses/gpl.html>.
  */
 
-namespace sowerphp\general\Exportar;
+namespace sowerphp\general;
 
 class Controller_Exportar extends \Controller_App
 {

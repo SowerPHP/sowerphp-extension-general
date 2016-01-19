@@ -58,7 +58,7 @@ class Controller_Module extends \Controller_App
 
     /**
      * Mostrar la página principal para el módulo (con sus opciones de menú)
-     * @version 2015-05-18
+     * @version 2016-01-19
      */
     public function display ()
     {
@@ -111,9 +111,12 @@ class Controller_Module extends \Controller_App
             $module = str_replace ('.', '/', \sowerphp\core\Utility_Inflector::underscore(
                 $this->request->params['module']
             ));
-            $title = str_replace ('.', ' &raquo; ',
-                $this->request->params['module']
-            );
+            $title = \sowerphp\core\Configure::read('module.title');
+            if (!$title) {
+                $title = str_replace ('.', ' &raquo; ',
+                    $this->request->params['module']
+                );
+            }
             $this->set(array(
                 'title' => $title,
                 'nav' => $nav_module,

@@ -164,7 +164,7 @@ class View_Helper_PDF extends \TCPDF
         $cols_empty = [];
         foreach ($data as $row) {
             foreach ($row as $col => $value) {
-                if (empty($value)) {
+                if (((string)$value)=='') {
                     if (!array_key_exists($col, $cols_empty))
                         $cols_empty[$col] = 0;
                     $cols_empty[$col]++;

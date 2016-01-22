@@ -141,14 +141,22 @@ class View_Helper_PDF extends \TCPDF
     /**
      * Obtener el ancho de las columnas de una tabla
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-02-12
+     * @version 2016-01-22
      */
-    private function getTableCellWidth ($total, $cells)
+    private function getTableCellWidth($total, $cells)
     {
-        $width = floor($total/$cells);
-        $widths = array ();
-        for ($i=0; $i<$cells; ++$i) {
-            $widths[] = $width;
+        $widths = [];
+        if (is_int($cells)) {
+            $width = floor($total/$cells);
+            for ($i=0; $i<$cells; ++$i) {
+                $widths[] = $width;
+            }
+        }
+        else if (is_array($cells)){
+            $width = floor($total/count($cells));
+            foreach ($cells as $i) {
+                $widths[$i] = $width;
+            }
         }
         return $widths;
     }
@@ -270,7 +278,7 @@ class View_Helper_PDF extends \TCPDF
     /**
      * Agregar una tabla generada mediante el método Cell
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-02-12
+     * @version 2016-01-22
      */
     private function addNormalTable ($headers, $data, $options = array())
     {
@@ -287,10 +295,9 @@ class View_Helper_PDF extends \TCPDF
         );
         $this->SetFont($this->defaultOptions['font']['family'], 'B',  $options['fontsize']);
         // Header
-        $num_headers = count($headers);
         $w = is_array($options['width']) ? $options['width'] :
-            $this->getTableCellWidth ($options['width'], $num_headers);
-        for ($i = 0; $i < $num_headers; ++$i) {
+            $this->getTableCellWidth($options['width'], array_keys($headers));
+        foreach($headers as $i => $header) {
             $this->Cell ($w[$i], $options['height'], $headers[$i], 1, 0, $options['align'], 1);
         }
         $this->Ln();
@@ -309,7 +316,7 @@ class View_Helper_PDF extends \TCPDF
         // Data
         $fill = false;
         foreach ($data as &$row) {
-            for ($i = 0; $i < $num_headers; ++$i) {
+            foreach($headers as $i => $header) {
                 $this->Cell ($w[$i], $options['height'], $row[$i], 'C', 0, $options['align'], $fill);
             }
             $this->Ln();

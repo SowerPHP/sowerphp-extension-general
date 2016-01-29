@@ -262,7 +262,7 @@ class View_Helper_Form
             $config['popover'] = ' data-toggle="popover" data-trigger="focus" title="'.$config['label'].'" data-placement="top" data-content="'.$config['popover'].'" onmouseover="$(this).popover(\'show\')" onmouseout="$(this).popover(\'hide\')"';
         }
         // limpiar valor del campo
-        if ($config['type']!='div' and $config['sanitize'] and isset($config['value'][0])) {
+        if ($config['type']!='div' and $config['sanitize'] and isset($config['value'][0]) and !is_array($config['value'])) {
             $config['value'] = trim(strip_tags($config['value']));
         }
         // generar campo, formatear y entregar

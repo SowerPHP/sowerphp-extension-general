@@ -534,7 +534,7 @@ class View_Helper_Form
                     $buffer .= '<td>'.$col.'</td>';
                 $count++;
             }
-            $checked = in_array($key, $config['checked']) ? ' checked="checked"' : '' ;
+            $checked = (in_array($key, $config['checked']) or $config['mastercheck']) ? ' checked="checked"' : '' ;
             $buffer .= '<td><input type="checkbox" name="'.$config['name'].'[]" value="'.$key.'"'.$checked.' /></td>';
             $buffer .= '</tr>';
         }

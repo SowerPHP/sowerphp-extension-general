@@ -160,7 +160,7 @@ class View_Helper_Spreadsheet extends \PHPExcel
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2016-02-02
      */
-    protected function setMergeCellValue($value, $start, $end)
+    public function setMergeCellValue($value, $start, $end)
     {
         $this->getActiveSheet()->mergeCells($start.$this->y.':'.$end.$this->y);
         $this->setFormatCenterBold($start.$this->y);
@@ -172,7 +172,7 @@ class View_Helper_Spreadsheet extends \PHPExcel
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2016-02-02
      */
-    protected function setRotateCellValue($value, $col, $end)
+    public function setRotateCellValue($value, $col, $end)
     {
         $this->getActiveSheet()->mergeCells($col.$this->y.':'.$col.($this->y+$end));
         $this->getActiveSheet()->getStyle($col.$this->y)->getAlignment()->setTextRotation(90);

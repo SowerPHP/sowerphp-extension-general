@@ -335,4 +335,21 @@ class Utility_Date
         return date('Y-m-d', ($n - 25568) * 86400);
     }
 
+    /**
+     * Método que obtiene un periodo (mes) anterior a uno específicado
+     * @param periodo Período para el cual se quiere saber el anterior o =null para actual
+     * @return Periodo en formato YYYYMM
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2016-02-03
+     */
+    public static function previousPeriod($periodo = null)
+    {
+        if (!$periodo)
+            $periodo = date('Ym');
+        $periodo_anterior = $periodo - 1;
+        if (substr($periodo_anterior, 4)=='00')
+            $periodo_anterior = $periodo_anterior - 100 + 12;
+        return $periodo_anterior;
+    }
+
 }

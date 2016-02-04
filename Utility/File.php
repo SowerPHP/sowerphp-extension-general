@@ -285,7 +285,7 @@ class Utility_File
      * @param options Arreglo con opciones para comprmir (format, download, delete)
      * @todo Preparar datos si se pasa un arreglo
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2015-11-03
+     * @version 2016-02-04
      */
     public static function compress($file, $options = [])
     {
@@ -325,6 +325,8 @@ class Utility_File
         if ($options['format']=='zip') {
             // crear archivo zip
             $zip = new \ZipArchive();
+            if (file_exists($dir.DIRECTORY_SEPARATOR.$file.'.zip'))
+                unlink($dir.DIRECTORY_SEPARATOR.$file.'.zip');
             if ($zip->open($dir.DIRECTORY_SEPARATOR.$file.'.zip', \ZipArchive::CREATE)!==true)
                 return false;
             // agregar un único archivo al zip

@@ -4,36 +4,37 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "13a8d2bc1ab9e09cbc906278f41df6b7",
-    "content-hash": "9768f6f9f8e543095ccfdbabceee1c75",
+    "hash": "5f4735cc1790b27012357e8a28a027ce",
+    "content-hash": "51f8e7d3d85d6dfc20811a75bf518c32",
     "packages": [
         {
             "name": "clue/graph",
-            "version": "v0.8.0",
+            "version": "v0.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/clue/graph.git",
-                "reference": "23d5f34da45bba9b19fe4f37b1748adcac1b83d2"
+                "reference": "0336a4d5229fa61a20ccceaeab25e52ac9542700"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/clue/graph/zipball/23d5f34da45bba9b19fe4f37b1748adcac1b83d2",
-                "reference": "23d5f34da45bba9b19fe4f37b1748adcac1b83d2",
+                "url": "https://api.github.com/repos/clue/graph/zipball/0336a4d5229fa61a20ccceaeab25e52ac9542700",
+                "reference": "0336a4d5229fa61a20ccceaeab25e52ac9542700",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "3.7.* | ~4.0"
+                "phpunit/phpunit": "~4.0"
             },
             "suggest": {
+                "graphp/algorithms": "Common graph algorithms, such as Dijkstra and Moore-Bellman-Ford (shortest path), minimum spanning tree (MST), Kruskal, Prim and many more..",
                 "graphp/graphviz": "GraphViz graph drawing / DOT output"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "Fhaculty": "lib/"
+                "psr-4": {
+                    "Fhaculty\\Graph\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -43,19 +44,13 @@
             "description": "A mathematical graph/network library written in PHP",
             "homepage": "https://github.com/clue/graph",
             "keywords": [
-                "dijkstra",
                 "edge",
                 "graph",
-                "kruskal",
                 "mathematical",
-                "minimum spanning tree",
-                "moore-bellman-ford",
                 "network",
-                "prim",
-                "shortest path",
                 "vertex"
             ],
-            "time": "2014-12-31 15:51:10"
+            "time": "2015-03-07 18:11:31"
         },
         {
             "name": "graphp/algorithms",

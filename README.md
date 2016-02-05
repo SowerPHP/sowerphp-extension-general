@@ -1,6 +1,9 @@
 Extensión: general
 ==================
 
+[![Dependency Status](https://www.versioneye.com/user/projects/56b439ac0a0ff5003b975099/badge.svg)](https://www.versioneye.com/user/projects/56b439ac0a0ff5003b975099)
+[![License](https://poser.pugx.org/sowerphp/general/license)](https://packagist.org/packages/sowerphp/general)
+
 Extensión de propósito general, ya que el framework base (directorio
 *lib/core*) solo provee un conjunto muy pequeño de funcionalidades, por lo
 general será interesante y útil para el programador incluir esta extensión. A

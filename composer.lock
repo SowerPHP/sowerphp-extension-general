@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5f4735cc1790b27012357e8a28a027ce",
-    "content-hash": "51f8e7d3d85d6dfc20811a75bf518c32",
+    "hash": "8047a12989b3c3d8105962790b8b844f",
+    "content-hash": "6eb5694b1dc2f412ac8b3d00559d0d7a",
     "packages": [
         {
             "name": "clue/graph",
@@ -280,49 +280,6 @@
             "time": "2015-05-01 07:00:55"
         },
         {
-            "name": "smalot/pdfparser",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/smalot/pdfparser.git",
-                "reference": "31590f7938a22f1c7fc4fb292611e3742a62ebaa"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/smalot/pdfparser/zipball/31590f7938a22f1c7fc4fb292611e3742a62ebaa",
-                "reference": "31590f7938a22f1c7fc4fb292611e3742a62ebaa",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0",
-                "tecnickcom/tcpdf": ">=6.0.050"
-            },
-            "require-dev": {
-                "atoum/atoum": "dev-master"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Smalot\\PdfParser\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Sebastien MALOT",
-                    "email": "sebastien@malot.fr",
-                    "homepage": "http://www.malot.fr",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Pdf parser library. Can read and extract information from pdf file.",
-            "homepage": "http://www.pdfparser.org",
-            "time": "2015-09-18 08:29:33"
-        },
-        {
             "name": "tecnickcom/tcpdf",
             "version": "6.2.12",
             "source": {
@@ -390,8 +347,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "lapinator.net/ods-php-generator": 20,
-        "smalot/pdfparser": 20
+        "lapinator.net/ods-php-generator": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

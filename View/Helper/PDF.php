@@ -67,9 +67,9 @@ class View_Helper_PDF extends \TCPDF
      * @param s Tipo de hoja
      * @param top Margen extra (al normal) para la parte de arriba del PDF
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-10-15
+     * @version 2016-02-06
      */
-    public function __construct ($o = 'P', $u = 'mm', $s = 'Letter', $top = 8)
+    public function __construct ($o = 'P', $u = 'mm', $s = 'LETTER', $top = 8)
     {
         parent::__construct($o, $u, $s);
         $this->margin_top = $top;

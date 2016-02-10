@@ -36,17 +36,18 @@ final class Utility_Spreadsheet_CSV
     /**
      * Lee un archivo CSV
      * @param archivo archivo a leer (ejemplo índice tmp_name de un arreglo $_FILES)
-     * @param separador separador a utilizar para diferenciar entre una columna u otra
+     * @param delimiter separador a utilizar para diferenciar entre una columna u otra
+     * @param enclosure Un caracter para rodear el dato
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2015-05-29
      */
-    public static function read ($archivo = null, $separador = null, $delimitadortexto = '"')
+    public static function read($archivo = null, $delimiter = null, $enclosure = '"')
     {
-        $separador = self::setDelimiter($separador);
+        $delimiter = self::setDelimiter($delimiter);
         if (($handle = fopen($archivo, 'r')) !== FALSE) {
             $data = array();
             $i = 0;
-            while (($row = fgetcsv($handle, 0, $separador, $delimitadortexto)) !== FALSE) {
+            while (($row = fgetcsv($handle, 0, $delimiter, $enclosure)) !== FALSE) {
                 $j = 0;
                 foreach ($row as &$col) {
                     $data[$i][$j++] = $col;
@@ -62,13 +63,14 @@ final class Utility_Spreadsheet_CSV
      * Crea un archivo CSV a partir de un arreglo
      * @param data Arreglo utilizado para generar la planilla
      * @param id Identificador de la planilla
-     * @param separador separador a utilizar para diferenciar entre una columna u otra
+     * @param delimiter separador a utilizar para diferenciar entre una columna u otra
+     * @param enclosure Un caracter para rodear el dato
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2015-09-23
      */
-    public static function generate ($data, $id, $separador = null, $delimitadortexto = '"')
+    public static function generate ($data, $id, $delimiter = null, $enclosure = '"')
     {
-        $separador = self::setDelimiter($separador);
+        $delimiter = self::setDelimiter($delimiter);
         ob_clean();
         header('Content-type: text/csv');
         header('Content-Disposition: attachment; filename='.$id.'.csv');
@@ -76,9 +78,9 @@ final class Utility_Spreadsheet_CSV
         header('Expires: 0');
         foreach($data as &$row) {
             foreach($row as &$col) {
-                $col = $delimitadortexto.rtrim(str_replace(['<br />', '<br/>', '<br>'], ', ', strip_tags($col, '<br>')), " \t\n\r\0\x0B,").$delimitadortexto;
+                $col = $enclosure.rtrim(str_replace(['<br />', '<br/>', '<br>'], ', ', strip_tags($col, '<br>')), " \t\n\r\0\x0B,").$enclosure;
             }
-            echo implode($separador, $row),"\r\n";
+            echo implode($delimiter, $row),"\r\n";
             unset($row);
         }
         unset($data);
@@ -89,19 +91,20 @@ final class Utility_Spreadsheet_CSV
      * Crea un archivo CSV a partir de un arreglo guardándolo en el sistema de archivos
      * @param data Arreglo utilizado para generar la planilla
      * @param archivo Nombre del archivo que se debe generar
-     * @param separador separador a utilizar para diferenciar entre una columna u otra
+     * @param delimiter separador a utilizar para diferenciar entre una columna u otra
+     * @param enclosure Un caracter para rodear el dato
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2016-01-29
      */
-    public static function save($data, $archivo, $separador = null, $delimitadortexto = '"')
+    public static function save($data, $archivo, $delimiter = null, $enclosure = '"')
     {
-        $separador = self::setDelimiter($separador);
+        $delimiter = self::setDelimiter($delimiter);
         $fd = fopen($archivo, 'w');
         foreach($data as &$row) {
             foreach($row as &$col) {
                 $col = rtrim(str_replace('<br />', ', ', strip_tags($col, '<br>')), " \t\n\r\0\x0B,");
             }
-            fputcsv($fd, $row, $separador, $delimitadortexto);
+            fputcsv($fd, $row, $delimiter, $enclosure);
             unset($row);
         }
         fclose($fd);
@@ -110,14 +113,14 @@ final class Utility_Spreadsheet_CSV
     /**
      * Método que determina el delimitador que se deberá usar para trabajar con
      * el archivo CSV
-     * @param separador Delimitador en caso que se quiera tratar de forzar uno
+     * @param delimiter Delimitador en caso que se quiera tratar de forzar uno
      * @return Delimitador que se debe usar, podría ser: el forzado, el configurado en la APP o el por defecto (',')
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2015-05-29
      */
-    private static function setDelimiter($separador = null)
+    private static function setDelimiter($delimiter = null)
     {
-        if ($separador!==null) return $separador;
+        if ($delimiter!==null) return $delimiter;
         $delimiter = \sowerphp\core\Configure::read('spreadsheet.csv.delimiter');
         return $delimiter ? $delimiter : ',';
     }

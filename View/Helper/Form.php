@@ -263,7 +263,9 @@ class View_Helper_Form
         }
         // limpiar valor del campo
         if ($config['type']!='div' and $config['sanitize'] and isset($config['value'][0]) and !is_array($config['value'])) {
-            $config['value'] = htmlentities(trim(strip_tags($config['value'])));
+            $config['value'] = trim(strip_tags($config['value']));
+            if (!in_array($config['type'], ['submit', 'button']))
+                $config['value'] = htmlentities($config['value']);
         }
         // generar campo, formatear y entregar
         return $this->_formatear($this->{'_'.$config['type']}($config), $config);

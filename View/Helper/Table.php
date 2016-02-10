@@ -141,7 +141,7 @@ class View_Helper_Table
      * Método que genera la tabla en HTML a partir de un arreglo
      * @param table Tabla que se generará
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-12-10
+     * @version 2016-02-10
      */
     public function generate ($table, $thead = 1)
     {
@@ -157,9 +157,9 @@ class View_Helper_Table
             $buffer = '<div>'."\n";
         // Crear iconos para exportar y ocultar/mostrar tabla
         if ($this->_id!==null) {
-            $buffer .= '<div class="tableIcons" style="text-align:right">'."\n";
-            $buffer .= $this->export ($table);
-            $buffer .= $this->showAndHide ();
+            $buffer .= '<div class="tableIcons hidden-print" style="text-align:right">'."\n";
+            $buffer .= $this->export($table);
+            $buffer .= $this->showAndHide();
             $buffer .= '</div>'."\n";
         }
         // Iniciar tabla

@@ -29,7 +29,7 @@ define ('K_PATH_IMAGES', '');
 /**
  * Clase para generar PDFs
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2015-04-18
+ * @version 2016-02-17
  */
 class View_Helper_PDF extends \TCPDF
 {
@@ -52,8 +52,8 @@ class View_Helper_PDF extends \TCPDF
             'width' => 186,
             'height' => 6,
             'align' => 'C',
-            'headerbackground' => array (0,0,0),
-            'headercolor' => array(255, 255,255),
+            'headerbackground' => [238, 238, 238],
+            'headercolor' => [102, 102, 102],
             'bodybackground' => array(224, 235, 255),
             'bodycolor' => array(0,0,0),
             'colorchange' => true,
@@ -231,7 +231,7 @@ class View_Helper_PDF extends \TCPDF
      * Agregar una tabla generada a través de código HTML al PDF
      * @todo Utilizar las opciones para definir estilo de la tabla HTML
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2015-07-07
+     * @version 2016-02-17
      */
     private function addHTMLTable ($headers, $data, $options = array())
     {
@@ -247,7 +247,7 @@ class View_Helper_PDF extends \TCPDF
         foreach ($headers as &$col) {
             $width = ($w and isset($w[$i])) ? (';width:'.$w[$i].'mm') : '';
             $align = isset($a[$i]) ? $a[$i] : 'center';
-            $buffer .= '<th style="background-color:#000;color:#fff;text-align:'.$align.$width.'"><strong>'.strip_tags($col).'</strong></th>';
+            $buffer .= '<th style="background-color:#eee;color:#666;text-align:'.$align.$width.'"><strong>'.strip_tags($col).'</strong></th>';
             $i++;
         }
         $buffer .= '</tr>';

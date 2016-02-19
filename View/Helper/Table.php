@@ -26,7 +26,7 @@ namespace sowerphp\general;
 /**
  * Helper para la creación de tablas en HTML
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2014-07-09
+ * @version 2016-02-18
  */
 class View_Helper_Table
 {
@@ -35,7 +35,7 @@ class View_Helper_Table
     private $_class = 'table table-striped'; ///< Atributo class para la tabla
     private $_export = false; ///< Crear o no datos para exportar
     private $_exportRemove = array(); ///< Datos que se removeran al exportar
-    private $_display = true; ///< Indica si se debe o no mostrar la tabla
+    private $_display = null; ///< Indica si se debe o no mostrar la tabla
     private $_height = null; ///< Altura de la tabla en pixeles
     private $_colsWidth = []; ///< Ancho de las columnas en pixeles
 
@@ -45,10 +45,9 @@ class View_Helper_Table
      * @param id Identificador de la tabla
      * @param export Si se desea poder exportar los datos de la tabla
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-03-26
+     * @version 2016-02-18
      */
-    public function __construct ($table = null, $id = null, $export = false,
-                                                            $display = true)
+    public function __construct($table = null, $id = null, $export = false, $display = null)
     {
         // si se paso una tabla se genera directamente y se imprime
         // esto evita una línea de programación em muchos casos
@@ -213,9 +212,9 @@ class View_Helper_Table
      * Crea los datos de la sesión de la tabla para poder exportarla
      * @param table Tabla que se está exportando
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2016-01-17
+     * @version 2016-02-18
      */
-    private function export (&$table)
+    private function export(&$table)
     {
         // si no se debe exportar retornar vacío
         if (!$this->_export)
@@ -255,10 +254,14 @@ class View_Helper_Table
         // guardar en la caché
         $buffer = '';
         if ((new \sowerphp\core\Cache())->set('session.'.session_id().'.export.'.$this->_id, $data)) {
-            $extensions = array('ods', 'xls', 'csv', 'pdf', 'xml', 'json');
-            foreach ($extensions as $e) {
-                $buffer .= '<a href="'._BASE.'/exportar/'.$e.'/'.$this->_id.'" title="Exportar a '.strtoupper($e).'"><img src="'._BASE.'/img/icons/16x16/files/'.$e.'.png" alt="" /></a> ';
+            $buffer .= '<div class="btn-group">';
+            $buffer .= '<button type="button" class="btn btn-default btn-default dropdown-toggle" data-toggle="dropdown" title="Guardar tabla como..."><i class="fa fa-download"></i> Guardar como...</button>';
+            $buffer .= '<ul class="dropdown-menu slidedown">';
+            $extensions = array('ods'=>'OpenDocument', 'csv'=>'Planilla CSV', 'xls'=>'Planilla Excel', 'pdf'=>'Documento PDF', 'xml'=>'Archivo XML', 'json'=>'Archivo JSON');
+            foreach ($extensions as $e => $n) {
+                $buffer .= '<li><a href="'._BASE.'/exportar/'.$e.'/'.$this->_id.'">'.$n.'</a></li>';
             }
+            $buffer .= '</ul></div>'."\n";
         }
         return $buffer;
     }
@@ -266,19 +269,22 @@ class View_Helper_Table
     /**
      * Botones para mostrar y ocultar la tabla (+/-)
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-05-14
+     * @version 2016-02-18
      */
-    public function showAndHide ()
+    public function showAndHide()
     {
-        $buffer = '<a onclick="$(\'#'.$this->_id.'\').show(); $(\'#tableShow'.$this->_id.'\').hide(); $(\'#tableHide'.$this->_id.'\').show();" id="tableShow'.$this->_id.'" title="Mostrar tabla"><img src="'._BASE.'/img/icons/16x16/actions/more.gif" alt="" /></a>';
-        $buffer .= '<a onclick="$(\'#'.$this->_id.'\').hide(); $(\'#tableHide'.$this->_id.'\').hide(); $(\'#tableShow'.$this->_id.'\').show();" id="tableHide'.$this->_id.'" title="Ocultar tabla"><img src="'._BASE.'/img/icons/16x16/actions/less.gif" alt="" /></a>';
-        $buffer .= '<script type="text/javascript"> $(function() { ';
-        if ($this->_display) {
-            $buffer .= '$(\'#tableShow'.$this->_id.'\').hide();';
-        } else {
-            $buffer .= '$(\'#'.$this->_id.'\').hide(); $(\'#tableHide'.$this->_id.'\').hide();';
+        $buffer = '';
+        if ($this->_display!==null) {
+            $buffer .= '<button type="button" class="btn btn-default btn-default" onclick="$(\'#'.$this->_id.'\').show(); $(\'#tableShow'.$this->_id.'\').hide(); $(\'#tableHide'.$this->_id.'\').show();" id="tableShow'.$this->_id.'" title="Mostrar tabla"><i class="fa fa-plus-square-o"></i></button>';
+            $buffer .= '<button type="button" class="btn btn-default btn-default" onclick="$(\'#'.$this->_id.'\').hide(); $(\'#tableHide'.$this->_id.'\').hide(); $(\'#tableShow'.$this->_id.'\').show();" id="tableHide'.$this->_id.'" title="Ocultar tabla"><i class="fa fa-minus-square-o"></i></button>';
+            $buffer .= '<script type="text/javascript"> $(function() { ';
+            if ($this->_display) {
+                $buffer .= '$(\'#tableShow'.$this->_id.'\').hide();';
+            } else {
+                $buffer .= '$(\'#'.$this->_id.'\').hide(); $(\'#tableHide'.$this->_id.'\').hide();';
+            }
+            $buffer .= ' }); </script>';
         }
-        $buffer .= ' }); </script>';
         return $buffer;
     }
 

@@ -413,7 +413,7 @@ class View_Helper_Form
     private function _js ($config, $js = true)
     {
         // configuración por defecto
-        $config = array_merge(array('titles'=>array(), 'width'=>'100%', 'accesskey'=>'+'), $config);
+        $config = array_merge(['titles'=>[], 'width'=>'100%', 'accesskey'=>'+', 'callback'=>'undefined'], $config);
         // respaldar formato
         $formato = $this->_style;
         $this->_style = null;
@@ -487,7 +487,7 @@ class View_Helper_Form
             $buffer .= '<th>'.$title.'</th>';
         }
         if ($js) {
-            $buffer .= '<th style="width:1px"><a href="javascript:Form.addJS(\''.$config['id'].'\')" title="Agregar ['.$config['accesskey'].']" accesskey="'.$config['accesskey'].'"><span class="fa fa-plus btn btn-default" aria-hidden="true"></span></a></th>';
+            $buffer .= '<th style="width:1px"><a href="javascript:Form.addJS(\''.$config['id'].'\', undefined, '.$config['callback'].')" title="Agregar ['.$config['accesskey'].']" accesskey="'.$config['accesskey'].'"><span class="fa fa-plus btn btn-default" aria-hidden="true"></span></a></th>';
         }
         $buffer .= '</tr></thead>';
         $buffer .= '<tbody>'.$values.'</tbody>';

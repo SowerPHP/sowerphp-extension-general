@@ -353,7 +353,7 @@ class View_Helper_Form
         } else {
             $attr = ' onmouseover="$(this).datepicker('.str_replace('"', '\'', json_encode($config['datepicker'])).')"';
         }
-        $buffer .= '<input type="text" name="'.$config['name'].'" value="'.$config['value'].'"'.$attr.' class="'.$config['class'].'" placeholder="'.$config['placeholder'].'" '.$config['attr'].$config['popover'].' />';
+        $buffer .= '<input type="text" name="'.$config['name'].'" value="'.$config['value'].'"'.$attr.' class="'.$config['class'].'" placeholder="'.$config['placeholder'].'" '.$config['attr'].$config['popover'].' autocomplete="off" />';
         return $buffer;
     }
 

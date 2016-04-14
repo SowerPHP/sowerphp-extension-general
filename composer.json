@@ -1,10 +1,10 @@
 {
     "name": "sowerphp/general",
-    "description": "Extensión: general",
+    "description": "Extensión general",
     "type": "library",
     "keywords": ["sowerphp", "extension"],
     "homepage": "http://sowerphp.org",
-    "license": "GPL-3.0+",
+    "license": "AGPL-3.0+",
     "authors": [
         {
             "name": "Equipo de SowerPHP",

@@ -26,7 +26,7 @@ namespace sowerphp\general;
 /**
  * Clase para trabajar con fechas
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2015-07-20
+ * @version 2016-05-27
  */
 class Utility_Date
 {
@@ -333,6 +333,23 @@ class Utility_Date
     public static function fromSerialNumber($n)
     {
         return date('Y-m-d', ($n - 25568) * 86400);
+    }
+
+    /**
+     * Método que obtiene un periodo (mes) siguiente a uno específicado
+     * @param periodo Período para el cual se quiere saber el siguiente o =null para actual
+     * @return Periodo en formato YYYYMM
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2016-05-27
+     */
+    public static function nextPeriod($periodo = null)
+    {
+        if (!$periodo)
+            $periodo = date('Ym');
+        $periodo_siguiente = $periodo + 1;
+        if (substr($periodo_siguiente, 4)=='13')
+            $periodo_siguiente = $periodo_siguiente +100 - 12;
+        return $periodo_siguiente;
     }
 
     /**

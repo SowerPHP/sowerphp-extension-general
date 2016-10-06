@@ -26,7 +26,7 @@ namespace sowerphp\general;
 /**
  * Helper para la creación de tablas en HTML
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2016-02-18
+ * @version 2016-10-06
  */
 class View_Helper_Table
 {
@@ -38,6 +38,7 @@ class View_Helper_Table
     private $_display = null; ///< Indica si se debe o no mostrar la tabla
     private $_height = null; ///< Altura de la tabla en pixeles
     private $_colsWidth = []; ///< Ancho de las columnas en pixeles
+    private $_showEmptyCols = true; ///< Indica si se deben mostrar las columnas vacías de la tabla
 
     /**
      * Constructor de la clase para crear una tabla
@@ -137,16 +138,32 @@ class View_Helper_Table
     }
 
     /**
+     * Asignar si se deben o no mostrar las columnas vacías de la tabla
+     * @param show =true se mostrarán todas las columnas =false sólo aquellas donde exista al menos una fila con un dato
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2016-10-06
+     */
+    public function setShowEmptyCols($show = true)
+    {
+        $this->_showEmptyCols = $show;
+    }
+
+    /**
      * Método que genera la tabla en HTML a partir de un arreglo
      * @param table Tabla que se generará
+     * @todo Programar opción para no mostrar todas las columnas
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2016-02-10
+     * @version 2016-10-06
      */
     public function generate ($table, $thead = 1)
     {
         // si el arreglo esta vacio o no es arreglo retornar nada
         if (!is_array($table) || !count($table)) {
             return null;
+        }
+        // si no se debeb mostrar las columnas vacías se quitan del arreglo de datos
+        if (!$this->_showEmptyCols) {
+            // TODO
         }
         // Utilizar buffer para el dibujado, así lo retornaremos en vez
         // de imprimir directamente

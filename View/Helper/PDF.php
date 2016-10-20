@@ -121,13 +121,13 @@ class View_Helper_PDF extends \TCPDF
         parent::Header();
         $this->SetFont('helvetica', 'B', 10);
         $link = 'http'.(isset($_SERVER['HTTPS'])?'s':null).'://'.$_SERVER['HTTP_HOST'];
-        $this->Texto($link, 15, 20+$this->margin_top, 'R', 185, $link);
+        $this->Texto($link, null, 20+$this->margin_top, 'R', null, $link);
     }
 
     /**
      * Método que sobreescribe el pie de página del PDF
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-10-20
+     * @version 2016-10-19
      */
     public function Footer()
     {
@@ -135,7 +135,7 @@ class View_Helper_PDF extends \TCPDF
         parent::Footer();
         $this->SetY($this->GetY());
         $this->SetFont('helvetica', 'B', 6);
-        $this->Texto('Documento generado: '. date('Y-m-d H:i'));
+        $this->Texto('Documento generado el '. date('d/m/Y').' a las '.date('H:i'));
     }
 
     /**

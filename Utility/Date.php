@@ -373,17 +373,18 @@ class Utility_Date
      * Método que obtiene la siguiente fecha a partir de una fecha y una frecuencia
      * @param fecha Fecha actual a la que se quiere obtener la siguiente
      * @param tiempo Tiempo que se agregará a la fecha actual: A:año, M:mes, S:semana, D:día
+     * @param cantidad Cantidad de 'frecuencia' a agregar
      * @return Nueva fecha en formato YYYY-MM-DD
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2016-12-19
+     * @version 2016-12-20
      */
-    public static function getNext($fecha = null, $tiempo = 'M', $cantidad = 1)
+    public static function getNext($fecha = null, $tiempo = 'M', $cantidad = 1, $operacion = '+')
     {
         if (!$fecha)
             $fecha = date('Y-m-d');
         if ($tiempo=='A') {
             list($y, $m, $d) = explode('-', $fecha);
-            $y += $cantidad;
+            $y = $operacion=='+' ? ($y+$cantidad) : ($y-$cantidad);
             if ($m=='02' and $d==29)
                 $d = 28;
             return $y.'-'.$m.'-'.$d;
@@ -392,7 +393,10 @@ class Utility_Date
             list($y, $m, $d) = explode('-', $fecha);
             $siguientePeriodo = $y.$m;
             for ($i=0; $i<$cantidad; $i++) {
-                $siguientePeriodo = self::nextPeriod($siguientePeriodo);
+                if ($operacion=='+')
+                    $siguientePeriodo = self::nextPeriod($siguientePeriodo);
+                else
+                    $siguientePeriodo = self::previousPeriod($siguientePeriodo);
             }
             $siguienteFecha = self::normalize($siguientePeriodo.$d);
             list($y, $m, $d) = explode('-', $siguienteFecha);
@@ -403,16 +407,33 @@ class Utility_Date
             return $y.'-'.$m.'-'.$d;
         }
         else if ($tiempo=='S') {
-            return self::getNext($fecha, 'D', 7*$cantidad);
+            return self::getNext($fecha, 'D', 7*$cantidad, $operacion);
         }
         else if ($tiempo=='D') {
             $date = new \DateTime($fecha);
-            $date->add(new \DateInterval('P'.$cantidad.'D'));
+            if ($operacion=='+')
+                $date->add(new \DateInterval('P'.$cantidad.'D'));
+            else
+                $date->sub(new \DateInterval('P'.$cantidad.'D'));
             return $date->format('Y-m-d');
         }
         else {
             return false;
         }
+    }
+
+    /**
+     * Método que obtiene la anterior fecha a partir de una fecha y una frecuencia
+     * @param fecha Fecha actual a la que se quiere obtener la anterior
+     * @param tiempo Tiempo que se quitará a la fecha actual: A:año, M:mes, S:semana, D:día
+     * @param cantidad Cantidad de 'frecuencia' a quitar
+     * @return Nueva fecha en formato YYYY-MM-DD
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2016-12-20
+     */
+    public static function getPrevious($fecha = null, $tiempo = 'M', $cantidad = 1)
+    {
+        return self::getNext($fecha, $tiempo, $cantidad, '-');
     }
 
 }

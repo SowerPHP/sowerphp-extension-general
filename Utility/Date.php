@@ -370,6 +370,31 @@ class Utility_Date
     }
 
     /**
+     * Método que calcula cuantos meses han pasado entre dos fecha
+     * @param from Fechas desde cuando contar
+     * @param to Fecha hasta cual contar
+     * @return Meses que han pasado entre las fechas
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @author http://stackoverflow.com/a/4233624
+     * @version 2017-01-10
+     */
+    public static function countMonths($from, $to = null)
+    {
+        if (!$to) {
+            $to = date('Y-m-d');
+        }
+        if (is_numeric($from)) {
+            $from = self::normalize($from.'01');
+        }
+        if (is_numeric($to)) {
+            $to = self::normalize($to.'01');
+        }
+        $d1 = new \DateTime($from);
+        $d2 = new \DateTime($to);
+        return $d1->diff($d2)->m + ($d1->diff($d2)->y*12);
+    }
+
+    /**
      * Método que obtiene la siguiente fecha a partir de una fecha y una frecuencia
      * @param fecha Fecha actual a la que se quiere obtener la siguiente
      * @param tiempo Tiempo que se agregará a la fecha actual: A:año, M:mes, S:semana, D:día

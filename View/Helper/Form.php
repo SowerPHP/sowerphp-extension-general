@@ -386,7 +386,7 @@ class View_Helper_Form
                 $key = array_shift($value);
                 $value = array_shift($value);
             }
-            $buffer .= '<option value="'.$key.'"'.($config['value']==$key?' selected="selected"':'').'>'.$value.'</option>';
+            $buffer .= '<option value="'.$key.'"'.((string)$config['value']==(string)$key?' selected="selected"':'').'>'.$value.'</option>';
         }
         $buffer .= '</select>';
         return $buffer;

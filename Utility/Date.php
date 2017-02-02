@@ -370,6 +370,21 @@ class Utility_Date
     }
 
     /**
+     * Método que entrega el último día de un período
+     * @return Último día del período
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2017-02-01
+     */
+    public static function lastDayPeriod($periodo = null)
+    {
+        if (!$periodo)
+            $periodo = date('Ym');
+        $periodoSiguiente = self::nextPeriod($periodo);
+        $primerDia = self::normalize($periodoSiguiente.'01');
+        return self::getPrevious($primerDia, 'D', 1);
+    }
+
+    /**
      * Método que calcula cuantos meses han pasado entre dos fecha
      * @param from Fechas desde cuando contar
      * @param to Fecha hasta cual contar

@@ -116,11 +116,12 @@ class Utility_File
      * @return Arreglo con los nombres de los archivos y/o directorios
      * @todo Selección de sólo algunos archivos de la carpeta
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2014-10-01
+     * @version 2017-03-15
      */
     public static function browseDirectory($dir)
     {
         $filesAux = scandir($dir);
+        $files = [];
         foreach($filesAux as &$file) {
             if($file[0]!='.') $files[] = $file;
         }

@@ -285,7 +285,7 @@ class Utility_File
      * @param options Arreglo con opciones para comprmir (format, download, delete)
      * @todo Preparar datos si se pasa un arreglo
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2016-02-04
+     * @version 2017-03-15
      */
     public static function compress($file, $options = [])
     {
@@ -297,6 +297,7 @@ class Utility_File
             'commands' => [
                 'gz' => 'gzip --keep :in',
                 'tar.gz' => 'tar czf :in.tar.gz :in',
+                'tgz' => 'tar czf :in.tgz :in',
                 'tar' => 'tar cf :in.tar :in',
                 'bz2' => 'bzip2 --keep :in',
                 'tar.bz2' => 'tar cjf :in.tar.bz2 :in',

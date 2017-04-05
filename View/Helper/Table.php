@@ -153,7 +153,7 @@ class View_Helper_Table
      * @param table Tabla que se generará
      * @todo Programar opción para no mostrar todas las columnas
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2016-10-06
+     * @version 2017-04-05
      */
     public function generate ($table, $thead = 1)
     {
@@ -198,11 +198,13 @@ class View_Helper_Table
         // extraer otras filas que son parte de la cabecera
         for ($i=1; $i<$thead; ++$i) {
             $titles = array_shift($table);
-            $buffer .= "\t\t".'<tr>'."\n";
-            foreach ($titles as &$col) {
-                $buffer .= "\t\t\t".'<td>'.$col.'</td>'."\n";
+            if ($titles) {
+                $buffer .= "\t\t".'<tr>'."\n";
+                foreach ($titles as &$col) {
+                    $buffer .= "\t\t\t".'<td>'.$col.'</td>'."\n";
+                }
+                $buffer .= "\t\t".'</tr>'."\n";
             }
-            $buffer .= "\t\t".'</tr>'."\n";
         }
         $buffer .= "\t".'</thead>'."\n";
         // Definir datos de la tabla

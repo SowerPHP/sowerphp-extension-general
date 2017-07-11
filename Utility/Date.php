@@ -416,7 +416,7 @@ class Utility_Date
      * @param cantidad Cantidad de 'frecuencia' a agregar
      * @return Nueva fecha en formato YYYY-MM-DD
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2016-12-20
+     * @version 2017-07-10
      */
     public static function getNext($fecha = null, $tiempo = 'M', $cantidad = 1, $operacion = '+')
     {
@@ -456,6 +456,9 @@ class Utility_Date
             else
                 $date->sub(new \DateInterval('P'.$cantidad.'D'));
             return $date->format('Y-m-d');
+        }
+        else if (is_numeric($tiempo)) {
+            return self::getNext($fecha, 'M', (int)$tiempo, $operacion);
         }
         else {
             return false;

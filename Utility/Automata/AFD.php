@@ -26,7 +26,7 @@ namespace sowerphp\general;
 /**
  * Clase para trabajar con un autómata finito determinístico (AFD)
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2014-12-19
+ * @version 2017-09-13
  */
 
 class Utility_Automata_AFD
@@ -36,6 +36,7 @@ class Utility_Automata_AFD
     private $q0; ///< Estado inicial del autómata
     private $F; ///< Conjunto de estados finales
     private $status; ///< Estado en que se detuvo el AFD
+    private $input; ///< Entrada en la que se detuvo el AFD
 
     /**
      * Constructor de la clase
@@ -54,7 +55,7 @@ class Utility_Automata_AFD
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2014-03-30
      */
-    public function __construct ($transitions = array(), $F = array(), $q0 = 0)
+    public function __construct($transitions = array(), $F = array(), $q0 = 0)
     {
         $this->transitions = $transitions;
         $this->F = $F;
@@ -68,12 +69,13 @@ class Utility_Automata_AFD
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2013-08-15
      */
-    public function run ($input)
+    public function run($input)
     {
         $estado = $this->q0;
         $simbols = is_array($input) ? count($input) : strlen($input);
         for ($i=0; $i<$simbols; ++$i) {
             if (isset($this->transitions[$estado][$input[$i]])) {
+                $this->input = $input[$i];
                 $estado = $this->transitions[$estado][$input[$i]];
             }
         }
@@ -87,9 +89,20 @@ class Utility_Automata_AFD
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2013-08-17
      */
-    public function getFinalState ()
+    public function getFinalState()
     {
         return $this->status;
+    }
+
+    /**
+     * Obtener la entrada final en que se detuvo el AFD
+     * @return Entrega el estado donde se detuvo el AFD después de correr
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2017-09-13
+     */
+    public function getFinalInput()
+    {
+        return $this->input;
     }
 
     /**

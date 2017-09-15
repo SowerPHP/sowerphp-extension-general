@@ -378,17 +378,23 @@ class Utility_File
      * @warning Sólo extrae un archivo del primer nivel (fuera de directorios)
      * @todo Extracción de un fichero que este en subdirectorios
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2010-07-15
+     * @version 2017-09-14
      */
-    public static function ezip($archivoZip, $archivoBuscado)
+    public static function ezip($archivoZip, $archivoBuscado = null)
     {
         $zip = zip_open($archivoZip);
         if (is_resource($zip)) {
             // buscar contenido
             do {
                 $entry = zip_read($zip);
+                if ($entry===false) {
+                    continue;
+                }
                 $name = zip_entry_name($entry);
-            } while ($entry && $name != $archivoBuscado);
+            } while ($entry && $name != $archivoBuscado && $archivoBuscado!==null);
+            if ($entry===false) {
+                return false;
+            }
             // abrir contenido
             zip_entry_open($zip, $entry, 'r');
             $size = zip_entry_filesize($entry);
@@ -401,7 +407,6 @@ class Utility_File
         } else {
             $archivo = false;
         }
-        unset($archivoZip, $archivoBuscado, $zip, $entry, $name, $size, $entry_content);
         return $archivo;
     }
 

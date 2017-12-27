@@ -294,8 +294,8 @@ class View_Helper_Table
     {
         $buffer = '';
         if ($this->_display!==null) {
-            $buffer .= '<button type="button" class="btn btn-default btn-default" onclick="$(\'#'.$this->_id.'\').show(); $(\'#tableShow'.$this->_id.'\').hide(); $(\'#tableHide'.$this->_id.'\').show();" id="tableShow'.$this->_id.'" title="Mostrar tabla"><i class="fa fa-plus-square-o"></i></button>';
-            $buffer .= '<button type="button" class="btn btn-default btn-default" onclick="$(\'#'.$this->_id.'\').hide(); $(\'#tableHide'.$this->_id.'\').hide(); $(\'#tableShow'.$this->_id.'\').show();" id="tableHide'.$this->_id.'" title="Ocultar tabla"><i class="fa fa-minus-square-o"></i></button>';
+            $buffer .= '<button type="button" class="btn btn-default btn-default" onclick="$(\'#'.$this->_id.'\').show(); $(\'#tableShow'.$this->_id.'\').hide(); $(\'#tableHide'.$this->_id.'\').show();" id="tableShow'.$this->_id.'" title="Mostrar tabla"><i class="far fa-plus-square"></i></button>';
+            $buffer .= '<button type="button" class="btn btn-default btn-default" onclick="$(\'#'.$this->_id.'\').hide(); $(\'#tableHide'.$this->_id.'\').hide(); $(\'#tableShow'.$this->_id.'\').show();" id="tableHide'.$this->_id.'" title="Ocultar tabla"><i class="far fa-minus-square"></i></button>';
             $buffer .= '<script type="text/javascript"> $(function() { ';
             if ($this->_display) {
                 $buffer .= '$(\'#tableShow'.$this->_id.'\').hide();';

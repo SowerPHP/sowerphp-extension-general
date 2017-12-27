@@ -418,8 +418,8 @@ class View_Helper_Form
         $formato = $this->_style;
         $this->_style = null;
         // determinar inputs
-        //$delete = '<td><a href="" onclick="Form.delJS(this); return false" onblur="Form.addJS(\''.$config['id'].'\', this)" title="Eliminar"><span class="fa fa-remove btn btn-default" aria-hidden="true"></span></a></td>'; // WARNING: onblur no funcionca correctamente con onclick en chrome
-        $delete = '<td><a href="" onclick="Form.delJS(this); return false" title="Eliminar"><span class="fa fa-remove btn btn-default" aria-hidden="true"></span></a></td>';
+        //$delete = '<td><a href="" onclick="Form.delJS(this); return false" onblur="Form.addJS(\''.$config['id'].'\', this)" title="Eliminar"><span class="fas fa-times btn btn-default" aria-hidden="true"></span></a></td>'; // WARNING: onblur no funcionca correctamente con onclick en chrome
+        $delete = '<td><a href="" onclick="Form.delJS(this); return false" title="Eliminar"><span class="fas fa-times btn btn-default" aria-hidden="true"></span></a></td>';
         $inputs = '<tr>';
         foreach ($config['inputs'] as $input) {
             $input['name'] = $input['name'].'[]';

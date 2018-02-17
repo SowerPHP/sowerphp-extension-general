@@ -1,5 +1,5 @@
-Extensión general
-=================
+SowerPHP: extensión general
+===========================
 
 [![Dependency Status](https://www.versioneye.com/user/projects/56b439ac0a0ff5003b975099/badge.svg)](https://www.versioneye.com/user/projects/56b439ac0a0ff5003b975099)
 [![License](https://poser.pugx.org/sowerphp/general/license)](https://packagist.org/packages/sowerphp/general)

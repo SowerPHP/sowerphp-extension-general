@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9187f4c7e45876e6295799fe589b388d",
-    "content-hash": "1cfa438c5c12fd2402c6656fb26d09c6",
+    "hash": "07312e3d1fc3d37c1d81e1dedb92c77f",
+    "content-hash": "c61eb46fbb86df47fa790f11fed1125e",
     "packages": [
         {
             "name": "clue/graph",
@@ -277,6 +277,7 @@
                 "xls",
                 "xlsx"
             ],
+            "abandoned": "phpoffice/phpspreadsheet",
             "time": "2015-05-01 07:00:55"
         },
         {

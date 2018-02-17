@@ -1,22 +1,4 @@
 {
-    "name": "sowerphp/general",
-    "description": "Extensión general",
-    "type": "library",
-    "keywords": ["sowerphp", "extension"],
-    "homepage": "http://sowerphp.org",
-    "license": "AGPL-3.0+",
-    "authors": [
-        {
-            "name": "Equipo de SowerPHP",
-            "homepage": "https://github.com/sowerphp/extension-general/graphs/contributors"
-        }
-    ],
-    "support": {
-        "issues": "https://github.com/sowerphp/extension-general/issues",
-        "forum": "http://stackoverflow.com/tags/sowerphp",
-        "irc": "irc://irc.freenode.org/#sowerphp",
-        "source": "https://github.com/sowerphp/extension-general"
-    },
     "config": {
         "vendor-dir": "Vendor"
     },

@@ -26,13 +26,27 @@ namespace sowerphp\general;
 /**
  * Clase para trabajar con fechas
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2016-05-27
+ * @version 2018-04-19
  */
 class Utility_Date
 {
 
     public static $dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
     public static $meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+    /**
+     * Método que valida si la fecha es o no válida según el formato
+     * @param date Fecha que se quiere validar
+     * @param format Formato que se quiere validar
+     * @return =true si la fecha está ok
+     * @author https://stackoverflow.com/a/13194398/3333009
+     * @version 2012-11-02
+     */
+    public static function check($date, $format = 'Y-m-d')
+    {
+        $dt = \DateTime::createFromFormat($format, $date);
+        return $dt !== false && !array_sum($dt->getLastErrors());
+    }
 
     /**
      * Método que suma días hábiles a una fecha

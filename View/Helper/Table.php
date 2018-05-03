@@ -153,7 +153,7 @@ class View_Helper_Table
      * @param table Tabla que se generará
      * @todo Programar opción para no mostrar todas las columnas
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2017-04-05
+     * @version 2018-05-03
      */
     public function generate ($table, $thead = 1)
     {
@@ -161,9 +161,33 @@ class View_Helper_Table
         if (!is_array($table) || !count($table)) {
             return null;
         }
-        // si no se debeb mostrar las columnas vacías se quitan del arreglo de datos
+        // si no se debe mostrar las columnas vacías se quitan del arreglo de datos
         if (!$this->_showEmptyCols) {
-            // TODO
+            $n_rows = count($table) - 1;
+            // contar las filas vacías en cada columna
+            $empty_cols = [];
+            for ($i=1; $i<=$n_rows; $i++) {
+                $col_count = 0;
+                foreach ($table[$i] as $col) {
+                    if (empty($col)) {
+                        if (!isset($empty_cols[$col_count])) {
+                            $empty_cols[$col_count] = 0;
+                        }
+                        $empty_cols[$col_count]++;
+                    }
+                    $col_count++;
+                }
+            }
+            // quitar columnas vacías
+            foreach ($table as $k_row => $row) {
+                $col_count = 0;
+                foreach ($row as $k_col => $col) {
+                    if (isset($empty_cols[$col_count]) and $empty_cols[$col_count]==$n_rows) {
+                        unset($table[$k_row][$k_col]);
+                    }
+                    $col_count++;
+                }
+            }
         }
         // Utilizar buffer para el dibujado, así lo retornaremos en vez
         // de imprimir directamente

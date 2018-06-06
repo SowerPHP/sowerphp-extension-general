@@ -66,14 +66,14 @@ final class Utility_Spreadsheet_CSV
      * @param delimiter separador a utilizar para diferenciar entre una columna u otra
      * @param enclosure Un caracter para rodear el dato
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2015-09-23
+     * @version 2018-06-06
      */
-    public static function generate ($data, $id, $delimiter = null, $enclosure = '"')
+    public static function generate($data, $id, $delimiter = null, $enclosure = '"', $extension = 'csv')
     {
         $delimiter = self::setDelimiter($delimiter);
         ob_clean();
         header('Content-type: text/csv');
-        header('Content-Disposition: attachment; filename='.$id.'.csv');
+        header('Content-Disposition: attachment; filename='.$id.'.'.$extension);
         header('Pragma: no-cache');
         header('Expires: 0');
         foreach($data as &$row) {

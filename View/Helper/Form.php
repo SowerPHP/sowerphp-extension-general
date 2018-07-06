@@ -458,8 +458,11 @@ class View_Helper_Form
             foreach ($config['values'] as $value) {
                 $values .= '<tr>';
                 foreach ($config['inputs'] as $input) {
+                    if (!isset($value[$input['name']])) {
+                        $value[$input['name']] = '';
+                    }
                     if (!is_array($value[$input['name']])) {
-                        $value[$input['name']] = ['value'=>isset($value[$input['name']]) ? $value[$input['name']] : ''];
+                        $value[$input['name']] = ['value'=>$value[$input['name']]];
                     }
                     $input = array_merge($input, $value[$input['name']]);
                     if (isset($input['type']) && $input['type']=='checkbox') {

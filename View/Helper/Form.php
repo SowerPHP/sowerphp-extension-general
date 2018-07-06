@@ -458,12 +458,14 @@ class View_Helper_Form
             foreach ($config['values'] as $value) {
                 $values .= '<tr>';
                 foreach ($config['inputs'] as $input) {
-                    if (isset($input['type']) && $input['type']=='checkbox')
-                        $input['checked'] = $value[$input['name']];
-                    else if (isset($value[$input['name']]))
-                        $input['value'] = $value[$input['name']];
-                    else
-                        $input['value'] = '';
+                    if (!is_array($value[$input['name']])) {
+                        $value[$input['name']] = ['value'=>isset($value[$input['name']]) ? $value[$input['name']] : ''];
+                    }
+                    $input = array_merge($input, $value[$input['name']]);
+                    if (isset($input['type']) && $input['type']=='checkbox') {
+                        $input['checked'] = $input['value'];
+                        unset($input['value']);
+                    }
                     $input['name'] = $input['name'].'[]';
                     $d = (isset($input['type']) && $input['type']=='hidden') ? ' style="display:none;"' : '';
                     $values .= '<td'.$d.'>'.rtrim($this->input($input)).'</td>';

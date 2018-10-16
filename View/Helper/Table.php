@@ -197,7 +197,7 @@ class View_Helper_Table
             $buffer = '<div>'."\n";
         // Crear iconos para exportar y ocultar/mostrar tabla
         if ($this->_id!==null) {
-            $buffer .= '<div class="tableIcons hidden-print" style="text-align:right">'."\n";
+            $buffer .= '<div class="tableIcons hidden-print text-right">'."\n";
             $buffer .= $this->export($table);
             $buffer .= $this->showAndHide();
             $buffer .= '</div>'."\n";
@@ -255,13 +255,14 @@ class View_Helper_Table
      * Crea los datos de la sesión de la tabla para poder exportarla
      * @param table Tabla que se está exportando
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2016-02-18
+     * @version 2018-10-15
      */
     private function export(&$table)
     {
         // si no se debe exportar retornar vacío
-        if (!$this->_export)
+        if (!$this->_export) {
             return '';
+        }
         // generar datos para la exportación
         $data = array();
         $nRow = 0;
@@ -297,14 +298,13 @@ class View_Helper_Table
         // guardar en la caché
         $buffer = '';
         if ((new \sowerphp\core\Cache())->set('session.'.session_id().'.export.'.$this->_id, $data)) {
-            $buffer .= '<div class="btn-group">';
-            $buffer .= '<button type="button" class="btn btn-default btn-default dropdown-toggle" data-toggle="dropdown" title="Guardar tabla como..."><i class="fa fa-download"></i> Guardar como...</button>';
-            $buffer .= '<ul class="dropdown-menu slidedown">';
+            $buffer = '<button type="button" class="btn btn-default btn-primary dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="dropdown_'.$this->_id.'" title="Guardar como..."><i class="fas fa-download fa-fw"></i> Guardar como...</button>';
+            $buffer .= '<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_'.$this->_id.'">';
             $extensions = array('ods'=>'OpenDocument', 'csv'=>'Planilla CSV', 'xls'=>'Planilla Excel', 'pdf'=>'Documento PDF', 'xml'=>'Archivo XML', 'json'=>'Archivo JSON');
             foreach ($extensions as $e => $n) {
-                $buffer .= '<li><a href="'._BASE.'/exportar/'.$e.'/'.$this->_id.'">'.$n.'</a></li>';
+                $buffer .= '<a href="'._BASE.'/exportar/'.$e.'/'.$this->_id.'" class="dropdown-item">'.$n.'</a>';
             }
-            $buffer .= '</ul></div>'."\n";
+            $buffer .= '</div>'."\n";
         }
         return $buffer;
     }
@@ -312,14 +312,14 @@ class View_Helper_Table
     /**
      * Botones para mostrar y ocultar la tabla (+/-)
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2016-02-18
+     * @version 2018-10-15
      */
     public function showAndHide()
     {
         $buffer = '';
         if ($this->_display!==null) {
-            $buffer .= '<button type="button" class="btn btn-default btn-default" onclick="$(\'#'.$this->_id.'\').show(); $(\'#tableShow'.$this->_id.'\').hide(); $(\'#tableHide'.$this->_id.'\').show();" id="tableShow'.$this->_id.'" title="Mostrar tabla"><i class="far fa-plus-square"></i></button>';
-            $buffer .= '<button type="button" class="btn btn-default btn-default" onclick="$(\'#'.$this->_id.'\').hide(); $(\'#tableHide'.$this->_id.'\').hide(); $(\'#tableShow'.$this->_id.'\').show();" id="tableHide'.$this->_id.'" title="Ocultar tabla"><i class="far fa-minus-square"></i></button>';
+            $buffer .= '<button type="button" class="btn btn-primary" onclick="$(\'#'.$this->_id.'\').show(); $(\'#tableShow'.$this->_id.'\').hide(); $(\'#tableHide'.$this->_id.'\').show();" id="tableShow'.$this->_id.'" title="Mostrar tabla"><i class="far fa-plus-square fa-fw"></i></button>';
+            $buffer .= '<button type="button" class="btn btn-primary" onclick="$(\'#'.$this->_id.'\').hide(); $(\'#tableHide'.$this->_id.'\').hide(); $(\'#tableShow'.$this->_id.'\').show();" id="tableHide'.$this->_id.'" title="Ocultar tabla"><i class="far fa-minus-square fa-fw"></i></button>';
             $buffer .= '<script type="text/javascript"> $(function() { ';
             if ($this->_display) {
                 $buffer .= '$(\'#tableShow'.$this->_id.'\').hide();';

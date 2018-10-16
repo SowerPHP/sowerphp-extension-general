@@ -1,18 +1,18 @@
+<?php $i=1; ?>
 <div class="page-header"><h1><?=$title?></h1></div>
-<div id="navpanel">
+<div class="card-deck">
 <?php foreach ($nav as $link=>&$info): ?>
-    <div class="pull-left">
-        <div class="icon">
-            <a href="<?=$_base,'/',$module,$link?>" title="<?=$info['desc']?>">
-<?php if (isset($info['icon'])) : ?>
-            <span class="<?=$info['icon']?>" aria-hidden="true" style="font-size:48px;margin-top:10px"></span>
-<?php else : ?>
-                <img src="<?=$_base,$info['imag']?>" alt="<?=$info['name']?>" align="middle" />
-<?php endif; ?>
-                <span><?=$info['name']?></span>
+    <div class="card mb-4 text-center">
+        <div class="card-body">
+            <a href="<?=$_base,'/',$module,$link?>" title="<?=$info['desc']?>" class="nav-link p-0">
+                <i class="<?=$info['icon']?> fa-3x" aria-hidden="true"></i>
+                <p class="card-text small"><?=$info['name']?></p>
             </a>
         </div>
     </div>
+<?php if ($i++==4) : ?>
+</div>
+<div class="card-deck">
+<?php endif; ?>
 <?php endforeach; ?>
 </div>
-<div style="clear:both;margin-top:2em">&nbsp;</div>

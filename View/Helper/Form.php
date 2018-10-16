@@ -158,35 +158,36 @@ class View_Helper_Form
         }
         // si se debe aplicar estilo horizontal
         else if ($config['style']=='horizontal') {
-            if ($config['help']!='')
-                $config['help'] = ' <p class="help-block"'.(isset($config['id'])?' id="'.$config['id'].'Help"':'').'>'.$config['help'].'</p>';
-            $buffer = '    <div class="form-group'.($config['notempty']?' required':'').'">'."\n";
+            if ($config['help']!='') {
+                $config['help'] = ' <p class="form-text text-muted"'.(isset($config['id'])?' id="'.$config['id'].'Help"':'').'>'.$config['help'].'</p>';
+            }
+            $buffer = '    <div class="form-group row'.($config['notempty']?' required':'').'">'."\n";
             if (!empty($config['label'])) {
-                if (isset($config['id'])) {
-                    $buffer .= '        <label for="'.$config['id'].'" class="col-sm-'.$this->_cols_label.' control-label">'.$config['label'].'</label>'."\n";
-                } else {
-                    $buffer .= '        <label class="col-sm-'.$this->_cols_label.' control-label">'.$config['label'].'</label>'."\n";
-                }
+                $required = $config['notempty'] ? '<span style="color:red"><strong>*</strong></span> ' : '';
+                $buffer .= '        <label'.(isset($config['id'])?(' for="'.$config['id'].'"'):'').' class="col-sm-'.$this->_cols_label.' control-label text-right">'.$required.$config['label'].'</label>'."\n";
             }
             if (!in_array($config['type'], ['submit'])) {
                 $buffer .= '        <div class="col-sm-'.(12-$this->_cols_label).'">'.$field.$config['help'].'</div>'."\n";
             } else {
-                $buffer .= '        <div class="col-sm-offset-'.$this->_cols_label.' col-sm-'.(12-$this->_cols_label).'">'.$field.$config['help'].'</div>'."\n";
+                $buffer .= '        <div class="offset-sm-'.$this->_cols_label.' col-sm-'.(12-$this->_cols_label).'">'.$field.$config['help'].'</div>'."\n";
             }
             $buffer .= '    </div>'."\n";
         }
         // si se debe aplicar estilo inline
         else if ($config['style']=='inline') {
             $buffer = '<div>';
-            if ($config['type']!='checkbox')
+            if ($config['type']!='checkbox') {
                 $buffer .= '<label class="sr-only"'.(isset($config['id'])?' for="'.$config['id'].'"':'').'>'.$config['label'].'</label>'."\n";
-            if (isset($config['addon-icon']))
-                $buffer .= '<div class="input-group-addon"><span class="fa fa-'.$config['addon-icon'].'" aria-hidden="true"></span></div>'."\n";
-            else if (isset($config['addon-text']))
+            }
+            if (isset($config['addon-icon'])) {
+                $buffer .= '<div class="input-group-addon"><i class="fa fa-'.$config['addon-icon'].'" aria-hidden="true"></i></div>'."\n";
+            } else if (isset($config['addon-text'])) {
                 $buffer .= '<div class="input-group-addon">'.$config['addon-text'].'</div>'."\n";
+            }
             $buffer .= $field;
-            if ($config['type']=='checkbox')
+            if ($config['type']=='checkbox') {
                 $buffer .= ' <label '.(isset($config['id'])?' for="'.$config['id'].'"':'').' style="font-weight:normal"'.$config['popover'].'>'.$config['label'].'</label>'."\n";
+            }
             $buffer .= '</div>'."\n";
         }
         // si se debe alinear
@@ -212,8 +213,9 @@ class View_Helper_Form
     public function input($config)
     {
         // transformar a arreglo en caso que no lo sea
-        if (!is_array($config))
+        if (!is_array($config)) {
             $config = array('name'=>$config, 'label'=>$config);
+        }
         // asignar configuración
         $config = array_merge(
             array(
@@ -231,23 +233,26 @@ class View_Helper_Form
                 'sanitize' => true,
             ), $config
         );
-        if (!isset($config['name']) && isset($config['id']))
+        if (!isset($config['name']) && isset($config['id'])) {
             $config['name'] = $config['id'];
+        }
         // si no se indicó un valor y existe uno por POST se usa
         if (!isset($config['value'][0]) && isset($config['name']) && isset($_POST[$config['name']])) {
             $config['value'] = $_POST[$config['name']];
         }
         // si label no existe se usa el nombre de la variable
-        if (!isset($config['label']))
+        if (!isset($config['label'])) {
             $config['label'] = isset($config['placeholder'][0]) ? $config['placeholder'] : $config['name'];
+        }
         // si se paso check se usa
         if ($config['check']) {
             // si no es arreglo se convierte
             if (!is_array($config['check'])) $config['check'] = explode(' ',$config['check']);
             // hacer implode, agregar check y meter al class
             $config['class'] = $config['class'].' check '.implode(' ', $config['check']);
-            if (in_array('notempty', $config['check']))
+            if (in_array('notempty', $config['check'])) {
                 $config['notempty'] = true;
+            }
         }
         // asignar class
         if (!in_array($config['type'], ['submit', 'checkbox', 'file', 'div'])) {
@@ -264,14 +269,15 @@ class View_Helper_Form
         // limpiar valor del campo
         if ($config['type']!='div' and $config['sanitize'] and isset($config['value'][0]) and !is_array($config['value'])) {
             $config['value'] = trim(strip_tags($config['value']));
-            if (!in_array($config['type'], ['submit', 'button']))
+            if (!in_array($config['type'], ['submit', 'button'])) {
                 $config['value'] = htmlentities($config['value']);
+            }
         }
         // generar campo, formatear y entregar
         return $this->_formatear($this->{'_'.$config['type']}($config), $config);
     }
 
-    private function _submit ($config)
+    private function _submit($config)
     {
         return $this->_button($config);
     }
@@ -279,7 +285,7 @@ class View_Helper_Form
     private function _button($config)
     {
         $id = isset($config['id']) ? ' id="'.$config['id'].'"' : '';
-        return '<button type="'.$config['type'].'" name="'.$config['name'].'"'.$id.' class="'.$config['class'].' btn btn-default" '.$config['attr'].'>'.$config['value'].'</button>';
+        return '<button type="'.$config['type'].'" name="'.$config['name'].'"'.$id.' class="'.$config['class'].' btn btn-primary" '.$config['attr'].'>'.$config['value'].'</button>';
     }
 
     private function _hidden ($config)
@@ -418,8 +424,7 @@ class View_Helper_Form
         $formato = $this->_style;
         $this->_style = null;
         // determinar inputs
-        //$delete = '<td><a href="" onclick="Form.delJS(this); return false" onblur="Form.addJS(\''.$config['id'].'\', this)" title="Eliminar"><span class="fas fa-times btn btn-default" aria-hidden="true"></span></a></td>'; // WARNING: onblur no funcionca correctamente con onclick en chrome
-        $delete = '<td><a href="" onclick="Form.delJS(this); return false" title="Eliminar"><span class="fas fa-times btn btn-default" aria-hidden="true"></span></a></td>';
+        $delete = '<td><a href="" onclick="Form.delJS(this); return false" title="Eliminar"><i class="fas fa-times fa-fw" aria-hidden="true"></i></a></td>';
         $inputs = '<tr>';
         foreach ($config['inputs'] as $input) {
             $input['name'] = $input['name'].'[]';
@@ -492,7 +497,7 @@ class View_Helper_Form
             $buffer .= '<th>'.$title.'</th>';
         }
         if ($js) {
-            $buffer .= '<th style="width:1px"><a href="javascript:Form.addJS(\''.$config['id'].'\', undefined, '.$config['callback'].')" title="Agregar ['.$config['accesskey'].']" accesskey="'.$config['accesskey'].'"><span class="fa fa-plus btn btn-default" aria-hidden="true"></span></a></th>';
+            $buffer .= '<th style="width:1px"><a href="javascript:Form.addJS(\''.$config['id'].'\', undefined, '.$config['callback'].')" title="Agregar ['.$config['accesskey'].']" accesskey="'.$config['accesskey'].'"><i class="fa fa-plus fa-fw" aria-hidden="true"></i></a></th>';
         }
         $buffer .= '</tr></thead>';
         $buffer .= '<tbody>'.$values.'</tbody>';

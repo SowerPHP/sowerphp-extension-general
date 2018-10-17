@@ -298,7 +298,7 @@ class View_Helper_Table
         // guardar en la caché
         $buffer = '';
         if ((new \sowerphp\core\Cache())->set('session.'.session_id().'.export.'.$this->_id, $data)) {
-            $buffer = '<button type="button" class="btn btn-default btn-primary dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="dropdown_'.$this->_id.'" title="Guardar como..."><i class="fas fa-download fa-fw"></i> Guardar como...</button>';
+            $buffer = '<button type="button" class="btn btn-default btn-primary dropdown-toggle mb-2" data-toggle="dropdown" role="button" aria-expanded="false" id="dropdown_'.$this->_id.'" title="Guardar como..."><i class="fas fa-download fa-fw"></i> Guardar como...</button>';
             $buffer .= '<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_'.$this->_id.'">';
             $extensions = array('ods'=>'OpenDocument', 'csv'=>'Planilla CSV', 'xls'=>'Planilla Excel', 'pdf'=>'Documento PDF', 'xml'=>'Archivo XML', 'json'=>'Archivo JSON');
             foreach ($extensions as $e => $n) {

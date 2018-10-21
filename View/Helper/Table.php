@@ -191,10 +191,7 @@ class View_Helper_Table
         }
         // Utilizar buffer para el dibujado, así lo retornaremos en vez
         // de imprimir directamente
-        if ($this->_height)
-            $buffer = '<div style="max-height:'.$this->_height.'px;overflow:auto">'."\n";
-        else
-            $buffer = '<div>'."\n";
+        $buffer = ($this->_height ? '<div style="max-height:'.$this->_height.'px;overflow:auto">' : '<div>')."\n";
         // Crear iconos para exportar y ocultar/mostrar tabla
         if ($this->_id!==null) {
             $buffer .= '<div class="tableIcons hidden-print text-right">'."\n";
@@ -204,7 +201,7 @@ class View_Helper_Table
         }
         // Iniciar tabla
         $buffer .= '<div style="width:100%;overflow:auto">'."\n";
-        $buffer .= '<table class="'.$this->_class.'"'.($this->_id?' id="'.$this->_id.'"':'').'>'."\n";
+        $buffer .= '<table style="width:100%" class="'.$this->_class.'"'.($this->_id?' id="'.$this->_id.'"':'').'>'."\n";
         // Definir cabecera de la tabla
         // títulos de columnas
         $buffer .= "\t".'<thead>'."\n";
@@ -298,7 +295,7 @@ class View_Helper_Table
         // guardar en la caché
         $buffer = '';
         if ((new \sowerphp\core\Cache())->set('session.'.session_id().'.export.'.$this->_id, $data)) {
-            $buffer = '<button type="button" class="btn btn-default btn-primary dropdown-toggle mb-2" data-toggle="dropdown" role="button" aria-expanded="false" id="dropdown_'.$this->_id.'" title="Guardar como..."><i class="fas fa-download fa-fw"></i> Guardar como...</button>';
+            $buffer = '<button type="button" class="btn btn-primary dropdown-toggle mb-2" data-toggle="dropdown" role="button" aria-expanded="false" id="dropdown_'.$this->_id.'" title="Guardar como..."><i class="fas fa-download fa-fw"></i> Guardar como...</button>';
             $buffer .= '<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_'.$this->_id.'">';
             $extensions = array('ods'=>'OpenDocument', 'csv'=>'Planilla CSV', 'xls'=>'Planilla Excel', 'pdf'=>'Documento PDF', 'xml'=>'Archivo XML', 'json'=>'Archivo JSON');
             foreach ($extensions as $e => $n) {

@@ -31,15 +31,33 @@ namespace sowerphp\general;
 class Utility_Mapas_Google
 {
 
+    private $api_key; ///< Llave para la API de Google Maps
+
+    /**
+     * Constructor del objeto de mapas para Google
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2018-10-25
+     */
+    public function __construct($api_key = null)
+    {
+        if (!$api_key) {
+            $api_key = \sowerphp\core\Configure::read('proveedores.api.google');
+            if (is_array($api_key)) {
+                $api_key = $api_key['server'];
+            }
+        }
+        $this->api_key = $api_key;
+    }
+
     /**
      * Método que entrega las coordenadas geográficas a partir de una dirección
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2016-12-26
+     * @version 2018-10-25
      */
     public function getCoordenadas($direccion)
     {
         $rest = new \sowerphp\core\Network_Http_Rest();
-        $response = $rest->get('https://maps.google.com/maps/api/geocode/json?address='.urlencode($direccion));
+        $response = $rest->get('https://maps.google.com/maps/api/geocode/json?address='.urlencode($direccion).'&key='.$this->api_key);
         if ($response['status']['code']!=200 or empty($response['body']['results'][0]['geometry']['location'])) {
             return [false, false];
         }

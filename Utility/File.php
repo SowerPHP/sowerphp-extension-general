@@ -410,4 +410,15 @@ class Utility_File
         return $archivo;
     }
 
+    /**
+     * Método que sanitiza el nombre de un archivo para ser usado en el sistema de archivos
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2018-12-02
+     */
+    public static function sanitize($filename)
+    {
+        $extension = \sowerphp\core\Utility_String::normalize(self::extension($filename));
+        return \sowerphp\core\Utility_String::normalize(substr($filename, 0, strrpos($filename,'.'))).'.'.$extension;
+    }
+
 }

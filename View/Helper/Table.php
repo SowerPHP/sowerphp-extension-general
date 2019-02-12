@@ -39,6 +39,7 @@ class View_Helper_Table
     private $_height = null; ///< Altura de la tabla en pixeles
     private $_colsWidth = []; ///< Ancho de las columnas en pixeles
     private $_showEmptyCols = true; ///< Indica si se deben mostrar las columnas vacías de la tabla
+    private $extensions = ['ods'=>'OpenDocument', 'csv'=>'Planilla CSV', 'xls'=>'Planilla Excel', 'pdf'=>'Documento PDF', 'xml'=>'Archivo XML', 'json'=>'Archivo JSON']; ///< Formatos por defecto para exportar datos
 
     /**
      * Constructor de la clase para crear una tabla
@@ -297,7 +298,7 @@ class View_Helper_Table
         if ((new \sowerphp\core\Cache())->set('session.'.session_id().'.export.'.$this->_id, $data)) {
             $buffer = '<button type="button" class="btn btn-primary dropdown-toggle mb-2" data-toggle="dropdown" role="button" aria-expanded="false" id="dropdown_'.$this->_id.'" title="Guardar como..."><i class="fas fa-download fa-fw"></i> Guardar como...</button>';
             $buffer .= '<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_'.$this->_id.'">';
-            $extensions = array('ods'=>'OpenDocument', 'csv'=>'Planilla CSV', 'xls'=>'Planilla Excel', 'pdf'=>'Documento PDF', 'xml'=>'Archivo XML', 'json'=>'Archivo JSON');
+            $extensions = \sowerphp\core\Configure::read('app.tables.extensions') ? \sowerphp\core\Configure::read('app.tables.extensions') : $this->extensions;
             foreach ($extensions as $e => $n) {
                 $buffer .= '<a href="'._BASE.'/exportar/'.$e.'/'.$this->_id.'" class="dropdown-item">'.$n.'</a>';
             }

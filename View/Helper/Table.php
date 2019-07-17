@@ -154,7 +154,7 @@ class View_Helper_Table
      * @param table Tabla que se generará
      * @todo Programar opción para no mostrar todas las columnas
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2018-05-03
+     * @version 2019-07-17
      */
     public function generate ($table, $thead = 1)
     {
@@ -189,6 +189,19 @@ class View_Helper_Table
                     $col_count++;
                 }
             }
+            // quitar anchos de columnas vacías
+            $colsWidth = [];
+            $col = 0;
+            foreach ($this->_colsWidth as $width) {
+                if (!isset($empty_cols[$col])) {
+                    $colsWidth[] = $width;
+                }
+                $col++;
+            }
+        }
+        // si se muestran todas las columnas se copia el ancho de ellas
+        else {
+            $colsWidth = $this->_colsWidth;
         }
         // Utilizar buffer para el dibujado, así lo retornaremos en vez
         // de imprimir directamente
@@ -210,8 +223,8 @@ class View_Helper_Table
         $buffer .= "\t\t".'<tr>'."\n";
         $i = 0;
         foreach ($titles as &$col) {
-            if (isset($this->_colsWidth[$i]) && $this->_colsWidth[$i]!=null) {
-                $w = ' style="width:'.$this->_colsWidth[$i].'px"';
+            if (isset($colsWidth[$i]) && $colsWidth[$i]!=null) {
+                $w = ' style="width:'.$colsWidth[$i].'px"';
             } else $w = '';
             $buffer .= "\t\t\t".'<th'.$w.'>'.$col.'</th>'."\n";
             $i++;

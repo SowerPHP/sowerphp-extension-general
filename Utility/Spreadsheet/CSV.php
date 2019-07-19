@@ -28,7 +28,7 @@ namespace sowerphp\general;
  *
  * Esta clase permite leer y generar archivos csv
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2015-05-29
+ * @version 2019-07-18
  */
 final class Utility_Spreadsheet_CSV
 {
@@ -60,31 +60,42 @@ final class Utility_Spreadsheet_CSV
     }
 
     /**
-     * Crea un archivo CSV a partir de un arreglo
+     * Crea un archivo CSV a partir de un arreglo entregándolo vía HTTP
      * @param data Arreglo utilizado para generar la planilla
      * @param id Identificador de la planilla
      * @param delimiter separador a utilizar para diferenciar entre una columna u otra
      * @param enclosure Un caracter para rodear el dato
+     * @param size_mib Tamaño máximo del archivo temporal en memoria que se usará (si excede, se escribe archivo real en sistema de archivos)
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2018-06-06
+     * @version 2019-07-18
      */
-    public static function generate($data, $id, $delimiter = null, $enclosure = '"', $extension = 'csv')
+    public static function generate($data, $id, $delimiter = null, $enclosure = '"', $extension = 'csv', $size_mib = 2)
     {
-        $delimiter = self::setDelimiter($delimiter);
-        ob_clean();
+        $csv = self::save2string($data, $delimiter, $enclosure, $size_mib);
         header('Content-type: text/csv');
         header('Content-Disposition: attachment; filename='.$id.'.'.$extension);
         header('Pragma: no-cache');
         header('Expires: 0');
-        foreach($data as &$row) {
-            foreach($row as &$col) {
-                $col = $enclosure.rtrim(str_replace(['<br />', '<br/>', '<br>'], ', ', strip_tags($col, '<br>')), " \t\n\r\0\x0B,").$enclosure;
-            }
-            echo implode($delimiter, $row),"\r\n";
-            unset($row);
-        }
-        unset($data);
+        echo $csv;
         exit(0);
+    }
+
+    /**
+     * Crea un archivo CSV a partir de un arreglo retornando su contenido
+     * @param data Arreglo utilizado para generar la planilla
+     * @param delimiter separador a utilizar para diferenciar entre una columna u otra
+     * @param enclosure Un caracter para rodear el dato
+     * @param size_mib Tamaño máximo del archivo temporal en memoria que se usará (si excede, se escribe archivo real en sistema de archivos)
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2019-07-18
+     */
+    public static function save2string($data, $delimiter, $enclosure, $size_mib = 2)
+    {
+        $fd = self::save($data, 'php://temp/maxmemory:'.(string)($size_mib*1024*2014), $delimiter, $enclosure, false);
+        rewind($fd);
+        $csv = stream_get_contents($fd);
+        fclose($fd);
+        return $csv;
     }
 
     /**
@@ -93,21 +104,30 @@ final class Utility_Spreadsheet_CSV
      * @param archivo Nombre del archivo que se debe generar
      * @param delimiter separador a utilizar para diferenciar entre una columna u otra
      * @param enclosure Un caracter para rodear el dato
+     * @param close =false permite obtener el descriptor de archivo para ser usado en otro lado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2016-01-29
+     * @version 2019-07-18
      */
-    public static function save($data, $archivo, $delimiter = null, $enclosure = '"')
+    public static function save($data, $archivo, $delimiter = null, $enclosure = '"', $close = true)
     {
+        ob_clean();
         $delimiter = self::setDelimiter($delimiter);
         $fd = fopen($archivo, 'w');
+        if ($fd === false) {
+            throw new \Exception('No fue posible crear el archivo CSV');
+        }
         foreach($data as &$row) {
             foreach($row as &$col) {
-                $col = rtrim(str_replace('<br />', ', ', strip_tags($col, '<br>')), " \t\n\r\0\x0B,");
+                $col = rtrim(str_replace(['<br />', '<br/>', '<br>'], ', ', strip_tags($col, '<br>')), " \t\n\r\0\x0B,");
             }
             fputcsv($fd, $row, $delimiter, $enclosure);
             unset($row);
         }
-        fclose($fd);
+        if ($close) {
+            fclose($fd);
+        } else {
+            return $fd;
+        }
     }
 
     /**
@@ -120,7 +140,9 @@ final class Utility_Spreadsheet_CSV
      */
     private static function setDelimiter($delimiter = null)
     {
-        if ($delimiter!==null) return $delimiter;
+        if ($delimiter !== null) {
+            return $delimiter;
+        }
         $delimiter = \sowerphp\core\Configure::read('spreadsheet.csv.delimiter');
         return $delimiter ? $delimiter : ',';
     }

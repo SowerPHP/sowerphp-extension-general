@@ -71,7 +71,7 @@ final class Utility_Spreadsheet_CSV
      */
     public static function generate($data, $id, $delimiter = null, $enclosure = '"', $extension = 'csv', $size_mib = 2)
     {
-        $csv = self::save2string($data, $delimiter, $enclosure, $size_mib);
+        $csv = self::get($data, $delimiter, $enclosure, $size_mib);
         header('Content-type: text/csv');
         header('Content-Disposition: attachment; filename='.$id.'.'.$extension);
         header('Pragma: no-cache');
@@ -89,7 +89,7 @@ final class Utility_Spreadsheet_CSV
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2019-07-18
      */
-    public static function save2string($data, $delimiter, $enclosure, $size_mib = 2)
+    public static function get($data, $delimiter, $enclosure, $size_mib = 2)
     {
         $fd = self::save($data, 'php://temp/maxmemory:'.(string)($size_mib*1024*2014), $delimiter, $enclosure, false);
         rewind($fd);

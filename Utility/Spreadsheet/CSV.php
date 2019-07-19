@@ -89,7 +89,7 @@ final class Utility_Spreadsheet_CSV
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
      * @version 2019-07-18
      */
-    public static function get($data, $delimiter, $enclosure, $size_mib = 2)
+    public static function get($data, $delimiter = null, $enclosure = '"', $size_mib = 2)
     {
         $fd = self::save($data, 'php://temp/maxmemory:'.(string)($size_mib*1024*2014), $delimiter, $enclosure, false);
         rewind($fd);

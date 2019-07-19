@@ -112,6 +112,9 @@ final class Utility_Spreadsheet_CSV
     {
         ob_clean();
         $delimiter = self::setDelimiter($delimiter);
+        if (!$enclosure) {
+            $enclosure = '"';
+        }
         $fd = fopen($archivo, 'w');
         if ($fd === false) {
             throw new \Exception('No fue posible crear el archivo CSV');

@@ -148,7 +148,7 @@ class View_Helper_Form
      * @param config Arreglo con la configuración para el elemento
      * @return String Código HTML de lo solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2015-01-14
+     * @version 2019-08-04
      */
     private function _formatear($field, $config)
     {
@@ -194,9 +194,13 @@ class View_Helper_Form
         else if (isset($config['align'])) {
             $buffer = '<div style="text-align:'.$config['align'].'">'.$field.'</div>'."\n";
         }
+        // si se debe colocar un label
+        else if (!empty($config['id']) and !empty($config['label'])) {
+            $buffer = '<div><label class="sr-only" for="'.$config['id'].'">'.$config['label'].'</label>'.$field.'</div>'."\n";
+        }
         // si no se debe aplicar ningún formato solo agregar el campo dentro de un div y el EOL
         else {
-            $buffer = '<div>'.$field.'</div>';
+            $buffer = '<div>'.$field.'</div>'."\n";
         }
         // retornar código formateado
         return $buffer;

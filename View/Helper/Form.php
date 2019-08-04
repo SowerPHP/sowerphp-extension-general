@@ -352,12 +352,13 @@ class View_Helper_Form
             (array)\sowerphp\core\Configure::read('datepicker'),
             isset($config['datepicker']) ? $config['datepicker'] : []
         );
+        $datepicker_config = str_replace('"', '\'', json_encode($config['datepicker']));
         $buffer = '';
         if (isset($config['id'])) {
             $attr = ' id="'.$config['id'].'"';
-            $buffer .= '<script type="text/javascript">$(function() { $("#'.$config['id'].'").datepicker('.json_encode($config['datepicker']).'); }); </script>';
+            $buffer .= '<script type="text/javascript">$(function() { $("#'.$config['id'].'").datepicker('.$datepicker_config.'); }); </script>';
         } else {
-            $attr = ' onmouseover="$(this).datepicker('.str_replace('"', '\'', json_encode($config['datepicker'])).')"';
+            $attr = ' onmouseover="$(this).datepicker('.$datepicker_config.')"';
         }
         $buffer .= '<input type="text" name="'.$config['name'].'" value="'.$config['value'].'"'.$attr.' class="'.$config['class'].'" placeholder="'.$config['placeholder'].'" '.$config['attr'].$config['popover'].' autocomplete="off" />';
         return $buffer;
@@ -381,12 +382,26 @@ class View_Helper_Form
         ]);
     }
 
-    private function _select ($config)
+    private function _select($config)
     {
-        $id = isset($config['id']) ? ' id="'.$config['id'].'"' : '';
+        $config['select2'] = array_merge(
+            ['theme'=>'bootstrap4', 'width'=>'100%'],
+            (array)\sowerphp\core\Configure::read('select2'),
+            isset($config['select2']) ? $config['select2'] : []
+        );
+        if (empty($config['select2']['placeholder']) and !empty($config['placeholder'])) {
+            $config['select2']['placeholder'] = $config['placeholder'];
+        }
+        $select2_config = str_replace('"', '\'', json_encode($config['select2']));
         $multiple = isset($config['multiple']) ? ' multiple="multiple" size="'.$config['multiple'].'"' : '';
         $buffer = '';
-        $buffer .= '<select name="'.$config['name'].'"'.$id.' class="'.$config['class'].'"'.$multiple.' '.$config['attr'].'>';
+        if (isset($config['id'])) {
+            $attr = ' id="'.$config['id'].'"';
+            $buffer .= '<script type="text/javascript">$(function() { $("#'.$config['id'].'").select2('.$select2_config.'); }); </script>';
+        } else {
+            $attr = ' onmouseover="$(this).select2('.$select2_config.')"';
+        }
+        $buffer .= '<select name="'.$config['name'].'"'.$attr.' class="'.$config['class'].'"'.$multiple.' '.$config['attr'].'>';
         foreach ($config['options'] as $key => &$value) {
             if (is_array($value)) {
                 $key = array_shift($value);
@@ -493,8 +508,16 @@ class View_Helper_Form
         }
         $buffer .= '<table id="'.$config['id'].'" class="table table-striped" style="width:'.$config['width'].'">';
         $buffer .= '<thead><tr>';
-        foreach ($config['titles'] as &$title) {
-            $buffer .= '<th>'.$title.'</th>';
+        foreach ($config['titles'] as $title) {
+            if (is_array($title)) {
+                list($title, $width) = $title;
+                if (is_numeric($width)) {
+                    $width = ((string)$width).'px';
+                }
+                $buffer .= '<th style="width:'.$width.'">'.$title.'</th>';
+            } else {
+                $buffer .= '<th>'.$title.'</th>';
+            }
         }
         if ($js) {
             $buffer .= '<th style="width:1px"><a href="javascript:Form.addJS(\''.$config['id'].'\', undefined, '.$config['callback'].')" title="Agregar ['.$config['accesskey'].']" accesskey="'.$config['accesskey'].'"><i class="fa fa-plus fa-fw" aria-hidden="true"></i></a></th>';

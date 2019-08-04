@@ -388,29 +388,41 @@ class View_Helper_Form
 
     private function _select($config)
     {
-        $config['select2'] = array_merge(
-            ['theme'=>'bootstrap4', 'width'=>'100%'],
-            (array)\sowerphp\core\Configure::read('select2'),
-            isset($config['select2']) ? $config['select2'] : []
-        );
-        if (empty($config['select2']['placeholder']) and !empty($config['placeholder'])) {
-            $config['select2']['placeholder'] = $config['placeholder'];
+        $config = array_merge(['wrapper'=>false], $config);
+        // configuración para los wrappers
+        $wrapper_config = '';
+        if ($config['wrapper']=='select2') {
+            $config['select2'] = array_merge(
+                ['theme'=>'bootstrap4', 'width'=>'100%'],
+                (array)\sowerphp\core\Configure::read('select2'),
+                isset($config['select2']) ? $config['select2'] : []
+            );
+            if (empty($config['select2']['placeholder']) and !empty($config['placeholder'])) {
+                $config['select2']['placeholder'] = $config['placeholder'];
+            }
+            if (!empty($config['select2']['dropdownParent'])) {
+                $dropdownParent = $config['select2']['dropdownParent'];
+                $config['select2']['dropdownParent'] = '###dropdownParent###';
+            }
+            $wrapper_config = str_replace('"', '\'', json_encode($config['select2']));
+            if (!empty($dropdownParent)) {
+                $wrapper_config = str_replace('\'###dropdownParent###\'', '$(\''.$dropdownParent.'\')', $wrapper_config);
+            }
         }
-        if (!empty($config['select2']['dropdownParent'])) {
-            $dropdownParent = $config['select2']['dropdownParent'];
-            $config['select2']['dropdownParent'] = '###dropdownParent###';
-        }
-        $select2_config = str_replace('"', '\'', json_encode($config['select2']));
-        if (!empty($dropdownParent)) {
-            $select2_config = str_replace('\'###dropdownParent###\'', '$(\''.$dropdownParent.'\')', $select2_config);
-        }
+        // generar campo select
         $multiple = isset($config['multiple']) ? ' multiple="multiple" size="'.$config['multiple'].'"' : '';
         $buffer = '';
         if (isset($config['id'])) {
             $attr = ' id="'.$config['id'].'"';
-            $buffer .= '<script type="text/javascript">$(function() { $("#'.$config['id'].'").select2('.$select2_config.'); }); </script>';
+            if (!empty($config['wrapper'])) {
+                $buffer .= '<script type="text/javascript">$(function() { $("#'.$config['id'].'").'.$config['wrapper'].'('.$wrapper_config.'); }); </script>';
+            }
         } else {
-            $attr = ' onmouseover="$(this).select2('.$select2_config.')"';
+            if (!empty($config['wrapper'])) {
+                $attr = ' onmouseover="$(this).'.$config['wrapper'].'('.$wrapper_config.')"';
+            } else {
+                $attr = '';
+            }
         }
         $buffer .= '<select name="'.$config['name'].'"'.$attr.' class="'.$config['class'].'"'.$multiple.' '.$config['attr'].'>';
         foreach ($config['options'] as $key => &$value) {

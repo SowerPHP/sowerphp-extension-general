@@ -102,7 +102,7 @@ class View_Helper_Form
         $buffer = '';
         // si hay focus se usa
         if ($config['focus']) {
-            $buffer .= '<script type="text/javascript"> $(function() { $("#'.$config['focus'].'").focus(); }); </script>'."\n";
+            $buffer .= '<script> $(function() { $("#'.$config['focus'].'").focus(); }); </script>'."\n";
         }
         // agregar formulario
         $class = $this->_style ? 'form-'.$this->_style : '';
@@ -360,7 +360,7 @@ class View_Helper_Form
         $buffer = '';
         if (isset($config['id'])) {
             $attr = ' id="'.$config['id'].'"';
-            $buffer .= '<script type="text/javascript">$(function() { $("#'.$config['id'].'").datepicker('.$datepicker_config.'); }); </script>';
+            $buffer .= '<script>$(function() { $("#'.$config['id'].'").datepicker('.$datepicker_config.'); }); </script>';
         } else {
             $attr = ' onmouseover="$(this).datepicker('.$datepicker_config.')"';
         }
@@ -388,7 +388,7 @@ class View_Helper_Form
 
     private function _select($config)
     {
-        $config = array_merge(['wrapper'=>false], $config);
+        $config = array_merge(['wrapper'=>'select2'], $config);
         // configuración para los wrappers
         $wrapper_config = '';
         if ($config['wrapper']=='select2') {
@@ -412,17 +412,31 @@ class View_Helper_Form
         // generar campo select
         $multiple = isset($config['multiple']) ? ' multiple="multiple" size="'.$config['multiple'].'"' : '';
         $buffer = '';
-        if (isset($config['id'])) {
-            $attr = ' id="'.$config['id'].'"';
+        $attr = '';
+        $onmouseover = '';
+        if (!empty($config['id'])) {
+            $attr .= ' id="'.$config['id'].'"';
             if (!empty($config['wrapper'])) {
-                $buffer .= '<script type="text/javascript">$(function() { $("#'.$config['id'].'").'.$config['wrapper'].'('.$wrapper_config.'); }); </script>';
+                $buffer .= '<script>$(function() { $("#'.$config['id'].'").'.$config['wrapper'].'('.$wrapper_config.'); }); </script>';
             }
         } else {
             if (!empty($config['wrapper'])) {
-                $attr = ' onmouseover="$(this).'.$config['wrapper'].'('.$wrapper_config.')"';
-            } else {
-                $attr = '';
+                $onmouseover .= ' $(this).'.$config['wrapper'].'('.$wrapper_config.');';
             }
+        }
+        if (!empty($config['onblur'])) {
+            if ($config['wrapper']=='select2') {
+                if (!empty($config['id'])) {
+                    $buffer .= '<script>$(function() { $("#'.$config['id'].'").on("select2:close", function(){ '.$config['onblur'].'; }); });</script>';
+                } else {
+                    $onmouseover .= ' $(this).on(\'select2:close\', function(){ '.$config['onblur'].'; });';
+                }
+            } else {
+                $attr .= ' onblur="'.$config['onblur'].'"';
+            }
+        }
+        if (!empty($onmouseover)) {
+            $attr .= ' onmouseover="'.$onmouseover.'"';
         }
         $buffer .= '<select name="'.$config['name'].'"'.$attr.' class="'.$config['class'].'"'.$multiple.' '.$config['attr'].'>';
         foreach ($config['options'] as $key => &$value) {
@@ -527,7 +541,7 @@ class View_Helper_Form
         // generar tabla
         $buffer = '';
         if ($js) {
-            $buffer .= '<script type="text/javascript"> window["inputsJS_'.$config['id'].'"] = \''.str_replace('\'', '\\\'', $inputs).'\'; </script>'."\n";
+            $buffer .= '<script> window["inputsJS_'.$config['id'].'"] = \''.str_replace('\'', '\\\'', $inputs).'\'; </script>'."\n";
         }
         $buffer .= '<table id="'.$config['id'].'" class="table table-striped" style="width:'.$config['width'].'">';
         $buffer .= '<thead><tr>';

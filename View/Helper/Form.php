@@ -392,7 +392,14 @@ class View_Helper_Form
         if (empty($config['select2']['placeholder']) and !empty($config['placeholder'])) {
             $config['select2']['placeholder'] = $config['placeholder'];
         }
+        if (!empty($config['select2']['dropdownParent'])) {
+            $dropdownParent = $config['select2']['dropdownParent'];
+            $config['select2']['dropdownParent'] = '###dropdownParent###';
+        }
         $select2_config = str_replace('"', '\'', json_encode($config['select2']));
+        if (!empty($dropdownParent)) {
+            $select2_config = str_replace('\'###dropdownParent###\'', '$(\''.$dropdownParent.'\')', $select2_config);
+        }
         $multiple = isset($config['multiple']) ? ' multiple="multiple" size="'.$config['multiple'].'"' : '';
         $buffer = '';
         if (isset($config['id'])) {

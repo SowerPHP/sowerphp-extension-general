@@ -301,7 +301,8 @@ class View_Helper_Form
     private function _text ($config)
     {
         $id = isset($config['id']) ? ' id="'.$config['id'].'"' : '';
-        return '<input type="text" name="'.$config['name'].'" value="'.$config['value'].'"'.$id.' class="'.$config['class'].'" placeholder="'.$config['placeholder'].'" '.$config['attr'].$config['popover'].' />';
+        $growup = !empty($config['growup']) ? 'ondblclick="Form.growup(this)"' : '';
+        return '<input type="text" name="'.$config['name'].'" value="'.$config['value'].'"'.$id.' class="'.$config['class'].'" placeholder="'.$config['placeholder'].'" '.$config['attr'].$config['popover'].' '.$growup.' />';
     }
 
     private function _password($config)
@@ -319,7 +320,8 @@ class View_Helper_Form
             ), $config
         );
         $id = isset($config['id']) ? ' id="'.$config['id'].'"' : '';
-        return '<textarea name="'.$config['name'].'" rows="'.$config['rows'].'" cols="'.$config['cols'].'"'.$id.' class="'.$config['class'].'" placeholder="'.$config['placeholder'].'" '.$config['attr'].$config['popover'].'>'.$config['value'].'</textarea>';
+        $growup = !empty($config['growup']) ? 'ondblclick="Form.growup(this)"' : '';
+        return '<textarea name="'.$config['name'].'" rows="'.$config['rows'].'" cols="'.$config['cols'].'"'.$id.' class="'.$config['class'].'" placeholder="'.$config['placeholder'].'" '.$config['attr'].$config['popover'].' '.$growup.'>'.$config['value'].'</textarea>';
     }
 
     private function _checkbox ($config)

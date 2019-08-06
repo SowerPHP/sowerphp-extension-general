@@ -26,7 +26,7 @@ namespace sowerphp\general;
 /**
  * Helper para la creación de formularios en HTML
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2015-04-13
+ * @version 2019-08-06
  */
 class View_Helper_Form
 {
@@ -442,13 +442,16 @@ class View_Helper_Form
         if (!empty($onmouseover)) {
             $attr .= ' onmouseover="'.$onmouseover.'"';
         }
+        if (!is_array($config['value'])) {
+            $config['value'] = [$config['value']];
+        }
         $buffer .= '<select name="'.$config['name'].'"'.$attr.' class="'.$config['class'].'"'.$multiple.' '.$config['attr'].'>';
         foreach ($config['options'] as $key => &$value) {
             if (is_array($value)) {
                 $key = array_shift($value);
                 $value = array_shift($value);
             }
-            $buffer .= '<option value="'.$key.'"'.((string)$config['value']==(string)$key?' selected="selected"':'').'>'.$value.'</option>';
+            $buffer .= '<option value="'.$key.'"'.(in_array($key, $config['value'])?' selected="selected"':'').'>'.$value.'</option>';
         }
         $buffer .= '</select>';
         return $buffer;
@@ -695,6 +698,14 @@ class View_Helper_Form
     private function _table($config)
     {
         return $this->_js($config, false);
+    }
+
+    private function _boolean($config)
+    {
+        if (empty($config['options'])) {
+            $config['options'] = ['No', 'Si'];
+        }
+        return $this->_select($config);
     }
 
 }

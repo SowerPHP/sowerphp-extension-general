@@ -398,7 +398,6 @@ class View_Helper_Form
         $wrapper_config = '';
         if ($config['wrapper']=='select2') {
             $config['select2'] = array_merge(
-                ['theme'=>'bootstrap4', 'width'=>'100%'],
                 (array)\sowerphp\core\Configure::read('select2'),
                 isset($config['select2']) ? $config['select2'] : []
             );

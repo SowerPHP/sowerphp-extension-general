@@ -30,3 +30,9 @@
     'todayHighlight' => true,
     'orientation' => 'auto',
 ]);
+
+// Configuración select2
+\sowerphp\core\Configure::write('select2', [
+    'theme' => 'bootstrap4',
+    'width' => '100%'
+]);

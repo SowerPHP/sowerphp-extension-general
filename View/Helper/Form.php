@@ -414,7 +414,12 @@ class View_Helper_Form
             }
         }
         // generar campo select
-        $multiple = isset($config['multiple']) ? ' multiple="multiple" size="'.$config['multiple'].'"' : '';
+        if (isset($config['multiple'])) {
+            $multiple = ' multiple="multiple" size="'.$config['multiple'].'"';
+            $config['name'] .= '[]';
+        } else {
+            $multiple = '';
+        }
         $buffer = '';
         $attr = '';
         $onmouseover = '';

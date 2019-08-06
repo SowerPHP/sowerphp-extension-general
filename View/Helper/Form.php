@@ -148,7 +148,7 @@ class View_Helper_Form
      * @param config Arreglo con la configuración para el elemento
      * @return String Código HTML de lo solicitado
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2019-08-04
+     * @version 2019-08-06
      */
     private function _formatear($field, $config)
     {
@@ -192,15 +192,18 @@ class View_Helper_Form
         }
         // si se debe alinear
         else if (isset($config['align'])) {
-            $buffer = '<div style="text-align:'.$config['align'].'">'.$field.'</div>'."\n";
+            $width = !empty($config['width']) ? (';width:'.$config['width']) : '';
+            $buffer = '<div style="text-align:'.$config['align'].$width.'">'.$field.'</div>'."\n";
         }
         // si se debe colocar un label
         else if (!empty($config['id']) and !empty($config['label'])) {
-            $buffer = '<div><label class="sr-only" for="'.$config['id'].'">'.$config['label'].'</label>'.$field.'</div>'."\n";
+            $width = !empty($config['width']) ? (' style="width:'.$config['width'].'"') : '';
+            $buffer = '<div'.$width.'><label class="sr-only" for="'.$config['id'].'">'.$config['label'].'</label>'.$field.'</div>'."\n";
         }
         // si no se debe aplicar ningún formato solo agregar el campo dentro de un div y el EOL
         else {
-            $buffer = '<div>'.$field.'</div>'."\n";
+            $width = !empty($config['width']) ? (' style="width:'.$config['width'].'"') : '';
+            $buffer = '<div'.$width.'>'.$field.'</div>'."\n";
         }
         // retornar código formateado
         return $buffer;
@@ -477,13 +480,49 @@ class View_Helper_Form
         // respaldar formato
         $formato = $this->_style;
         $this->_style = null;
-        // determinar inputs
+        // determinar ancho de columnas si no fue indicado
+        // se busca en el arreglo de títulos por si viene en el título como arreglo
+        if (empty($config['cols_width'])) {
+            $config['cols_width'] = [];
+            $titles = [];
+            foreach ($config['titles'] as $title_ori) {
+                if (is_array($title_ori)) {
+                    list($title, $width) = $title_ori;
+                    if (is_numeric($width)) {
+                        $width = ((string)$width).'px';
+                    }
+                    $config['cols_width'][] = $width;
+                    $titles[] = $title;
+                } else {
+                    $config['cols_width'][] = null;
+                    $titles[] = $title_ori;
+                }
+            }
+            $config['titles'] = $titles;
+        }
+        // determinar estilos de columnas
+        $cols_style = [];
+        $col_i = 0;
+        foreach ($config['inputs'] as $input) {
+            $style = [];
+            if (isset($input['type']) && $input['type']=='hidden') {
+                $style[] = 'display:none';
+            }
+            $cols_style[] = !empty($style) ? (' style="'.implode(';',$style).'"') : '';
+            $col_i++;
+        }
+        // botón de borrado de la fila
         $delete = '<td><a href="" onclick="Form.delJS(this); return false" title="Eliminar"><i class="fas fa-times fa-fw" aria-hidden="true"></i></a></td>';
+        // determinar inputs
         $inputs = '<tr>';
+        $col_i = 0;
         foreach ($config['inputs'] as $input) {
             $input['name'] = $input['name'].'[]';
-            $d = (isset($input['type']) && $input['type']=='hidden') ? ' style="display:none;"' : '';
-            $inputs .= '<td'.$d.'>'.rtrim($this->input($input)).'</td>';
+            if (!empty($config['cols_width'][$col_i])) {
+                $input['width'] = $config['cols_width'][$col_i];
+            }
+            $inputs .= '<td'.(isset($cols_style[$col_i])?$cols_style[$col_i]:'').'>'.rtrim($this->input($input)).'</td>';
+            $col_i++;
         }
         if ($js) {
             $inputs .= $delete;
@@ -496,11 +535,15 @@ class View_Helper_Form
                 $filas = count($_POST[$config['inputs'][0]['name']]);
                 for ($i=0; $i<$filas; $i++) {
                     $values .= '<tr>';
+                    $col_i = 0;
                     foreach ($config['inputs'] as $input) {
                         $input['value'] = isset($_POST[$input['name']]) ? $_POST[$input['name']][$i] : '';
                         $input['name'] = $input['name'].'[]';
-                        $d = (isset($input['type']) && $input['type']=='hidden') ? ' style="display:none;"' : '';
-                        $values .= '<td'.$d.'>'.rtrim($this->input($input)).'</td>';
+                        if (!empty($config['cols_width'][$col_i])) {
+                            $input['width'] = $config['cols_width'][$col_i];
+                        }
+                        $values .= '<td'.(isset($cols_style[$col_i])?$cols_style[$col_i]:'').'>'.rtrim($this->input($input)).'</td>';
+                        $col_i++;
                     }
                     if ($js) {
                         $values .= $delete;
@@ -516,6 +559,7 @@ class View_Helper_Form
             $values = '';
             foreach ($config['values'] as $value) {
                 $values .= '<tr>';
+                $col_i = 0;
                 foreach ($config['inputs'] as $input) {
                     if (!isset($value[$input['name']])) {
                         $value[$input['name']] = '';
@@ -529,8 +573,11 @@ class View_Helper_Form
                         unset($input['value']);
                     }
                     $input['name'] = $input['name'].'[]';
-                    $d = (isset($input['type']) && $input['type']=='hidden') ? ' style="display:none;"' : '';
-                    $values .= '<td'.$d.'>'.rtrim($this->input($input)).'</td>';
+                    if (!empty($config['cols_width'][$col_i])) {
+                        $input['width'] = $config['cols_width'][$col_i];
+                    }
+                    $values .= '<td'.(isset($cols_style[$col_i])?$cols_style[$col_i]:'').'>'.rtrim($this->input($input)).'</td>';
+                    $col_i++;
                 }
                 if ($js) {
                     $values .= $delete;
@@ -548,15 +595,7 @@ class View_Helper_Form
         $buffer .= '<table id="'.$config['id'].'" class="table table-striped" style="width:'.$config['width'].'">';
         $buffer .= '<thead><tr>';
         foreach ($config['titles'] as $title) {
-            if (is_array($title)) {
-                list($title, $width) = $title;
-                if (is_numeric($width)) {
-                    $width = ((string)$width).'px';
-                }
-                $buffer .= '<th style="width:'.$width.'">'.$title.'</th>';
-            } else {
-                $buffer .= '<th>'.$title.'</th>';
-            }
+            $buffer .= '<th>'.$title.'</th>';
         }
         if ($js) {
             $buffer .= '<th style="width:1px"><a href="javascript:Form.addJS(\''.$config['id'].'\', undefined, '.$config['callback'].')" title="Agregar ['.$config['accesskey'].']" accesskey="'.$config['accesskey'].'"><i class="fa fa-plus fa-fw" aria-hidden="true"></i></a></th>';

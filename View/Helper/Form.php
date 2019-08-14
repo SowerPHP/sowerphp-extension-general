@@ -393,7 +393,11 @@ class View_Helper_Form
 
     private function _select($config)
     {
-        $config = array_merge(['wrapper'=>'select2'], $config);
+        $form_select_wrapper = \sowerphp\core\Configure::read('form.select.wrapper');
+        if ($form_select_wrapper === null) {
+            $form_select_wrapper = 'select2';
+        }
+        $config = array_merge(['wrapper'=>$form_select_wrapper], $config);
         // configuración para los wrappers
         $wrapper_config = '';
         if ($config['wrapper']=='select2') {

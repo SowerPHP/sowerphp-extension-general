@@ -454,13 +454,15 @@ class View_Helper_Form
         if (!is_array($config['value'])) {
             $config['value'] = ($config['value'] or (string)$config['value']=='0') ? [$config['value']] : [];
         }
+        $config['value'] = array_map('strval', $config['value']);
         $buffer .= '<select name="'.$config['name'].'"'.$attr.' class="'.$config['class'].'"'.$multiple.' '.$config['attr'].'>';
-        foreach ($config['options'] as $key => &$value) {
+        foreach ($config['options'] as $key => $value) {
             if (is_array($value)) {
                 $key = array_shift($value);
                 $value = array_shift($value);
             }
-            $buffer .= '<option value="'.$key.'"'.(in_array($key, $config['value'])?' selected="selected"':'').'>'.$value.'</option>';
+            $selected = (in_array((string)$key, $config['value'], true)?' selected="selected"':'');
+            $buffer .= '<option value="'.$key.'"'.$selected.'>'.$value.'</option>';
         }
         $buffer .= '</select>';
         return $buffer;

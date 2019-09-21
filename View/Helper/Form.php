@@ -452,7 +452,7 @@ class View_Helper_Form
             $attr .= ' onmouseover="'.$onmouseover.'"';
         }
         if (!is_array($config['value'])) {
-            $config['value'] = [$config['value']];
+            $config['value'] = ($config['value'] or (string)$config['value']=='0') ? [$config['value']] : [];
         }
         $buffer .= '<select name="'.$config['name'].'"'.$attr.' class="'.$config['class'].'"'.$multiple.' '.$config['attr'].'>';
         foreach ($config['options'] as $key => &$value) {

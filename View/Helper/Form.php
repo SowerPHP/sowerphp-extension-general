@@ -457,12 +457,28 @@ class View_Helper_Form
         $config['value'] = array_map('strval', $config['value']);
         $buffer .= '<select name="'.$config['name'].'"'.$attr.' class="'.$config['class'].'"'.$multiple.' '.$config['attr'].'>';
         foreach ($config['options'] as $key => $value) {
-            if (is_array($value)) {
-                $key = array_shift($value);
-                $value = array_shift($value);
+            // los options no están agrupados
+            if (empty($config['groups'])) {
+                if (is_array($value)) {
+                    $key = array_shift($value);
+                    $value = array_shift($value);
+                }
+                $selected = (in_array((string)$key, $config['value'], true)?' selected="selected"':'');
+                $buffer .= '<option value="'.$key.'"'.$selected.'>'.$value.'</option>';
             }
-            $selected = (in_array((string)$key, $config['value'], true)?' selected="selected"':'');
-            $buffer .= '<option value="'.$key.'"'.$selected.'>'.$value.'</option>';
+            // los options están agrupados usando optgroup
+            else {
+                $buffer .= '<optgroup label="'.$key.'">';
+                foreach ($value as $key2 => $value2) {
+                    if (is_array($value2)) {
+                        $key2 = array_shift($value2);
+                        $value2 = array_shift($value2);
+                    }
+                    $selected = (in_array((string)$key2, $config['value'], true)?' selected="selected"':'');
+                    $buffer .= '<option value="'.$key2.'"'.$selected.'>'.$value2.'</option>';
+                }
+                $buffer .= '</optgroup>';
+            }
         }
         $buffer .= '</select>';
         return $buffer;

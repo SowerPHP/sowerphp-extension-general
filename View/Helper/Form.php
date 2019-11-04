@@ -305,13 +305,15 @@ class View_Helper_Form
     {
         $id = isset($config['id']) ? ' id="'.$config['id'].'"' : '';
         $growup = !empty($config['growup']) ? 'ondblclick="Form.growup(this)"' : '';
-        return '<input type="text" name="'.$config['name'].'" value="'.$config['value'].'"'.$id.' class="'.$config['class'].'" placeholder="'.$config['placeholder'].'" '.$config['attr'].$config['popover'].' '.$growup.' />';
+        $autocomplete = (isset($config['autocomplete']) and $config['autocomplete']===false) ? 'autocomplete="off"' : '';
+        return '<input type="text" name="'.$config['name'].'" value="'.$config['value'].'"'.$id.' class="'.$config['class'].'" placeholder="'.$config['placeholder'].'" '.$config['attr'].$config['popover'].' '.$growup.' '.$autocomplete.' />';
     }
 
     private function _password($config)
     {
         $id = isset($config['id']) ? ' id="'.$config['id'].'"' : '';
-        return '<input type="password" name="'.$config['name'].'"'.$id.' class="'.$config['class'].'" '.$config['attr'].$config['popover'].' />';
+        $autocomplete = empty($config['autocomplete']) ? 'autocomplete="off"' : '';
+        return '<input type="password" name="'.$config['name'].'"'.$id.' class="'.$config['class'].'" '.$config['attr'].$config['popover'].' '.$autocomplete.' />';
     }
 
     private function _textarea ($config)

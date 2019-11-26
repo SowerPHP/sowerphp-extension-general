@@ -80,9 +80,13 @@ class Controller_Exportar extends \Controller_App
         ));
     }
 
-    public function qrcode ($string)
+    public function qrcode ($string, $size = 3, $color = '0,0,0')
     {
-        $this->set('string', base64_decode($string));
+        $this->set([
+            'string' => base64_decode($string),
+            'size' => $size,
+            'color' => explode(',', $color),
+        ]);
     }
 
     public function pdf417 ($string)

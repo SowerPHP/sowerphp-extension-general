@@ -1,4 +1,4 @@
 <?php
 $barcodeobj = new TCPDF2DBarcode($string, 'QRCode');
-$barcodeobj->getBarcodePNG();
+$barcodeobj->getBarcodePNG($size, $size, $color);
 exit (0);

@@ -296,12 +296,16 @@ class Utility_Image
      * @param dst_h Alto de la nueva imagen
      * @return Arreglo con ancho y alto
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2015-09-29
+     * @version 2020-01-30
      */
     public static function resizeOnFile($file, $dst_w, $dst_h)
     {
-        // determinar el nuevo ancho y alto que tendra la imagen (manteniendo proporciones)
+        // si la imagen es más pequeña que el nuevo tamaño no se modifica
         list($ancho, $alto) = getimagesize($file);
+        if ($dst_w > $ancho && $dst_h > $alto) {
+            return [$ancho, $alto];
+        }
+        // determinar el nuevo ancho y alto que tendra la imagen (manteniendo proporciones)
         $ratio = min($dst_w/$ancho, $dst_h/$alto);
         $new_w = round($ancho * $ratio);
         $new_h = round($alto * $ratio);

@@ -335,4 +335,25 @@ class Utility_Image
         return [$new_w, $new_h];
     }
 
+    /**
+     * Método que entrega un mapa de bits de la imagen
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2020-03-01
+     */
+    public static function bitmap($img) {
+        $data = [];
+        $w = imagesx($img);
+        $h = imagesy($img);
+        for($y = 0; $y < $h; $y++) {
+            for($x = 0; $x < $w; $x++) {
+                $data[] = (bool)imagecolorat($img, $x, $y);
+            }
+        }
+        return [
+            'data' => $data,
+            'width' => $w,
+            'height' => $h,
+        ];
+    }
+
 }

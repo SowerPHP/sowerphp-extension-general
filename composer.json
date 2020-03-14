@@ -3,7 +3,7 @@
         "vendor-dir": "Vendor"
     },
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.3",
         "libchart/libchart": "1.4.0",
         "lapinator.net/ods-php-generator": "dev-master",
         "phpoffice/phpexcel": "1.8.2",

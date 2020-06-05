@@ -26,7 +26,7 @@ namespace sowerphp\general;
 /**
  * Clase para trabajar con fechas
  * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
- * @version 2018-04-19
+ * @version 2020-06-05
  */
 class Utility_Date
 {
@@ -491,6 +491,36 @@ class Utility_Date
     public static function getPrevious($fecha = null, $tiempo = 'M', $cantidad = 1)
     {
         return self::getNext($fecha, $tiempo, $cantidad, '-');
+    }
+
+    /**
+     * Método que entrega el primer día de la semana
+     * @return string Primer Día de la semana
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2020-06-05
+     */
+    public static function firstDayWeek($date = null)
+    {
+        if (!$date) {
+            $date = date('Y-m-d');
+        }
+        $days = date('N', strtotime($date)) - 1;
+        return self::getPrevious($date, 'D', $days);
+    }
+
+    /**
+     * Método que entrega el último día de la semana
+     * @return string Último Día de la semana
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2020-06-05
+     */
+    public static function lastDayWeek($date = null)
+    {
+        if (!$date) {
+            $date = date('Y-m-d');
+        }
+        $days = 7 - date('N', strtotime($date));
+        return self::getNext($date, 'D', $days);
     }
 
 }

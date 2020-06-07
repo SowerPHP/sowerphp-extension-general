@@ -523,4 +523,24 @@ class Utility_Date
         return self::getNext($date, 'D', $days);
     }
 
+    /**
+     * Método que entrega un listado de años
+     * @return array Arreglo decreciente con el listado de años
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2020-06-07
+     */
+    public static function years($total_years, $from = null)
+    {
+        if (!$from) {
+            $from = date('Y');
+        }
+        $years = [];
+        $year_i = date('Y');
+        $year_f = $year_i - $total_years + 1;
+        for ($year = $year_i; $year >= $year_f; $year--) {
+            $years[] = $year;
+        }
+        return $years;
+    }
+
 }

@@ -543,4 +543,17 @@ class Utility_Date
         return $years;
     }
 
+    /**
+     * Método que entrega la cantidad de días que tiene un mes
+     * @return int Cantidad de días
+     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
+     * @version 2020-06-07
+     */
+    public static function daysInMonth($periodo)
+    {
+        $anio = (int)substr($periodo,0,4);
+        $mes = (int)substr($periodo,4);
+        return cal_days_in_month(\CAL_GREGORIAN, $mes, $anio);
+    }
+
 }

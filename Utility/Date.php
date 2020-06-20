@@ -535,7 +535,7 @@ class Utility_Date
             $from = date('Y');
         }
         $years = [];
-        $year_i = date('Y');
+        $year_i = $from;
         $year_f = $year_i - $total_years + 1;
         for ($year = $year_i; $year >= $year_f; $year--) {
             $years[] = $year;

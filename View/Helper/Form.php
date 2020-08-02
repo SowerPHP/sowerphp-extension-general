@@ -316,6 +316,14 @@ class View_Helper_Form
         return '<input type="password" name="'.$config['name'].'"'.$id.' class="'.$config['class'].'" '.$config['attr'].$config['popover'].' '.$autocomplete.' />';
     }
 
+    private function _textpass($config)
+    {
+        $id = isset($config['id']) ? ' id="'.$config['id'].'"' : '';
+        $mousechange = 'onmouseover="this.type=\'text\'" onmouseout="this.type=\'password\'"';
+        $script = isset($config['id']) ? '<script>$(\'#'.$config['id'].'\').attr(\'type\', \'password\');</script>' : '';
+        return '<input type="text" name="'.$config['name'].'" value="'.$config['value'].'"'.$id.' class="'.$config['class'].'" placeholder="'.$config['placeholder'].'" '.$config['attr'].$config['popover'].' autocomplete="off" '.$mousechange.' />'.$script;
+    }
+
     private function _textarea ($config)
     {
         $config = array_merge(

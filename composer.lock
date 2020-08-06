@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "14e0087cfcf72aec4bbdb436fd8834a8",
+    "content-hash": "a722eef7456be71afc95fcc8e7f5ef43",
     "packages": [
         {
             "name": "clue/graph",
@@ -180,11 +180,23 @@
         },
         {
             "name": "libchart/libchart",
-            "version": "1.4.0",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/astehlik/libchart.git",
-                "reference": "0be2ff6d3466e17838229780520b65e6a1a5ebdf"
+                "reference": "58e5e49376f20a88f2ee0d928a36a6983996dc61"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/astehlik/libchart/zipball/58e5e49376f20a88f2ee0d928a36a6983996dc61",
+                "reference": "58e5e49376f20a88f2ee0d928a36a6983996dc61",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6 || ^7 || ^8.3"
             },
             "type": "library",
             "autoload": {
@@ -194,7 +206,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-3.0"
+                "GPL-3.0-only"
             ],
             "authors": [
                 {
@@ -216,7 +228,7 @@
                 "line charts",
                 "pie charts"
             ],
-            "time": "2013-10-20T00:21:30+00:00"
+            "time": "2020-04-23T15:50:14+00:00"
         },
         {
             "name": "phpoffice/phpexcel",

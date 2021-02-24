@@ -10,7 +10,7 @@
             </a>
         </div>
     </div>
-<?php if ($i++==4) : ?>
+<?php if ($i++%4==0) : ?>
 </div>
 <div class="card-deck">
 <?php endif; ?>

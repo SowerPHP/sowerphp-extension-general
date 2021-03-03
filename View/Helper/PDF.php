@@ -280,7 +280,7 @@ class View_Helper_PDF extends \TCPDF
     /**
      * Agregar una tabla generada mediante el método Cell
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2018-04-15
+     * @version 2021-03-03
      */
     private function addNormalTable(array $headers, array $data, array $options = [])
     {
@@ -310,6 +310,9 @@ class View_Helper_PDF extends \TCPDF
             $options['width'] = $this->getTableCellWidth($options['width'], $headers_keys);
         }
         if (is_array($options['width'])) {
+            if (is_string($options['align'])) {
+                $options['align'] = array_fill(0, count($headers_keys), $options['align']);
+            }
             $options['align'] = array_combine($headers_keys, $options['align']);
             foreach ($options['align'] as &$a) {
                 $a = strtoupper($a[0]);

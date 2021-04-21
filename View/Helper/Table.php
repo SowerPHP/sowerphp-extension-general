@@ -309,13 +309,13 @@ class View_Helper_Table
         // guardar en la caché
         $buffer = '';
         if ((new \sowerphp\core\Cache())->set('session.'.session_id().'.export.'.$this->_id, $data)) {
-            $buffer = '<button type="button" class="btn btn-primary dropdown-toggle mb-2" data-toggle="dropdown" role="button" aria-expanded="false" id="dropdown_'.$this->_id.'" title="Guardar como..."><i class="fas fa-download fa-fw"></i> Guardar como...</button>';
-            $buffer .= '<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_'.$this->_id.'">';
+            $buffer = '<br><div class="btn-group float-end"><button type="button" class="btn btn-primary dropdown-toggle mb-2" data-bs-toggle="dropdown" role="button" aria-expanded="false" id="dropdown_'.$this->_id.'" title="Guardar como..."><i class="fas fa-download fa-fw"></i> Guardar como...</button>';
+            $buffer .= '<ul class="dropdown-menu" aria-labelledby="dropdown_'.$this->_id.'">';
             $extensions = \sowerphp\core\Configure::read('app.tables.extensions') ? \sowerphp\core\Configure::read('app.tables.extensions') : $this->extensions;
             foreach ($extensions as $e => $n) {
                 $buffer .= '<a href="'._BASE.'/exportar/'.$e.'/'.$this->_id.'" class="dropdown-item">'.$n.'</a>';
             }
-            $buffer .= '</div>'."\n";
+            $buffer .= '</ul></div>'."\n";
         }
         return $buffer;
     }

@@ -5,7 +5,12 @@
     <div class="card mb-4 text-center">
         <div class="card-body">
             <a href="<?=$_base,'/',$module,$link?>" title="<?=$info['desc']?>" class="nav-link p-0">
+<?php if (isset($info['icon'])) : ?>
                 <i class="<?=$info['icon']?> fa-3x" aria-hidden="true"></i>
+<?php else : if (isset($info['imag'])) : ?>
+                <img src="<?=$_base.$info['imag']?>" />
+<?php endif; ?>
+<?php endif; ?>
                 <p class="card-text small"><?=$info['name']?></p>
             </a>
         </div>

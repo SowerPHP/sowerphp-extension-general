@@ -161,10 +161,10 @@ class View_Helper_Form
             if ($config['help']!='') {
                 $config['help'] = ' <p class="form-text text-muted"'.(isset($config['id'])?' id="'.$config['id'].'Help"':'').'>'.$config['help'].'</p>';
             }
-            $buffer = '    <div class="form-group row'.($config['notempty']?' required':'').'">'."\n";
+            $buffer = '    <div class="mb-3 row'.($config['notempty']?' required':'').'">'."\n";
             if (!empty($config['label'])) {
                 $required = $config['notempty'] ? '<span style="color:red"><strong>*</strong></span> ' : '';
-                $buffer .= '        <label'.(isset($config['id'])?(' for="'.$config['id'].'"'):'').' class="col-sm-'.$this->_cols_label.' control-label text-right">'.$required.$config['label'].'</label>'."\n";
+                $buffer .= '        <label'.(isset($config['id'])?(' for="'.$config['id'].'"'):'').' class="col-sm-'.$this->_cols_label.' col-form-label text-end">'.$required.$config['label'].'</label>'."\n";
             }
             if (!in_array($config['type'], ['submit'])) {
                 $buffer .= '        <div class="col-sm-'.(12-$this->_cols_label).'">'.$field.$config['help'].'</div>'."\n";
@@ -177,12 +177,12 @@ class View_Helper_Form
         else if ($config['style']=='inline') {
             $buffer = '<div>';
             if ($config['type']!='checkbox') {
-                $buffer .= '<label class="sr-only"'.(isset($config['id'])?' for="'.$config['id'].'"':'').'>'.$config['label'].'</label>'."\n";
+                $buffer .= '<label class="visually-hidden"'.(isset($config['id'])?' for="'.$config['id'].'"':'').'>'.$config['label'].'</label>'."\n";
             }
             if (isset($config['addon-icon'])) {
-                $buffer .= '<div class="input-group-addon"><i class="fa fa-'.$config['addon-icon'].'" aria-hidden="true"></i></div>'."\n";
+                $buffer .= '<div class="input-group-prepend"><i class="fa fa-'.$config['addon-icon'].'" aria-hidden="true"></i></div>'."\n";
             } else if (isset($config['addon-text'])) {
-                $buffer .= '<div class="input-group-addon">'.$config['addon-text'].'</div>'."\n";
+                $buffer .= '<div class="input-group-prepend">'.$config['addon-text'].'</div>'."\n";
             }
             $buffer .= $field;
             if ($config['type']=='checkbox') {
@@ -198,7 +198,7 @@ class View_Helper_Form
         // si se debe colocar un label
         else if (!empty($config['id']) and !empty($config['label'])) {
             $width = !empty($config['width']) ? (' style="width:'.$config['width'].'"') : '';
-            $buffer = '<div'.$width.'><label class="sr-only" for="'.$config['id'].'">'.$config['label'].'</label>'.$field.'</div>'."\n";
+            $buffer = '<div'.$width.'><label class="visually-hidden" for="'.$config['id'].'">'.$config['label'].'</label>'.$field.'</div>'."\n";
         }
         // si no se debe aplicar ningún formato solo agregar el campo dentro de un div y el EOL
         else {
@@ -271,7 +271,7 @@ class View_Helper_Form
         }
         // determinar popover
         if ($config['popover']!='') {
-            $config['popover'] = ' data-toggle="popover" data-trigger="focus" title="'.$config['label'].'" data-placement="top" data-content="'.$config['popover'].'" onmouseover="$(this).popover(\'show\')" onmouseout="$(this).popover(\'hide\')"';
+            $config['popover'] = ' data-bs-toggle="popover" data-bs-trigger="focus" title="'.$config['label'].'" data-bs-placement="top" data-bs-content="'.$config['popover'].'" onmouseover="$(this).popover(\'show\')" onmouseout="$(this).popover(\'hide\')"';
         }
         // limpiar valor del campo
         if ($config['type']!='div' and $config['sanitize'] and isset($config['value'][0]) and !is_array($config['value'])) {

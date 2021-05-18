@@ -54,13 +54,16 @@ class View_Helper_FTP
     /**
      * Método que descarga un archivo desde el servidor FTP
      * @param file Archivo que se desea descargar
-     * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2015-06-16
+     * @author Nicalás Contreras Becerra (nicolas[at]sasco.cl)
+     * @version 2021-05-17
      */
     private function download($file)
     {
         ob_clean();
-        header('location: '.$this->ftp->getUri().$this->rootDir.str_replace('../', '', substr($file, 1)));
+        readfile($this->ftp->getUri().$this->rootDir.str_replace('../', '', substr($file, 1)));
+        header('Content-Type: application/octet-stream');
+        header("Content-Transfer-Encoding: Binary");
+        header("Content-disposition: attachment; filename=".substr($file, 1));
         exit;
     }
 
@@ -97,21 +100,23 @@ class View_Helper_FTP
      * @param path Ruta de los directorios
      * @return Breadcrumb con la ruta de los directorios
      * @author Esteban De La Fuente Rubio, DeLaF (esteban[at]delaf.cl)
-     * @version 2015-06-17
+     * @version 2021-05-17
      */
     private function breadcrumb($path)
     {
         $dirs = $path ? explode('/', substr($path, 0, -1)) : [];
         $n_dirs = count($dirs);
-        $buffer = '<ol class="breadcrumb">';
-        $buffer .= $dirs ? '<li><a href="?dir=/">Raíz</a></li>' : '<li class="active">Raíz</li>';
+        $buffer = '<nav aria-label="breadcrumb">';
+        $buffer .= '<ol class="breadcrumb">';
+        $buffer .= $dirs ? '<li class="breadcrumb-item"><a href="?dir=/">Raíz</a></li>' : '<li class=" breadcrumb-item active">Raíz</li>';
         for ($i=0; $i<$n_dirs; $i++) {
             if ($i+1<$n_dirs)
-                $buffer .= '<li><a href="?dir=/'.implode('/', array_slice($dirs, 0, $i+1)).'/">'.$dirs[$i].'</a></li>';
+                $buffer .= '<li class="breadcrumb-item"><a href="?dir=/'.implode('/', array_slice($dirs, 0, $i+1)).'/">'.$dirs[$i].'</a></li>';
             else
-                $buffer .= '<li class="active">'.$dirs[$i].'</li>';
+                $buffer .= '<li class="breadcrumb-item active">'.$dirs[$i].'</li>';
         }
         $buffer .= '</ol>';
+        $buffer .= '</nav>';
         return $buffer;
     }
 
